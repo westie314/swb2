@@ -21,6 +21,7 @@ module file_operations
     character (len=:), allocatable  :: sDelimiters
     character (len=:), allocatable  :: sCommentChars
     type (FSTRING_LIST_T)           :: slColNames
+    logical (c_bool)                :: remove_extra_delimiters = FALSE
     integer (c_int)                 :: iCurrentLinenum = 0
     integer (c_int)                 :: iNumberOfLines = 0
     integer (c_int)                 :: iNumberOfRecords = 0
@@ -173,8 +174,10 @@ contains
     ! [ LOCALS ]
     character (len=len(sFilename) ) :: sFilename_l
 
+    ! 'fix_pathname' simply replaces forward slashes and backslashes with whatever the native OS
+    ! path delimiter character should be
     sFilename_l = fix_pathname( sFilename )
-
+    
     this%sCommentChars = sCommentChars
     this%sDelimiters = sDelimiters
 
@@ -253,7 +256,10 @@ contains
 
     class (ASCII_FILE_T) :: this
 
+    integer (c_int)      :: iStat
+
     close(unit=this%iUnitNum, iostat=this%iStat)
+    
     this%lIsOpen = FALSE
 
   end subroutine close_file_sub
@@ -333,22 +339,19 @@ contains
     character (len=MAX_STR_LEN)           :: sString
     character (len=MAX_STR_LEN)           :: sSubString
     character (len=MAX_STR_LEN)           :: sSubStringClean
-    integer (c_int)                  :: column_count
+    integer (c_int)                       :: iStat
 
     this%sBuf = this%readline()
-    column_count = 0
-
     call stList%clear()
 
     do while ( len_trim( this%sBuf ) > 0)
 
-      column_count = column_count + 1
-      call chomp( this%sBuf, sSubString, this%sDelimiters )
+      call chomp( str=this%sBuf, substr=sSubString, delimiter_chr=this%sDelimiters,   &
+                  remove_extra_delimiters=this%remove_extra_delimiters )
 
       call replace(sSubString, " ", "_")
       call replace(sSubString, ".", "_")
       sSubStringClean = trim( clean( sSubString, DOUBLE_QUOTE ) )
-
       call stList%append( trim( adjustl( sSubStringClean ) ) )
 
     enddo

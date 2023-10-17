@@ -1,5 +1,5 @@
 !> @file
-!>  Contains a single module, \ref crop_coefficients__FAO56, which
+!>  Contains a single module, \ref crop_coefficients__fao56, which
 !>  provides support for modifying reference ET through the use of
 !>  crop coefficients
 
@@ -10,7 +10,7 @@ module crop_coefficients__fao56
   use iso_c_binding, only             : c_bool, c_short, c_int, c_float, c_double
   use constants_and_conversions, only : M_PER_FOOT, TRUE, FALSE, fTINYVAL,       &
                                         iTINYVAL, asInt, asFloat, fZERO, in_to_mm, &
-                                        TRUE, FALSE
+                                        TRUE, FALSE, clip
   use data_catalog, only              : DAT
   use data_catalog_entry, only        : DATA_CATALOG_ENTRY_T
   use datetime
@@ -27,8 +27,9 @@ module crop_coefficients__fao56
   public :: crop_coefficients_FAO56_initialize, crop_coefficients_FAO56_calculate
   public :: crop_coefficients_FAO56_update_growth_stage_dates
   public :: crop_coefficients_FAO56_update_growing_season
+  public :: crop_coefficients_FAO56_calculate_Kcb_Max
   public :: update_crop_coefficient_date_as_threshold, update_crop_coefficient_GDD_as_threshold
-  public :: GROWTH_STAGE_DATE, PLANTING_DATE, GROWTH_STAGE_DOY
+  public :: GROWTH_STAGE_DATE, PLANTING_DATE, GROWTH_STAGE_LENGTH_IN_DAYS
   public :: KCB_MIN, KCB_INI, KCB_MID, KCB_END
   public :: KCB_l, JAN, DEC, KCB_METHOD, KCB_METHOD_GDD, KCB_METHOD_FAO56
   public :: KCB_METHOD_MONTHLY_VALUES
@@ -66,7 +67,7 @@ module crop_coefficients__fao56
   real (c_float), allocatable   :: KCB_l(:,:)
   integer (c_int), allocatable  :: KCB_METHOD(:)
   real (c_float), allocatable   :: GROWTH_STAGE_SHIFT_DAYS(:)
-  real (c_float), allocatable   :: GROWTH_STAGE_DOY(:,:)
+  real (c_float), allocatable   :: GROWTH_STAGE_LENGTH_IN_DAYS(:,:)
   real (c_float), allocatable   :: GROWTH_STAGE_GDD(:,:)
   type (DATETIME_T), allocatable     :: GROWTH_STAGE_DATE(:,:)
 
@@ -77,61 +78,63 @@ contains
   subroutine crop_coefficients_FAO56_initialize()
 
     ! [ LOCALS ]
-    ! type (FSTRING_LIST_T)              :: slREW, slTEW
-    type (FSTRING_LIST_T)              :: slList
+    ! type (FSTRING_LIST_T)            :: slREW, slTEW
+    type (FSTRING_LIST_T)             :: slList
     type (DATETIME_T)                 :: DT
     type (DATETIME_T)                 :: temp_date
     ! integer (c_int), allocatable :: iTEWSeqNums(:)
     ! integer (c_int), allocatable :: iREWSeqNums(:)
-    integer (c_int)              :: iNumberOfTEW, iNumberOfREW
-    integer (c_int)              :: iNumberOfLanduses
-    integer (c_int)              :: iIndex, iIndex2
-    integer (c_int)              :: iStat
-    real (c_float)               :: growing_cycle_length
+    integer (c_int)                   :: iNumberOfTEW, iNumberOfREW
+    integer (c_int)                   :: iNumberOfLanduses
+    integer (c_int)                   :: iIndex, iIndex2
+    integer (c_int)                   :: iStat
+    real (c_float)                    :: growing_cycle_length
 
-    character (len=10)               :: sMMDDYYYY
-    character (len=:), allocatable   :: sText
+    character (len=10)                :: sMMDDYYYY
+    character (len=:), allocatable    :: sText
 
     type (FSTRING_LIST_T)             :: slPlantingDate
-    type (DATETIME_T)                :: dtPlantingDate
-    character (len=:), allocatable   :: PlantingDate_str
+    type (DATETIME_T)                 :: dtPlantingDate
+    character (len=:), allocatable    :: PlantingDate_str
 
-    real (c_float), allocatable :: L_shift_days_l(:)
+    real (c_float), allocatable       :: L_shift_days_l(:)
 
-    real (c_float), allocatable :: L_ini_l(:)
-    real (c_float), allocatable :: L_dev_l(:)
-    real (c_float), allocatable :: L_mid_l(:)
-    real (c_float), allocatable :: L_late_l(:)
-    real (c_float), allocatable :: L_fallow_l(:)
+    real (c_float), allocatable       :: L_ini_l(:)
+    real (c_float), allocatable       :: L_dev_l(:)
+    real (c_float), allocatable       :: L_mid_l(:)
+    real (c_float), allocatable       :: L_late_l(:)
+    real (c_float), allocatable       :: L_fallow_l(:)
 
-    real (c_float), allocatable :: GDD_plant_l(:)
-    real (c_float), allocatable :: GDD_ini_l(:)
-    real (c_float), allocatable :: GDD_dev_l(:)
-    real (c_float), allocatable :: GDD_mid_l(:)
-    real (c_float), allocatable :: GDD_late_l(:)
+    real (c_float), allocatable       :: GDD_plant_l(:)
+    real (c_float), allocatable       :: GDD_ini_l(:)
+    real (c_float), allocatable       :: GDD_dev_l(:)
+    real (c_float), allocatable       :: GDD_mid_l(:)
+    real (c_float), allocatable       :: GDD_late_l(:)
 
-    real (c_float), allocatable :: Kcb_ini_l(:)
-    real (c_float), allocatable :: Kcb_mid_l(:)
-    real (c_float), allocatable :: Kcb_end_l(:)
-    real (c_float), allocatable :: Kcb_min_l(:)
+    real (c_float), allocatable       :: Kcb_MAX(:)
 
-    real (c_float), allocatable :: Kcb_jan(:)
-    real (c_float), allocatable :: Kcb_feb(:)
-    real (c_float), allocatable :: Kcb_mar(:)
-    real (c_float), allocatable :: Kcb_apr(:)
-    real (c_float), allocatable :: Kcb_may(:)
-    real (c_float), allocatable :: Kcb_jun(:)
-    real (c_float), allocatable :: Kcb_jul(:)
-    real (c_float), allocatable :: Kcb_aug(:)
-    real (c_float), allocatable :: Kcb_sep(:)
-    real (c_float), allocatable :: Kcb_oct(:)
-    real (c_float), allocatable :: Kcb_nov(:)
-    real (c_float), allocatable :: Kcb_dec(:)
+    real (c_float), allocatable       :: Kcb_ini_l(:)
+    real (c_float), allocatable       :: Kcb_mid_l(:)
+    real (c_float), allocatable       :: Kcb_end_l(:)
+    real (c_float), allocatable       :: Kcb_min_l(:)
 
-    real (c_float)              :: fKcb_initial
-    real (c_float)              :: fRz_initial
+    real (c_float), allocatable       :: Kcb_jan(:)
+    real (c_float), allocatable       :: Kcb_feb(:)
+    real (c_float), allocatable       :: Kcb_mar(:)
+    real (c_float), allocatable       :: Kcb_apr(:)
+    real (c_float), allocatable       :: Kcb_may(:)
+    real (c_float), allocatable       :: Kcb_jun(:)
+    real (c_float), allocatable       :: Kcb_jul(:)
+    real (c_float), allocatable       :: Kcb_aug(:)
+    real (c_float), allocatable       :: Kcb_sep(:)
+    real (c_float), allocatable       :: Kcb_oct(:)
+    real (c_float), allocatable       :: Kcb_nov(:)
+    real (c_float), allocatable       :: Kcb_dec(:)
 
-    real (c_float), parameter   :: NEAR_ZERO = 1.0e-9_c_float
+    real (c_float)                    :: fKcb_initial
+    real (c_float)                    :: fRz_initial
+
+    real (c_float), parameter         :: NEAR_ZERO = 1.0e-9_c_float
 
     type (DATA_CATALOG_ENTRY_T), pointer :: pINITIAL_PERCENT_SOIL_MOISTURE
 
@@ -190,8 +193,8 @@ contains
    call PARAMS%get_parameters( sKey="Kcb_Dec", fValues=KCB_dec )
 
 
-    allocate( GROWTH_STAGE_DOY( 5, iNumberOfLanduses ), stat=iStat )
-    call assert( iStat==0, "Failed to allocate memory for GROWTH_STAGE_DOY array", &
+    allocate( GROWTH_STAGE_LENGTH_IN_DAYS( 5, iNumberOfLanduses ), stat=iStat )
+    call assert( iStat==0, "Failed to allocate memory for GROWTH_STAGE_LENGTH_IN_DAYS array", &
       __FILE__, __LINE__ )
 
     allocate( GROWTH_STAGE_GDD( 5, iNumberOfLanduses ), stat=iStat )
@@ -217,26 +220,26 @@ contains
     KCB_METHOD = -9999
     KCB_l = -9999.
     GROWTH_STAGE_GDD = -9999.
-    GROWTH_STAGE_DOY = -9999.
+    GROWTH_STAGE_LENGTH_IN_DAYS = 0.
     GROWTH_STAGE_SHIFT_DAYS = 0.0_c_float
 
     if ( ubound(L_shift_days_l,1) == iNumberOfLanduses )    &
       GROWTH_STAGE_SHIFT_DAYS = L_shift_days_l
 
     if ( ubound(L_ini_l,1) == iNumberOfLanduses )           &
-      GROWTH_STAGE_DOY( L_DOY_INI,  : ) = L_ini_l
+      GROWTH_STAGE_LENGTH_IN_DAYS( L_DOY_INI,  : ) = L_ini_l
 
     if ( ubound(L_dev_l,1) == iNumberOfLanduses )           &
-      GROWTH_STAGE_DOY( L_DOY_DEV,  : ) = L_dev_l
+      GROWTH_STAGE_LENGTH_IN_DAYS( L_DOY_DEV,  : ) = L_dev_l
 
     if ( ubound(L_mid_l,1) == iNumberOfLanduses )           &
-      GROWTH_STAGE_DOY( L_DOY_MID,  : ) = L_mid_l
+      GROWTH_STAGE_LENGTH_IN_DAYS( L_DOY_MID,  : ) = L_mid_l
 
     if ( ubound(L_late_l,1) == iNumberOfLanduses )          &
-      GROWTH_STAGE_DOY( L_DOY_LATE, : ) = L_late_l
+      GROWTH_STAGE_LENGTH_IN_DAYS( L_DOY_LATE, : ) = L_late_l
 
     if ( ubound(L_fallow_l,1) == iNumberOfLanduses )        &
-      GROWTH_STAGE_DOY( L_DOY_FALLOW, : ) = L_fallow_l
+      GROWTH_STAGE_LENGTH_IN_DAYS( L_DOY_FALLOW, : ) = L_fallow_l
 
     call LOGS%write(" ## Crop Kcb Curve Summary ##", iLinesAfter=1)
     call LOGS%write(" _only meaningful for landuses where the Kcb curve is defined " &
@@ -273,24 +276,36 @@ contains
         endif
 
         ! march forward through time calculating the various dates on the Kcb curve
-        GROWTH_STAGE_DATE( ENDDATE_INI, iIndex ) = GROWTH_STAGE_DATE( PLANTING_DATE, iIndex ) + L_ini_l( iIndex )
-        GROWTH_STAGE_DATE( ENDDATE_DEV, iIndex ) = GROWTH_STAGE_DATE( ENDDATE_INI, iIndex ) + L_dev_l( iIndex )
-        GROWTH_STAGE_DATE( ENDDATE_MID, iIndex ) = GROWTH_STAGE_DATE( ENDDATE_DEV, iIndex ) + L_mid_l( iIndex )
-        GROWTH_STAGE_DATE( ENDDATE_LATE, iIndex ) = GROWTH_STAGE_DATE( ENDDATE_MID, iIndex ) + L_late_l( iIndex )
-        GROWTH_STAGE_DATE( ENDDATE_FALLOW, iIndex ) = GROWTH_STAGE_DATE( ENDDATE_LATE, iIndex ) + L_fallow_l( iIndex )
+        ! GROWTH_STAGE_DATE( ENDDATE_INI, iIndex ) = GROWTH_STAGE_DATE( PLANTING_DATE, iIndex ) + L_ini_l( iIndex )
+        ! GROWTH_STAGE_DATE( ENDDATE_DEV, iIndex ) = GROWTH_STAGE_DATE( ENDDATE_INI, iIndex ) + L_dev_l( iIndex )
+        ! GROWTH_STAGE_DATE( ENDDATE_MID, iIndex ) = GROWTH_STAGE_DATE( ENDDATE_DEV, iIndex ) + L_mid_l( iIndex )
+        ! GROWTH_STAGE_DATE( ENDDATE_LATE, iIndex ) = GROWTH_STAGE_DATE( ENDDATE_MID, iIndex ) + L_late_l( iIndex )
+        ! GROWTH_STAGE_DATE( ENDDATE_FALLOW, iIndex ) = GROWTH_STAGE_DATE( ENDDATE_LATE, iIndex ) + L_fallow_l( iIndex )
 
-        call LOGS%write( "| "//asCharacter( LANDUSE_CODE( iIndex ))//" | "                &
-           //trim( GROWTH_STAGE_DATE( PLANTING_DATE, iIndex )%prettydate() )        &
-             //" (doy:"//asCharacter( GROWTH_STAGE_DATE( PLANTING_DATE, iIndex )%getDayOfYear() )//") | " &
-           //trim( GROWTH_STAGE_DATE( ENDDATE_INI, iIndex )%prettydate() )//" | "   &
-             //" (doy:"//asCharacter( GROWTH_STAGE_DATE( ENDDATE_INI, iIndex )%getDayOfYear() )//") | " &
-           //trim( GROWTH_STAGE_DATE( ENDDATE_DEV, iIndex )%prettydate() )//" | "   &
-             //" (doy:"//asCharacter( GROWTH_STAGE_DATE( ENDDATE_DEV, iIndex )%getDayOfYear() )//") | " &
-           //trim( GROWTH_STAGE_DATE( ENDDATE_MID, iIndex )%prettydate() )//" | "   &
-             //" (doy:"//asCharacter( GROWTH_STAGE_DATE( ENDDATE_MID, iIndex )%getDayOfYear() )//") | " &
-           //trim( GROWTH_STAGE_DATE( ENDDATE_LATE, iIndex )%prettydate() )//" | "  &
-             //" (doy:"//asCharacter( GROWTH_STAGE_DATE( ENDDATE_LATE, iIndex )%getDayOfYear() )//") | " &
-           //trim( GROWTH_STAGE_DATE( ENDDATE_FALLOW, iIndex )%prettydate() )       &
+        ! if any of the L_* length values is missing, a value of zero will be used, resulting in a wierd looking Kcb curve
+        GROWTH_STAGE_DATE( ENDDATE_INI, iIndex ) = GROWTH_STAGE_DATE( PLANTING_DATE, iIndex )                        &
+                                                   + GROWTH_STAGE_LENGTH_IN_DAYS( L_DOY_INI, iIndex )
+        GROWTH_STAGE_DATE( ENDDATE_DEV, iIndex ) = GROWTH_STAGE_DATE( ENDDATE_INI, iIndex )                          &
+                                                   + GROWTH_STAGE_LENGTH_IN_DAYS( L_DOY_DEV, iIndex )
+        GROWTH_STAGE_DATE( ENDDATE_MID, iIndex ) = GROWTH_STAGE_DATE( ENDDATE_DEV, iIndex )                          &
+                                                   + GROWTH_STAGE_LENGTH_IN_DAYS( L_DOY_MID, iIndex )
+        GROWTH_STAGE_DATE( ENDDATE_LATE, iIndex ) = GROWTH_STAGE_DATE( ENDDATE_MID, iIndex )                         &
+                                                   + GROWTH_STAGE_LENGTH_IN_DAYS( L_DOY_LATE, iIndex )
+        GROWTH_STAGE_DATE( ENDDATE_FALLOW, iIndex ) = GROWTH_STAGE_DATE( ENDDATE_LATE, iIndex )                      &
+                                                     + GROWTH_STAGE_LENGTH_IN_DAYS( L_DOY_FALLOW, iIndex )
+
+        call LOGS%write( "| "//asCharacter( LANDUSE_CODE( iIndex ))//" | "                                    &
+           //trim( GROWTH_STAGE_DATE( PLANTING_DATE, iIndex )%prettydate() )                                  &
+             //" (doy:"//asCharacter( GROWTH_STAGE_DATE( PLANTING_DATE, iIndex )%getDayOfYear() )//") | "     &
+           //trim( GROWTH_STAGE_DATE( ENDDATE_INI, iIndex )%prettydate() )//" | "                             &
+             //" (doy:"//asCharacter( GROWTH_STAGE_DATE( ENDDATE_INI, iIndex )%getDayOfYear() )//") | "       &
+           //trim( GROWTH_STAGE_DATE( ENDDATE_DEV, iIndex )%prettydate() )//" | "                             &
+             //" (doy:"//asCharacter( GROWTH_STAGE_DATE( ENDDATE_DEV, iIndex )%getDayOfYear() )//") | "       &
+           //trim( GROWTH_STAGE_DATE( ENDDATE_MID, iIndex )%prettydate() )//" | "                             &
+             //" (doy:"//asCharacter( GROWTH_STAGE_DATE( ENDDATE_MID, iIndex )%getDayOfYear() )//") | "       &
+           //trim( GROWTH_STAGE_DATE( ENDDATE_LATE, iIndex )%prettydate() )//" | "                            &
+             //" (doy:"//asCharacter( GROWTH_STAGE_DATE( ENDDATE_LATE, iIndex )%getDayOfYear() )//") | "      &
+           //trim( GROWTH_STAGE_DATE( ENDDATE_FALLOW, iIndex )%prettydate() )                                 &
              //" (doy:"//asCharacter( GROWTH_STAGE_DATE( ENDDATE_FALLOW, iIndex )%getDayOfYear() )//") | ")
       enddo
 
@@ -333,7 +348,7 @@ contains
          .and. all( KCB_l( KCB_INI:KCB_MIN, iIndex ) > 0.0_c_float ) ) then
         KCB_METHOD( iIndex ) = KCB_METHOD_GDD
 
-      elseif ( all( GROWTH_STAGE_DOY( PLANTING_DATE:, iIndex ) >= 0.0_c_float )              &
+      elseif ( all( GROWTH_STAGE_LENGTH_IN_DAYS( PLANTING_DATE:, iIndex ) >= 0.0_c_float )              &
          .and. all( KCB_l( KCB_INI:KCB_MIN, iIndex ) > 0.0_c_float ) ) then
         KCB_METHOD( iIndex ) = KCB_METHOD_FAO56
       endif
@@ -446,6 +461,37 @@ end function update_crop_coefficient_date_as_threshold
 
 !------------------------------------------------------------------------------
 
+pure elemental function crop_coefficients_FAO56_calculate_Kcb_Max(wind_speed_meters_per_sec,   &
+                                          relative_humidity_min_pct,   &
+                                          Kcb,                         & 
+                                          plant_height_meters)                       result(kcb_max)
+
+  real (c_float), intent(in) :: wind_speed_meters_per_sec
+  real (c_float), intent(in) :: relative_humidity_min_pct
+  real (c_float), intent(in) :: Kcb
+  real (c_float), intent(in) :: plant_height_meters
+
+  real (c_float)  :: kcb_max
+  real (c_double) :: U2
+  real (c_double) :: RHmin
+  real (c_double) :: plant_height
+
+  ! Limits are as suggested on page 123 of FAO-56 with respect to
+  ! modifying mid-season KCB_mid values 
+  RHmin = clip( relative_humidity_min_pct, minval=20., maxval=80. )
+  U2 = clip(wind_speed_meters_per_sec, minval=1., maxval=6.)
+  plant_height = clip(plant_height_meters, minval=1., maxval=10.)
+
+  ! equation 72, FAO-56, p 199
+  kcb_max = max(  1.2_c_double + ( (0.04_c_double * (U2 - 2._c_double)               &
+                                  - 0.004_c_double * (RHmin - 45._c_double) ) )      &
+                                  * (plant_height_meters/3._c_double)**0.3_c_double, &
+                  Kcb + 0.05_c_double )
+
+end function crop_coefficients_FAO56_calculate_Kcb_Max
+
+!------------------------------------------------------------------------------
+
  !> Update the current basal crop coefficient (Kcb), with GDD as the threhold
  !!
  !! @param[in] fGDD current growing degree day value associated with the cell.
@@ -554,15 +600,15 @@ end function update_crop_coefficient_GDD_as_threshold
 
       ! now calculate dates associated with the rest of the Kcb curve
       GROWTH_STAGE_DATE( ENDDATE_INI, iIndex ) = GROWTH_STAGE_DATE( PLANTING_DATE, iIndex ) &
-                                                + GROWTH_STAGE_DOY( L_DOY_INI, iIndex )
+                                                + GROWTH_STAGE_LENGTH_IN_DAYS( L_DOY_INI, iIndex )
       GROWTH_STAGE_DATE( ENDDATE_DEV, iIndex ) = GROWTH_STAGE_DATE( ENDDATE_INI, iIndex )&
-                                                + GROWTH_STAGE_DOY( L_DOY_DEV, iIndex )
+                                                + GROWTH_STAGE_LENGTH_IN_DAYS( L_DOY_DEV, iIndex )
       GROWTH_STAGE_DATE( ENDDATE_MID, iIndex ) = GROWTH_STAGE_DATE( ENDDATE_DEV, iIndex )&
-                                                + GROWTH_STAGE_DOY( L_DOY_MID, iIndex )
+                                                + GROWTH_STAGE_LENGTH_IN_DAYS( L_DOY_MID, iIndex )
       GROWTH_STAGE_DATE( ENDDATE_LATE, iIndex ) = GROWTH_STAGE_DATE( ENDDATE_MID, iIndex )&
-                                                + GROWTH_STAGE_DOY( L_DOY_LATE, iIndex )
+                                                + GROWTH_STAGE_LENGTH_IN_DAYS( L_DOY_LATE, iIndex )
       GROWTH_STAGE_DATE( ENDDATE_FALLOW, iIndex ) = GROWTH_STAGE_DATE( ENDDATE_LATE, iIndex )&
-                                                + GROWTH_STAGE_DOY( L_DOY_FALLOW, iIndex )
+                                                + GROWTH_STAGE_LENGTH_IN_DAYS( L_DOY_FALLOW, iIndex )
 
       call LOGS%write("## Updating Kcb Date Values ##", iLinesAfter=1, lEcho=FALSE )
       call LOGS%write("Landuse Code | Planting Date | End of 'ini' | End of 'dev' " &
@@ -615,7 +661,7 @@ end function update_crop_coefficient_GDD_as_threshold
 
     real (c_float), intent(in)             :: Kcb
     integer (c_int), intent(in)            :: landuse_index
-    logical (c_bool), intent(out)               :: it_is_growing_season
+    logical (c_bool), intent(out)          :: it_is_growing_season
 
     if ( Kcb > KCB_l( KCB_MIN, landuse_index) ) then
       it_is_growing_season = TRUE

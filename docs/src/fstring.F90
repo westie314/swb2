@@ -151,6 +151,10 @@ module fstring
     procedure :: return_left_part_of_string_fn
   end interface left
 
+  interface strip_full_pathname
+    procedure :: strip_full_pathname_fn
+  end interface strip_full_pathname
+
   public :: f_to_c_str
   interface f_to_c_str
     procedure :: f_to_c_string_fn
@@ -162,14 +166,14 @@ module fstring
   end interface c_to_f_str
 
   ! [ special ASCII characters ]
-  public :: TAB, WHITESPACE, BACKSLASH, FORWARDSLASH, CARRIAGE_RETURN, COMMENT_CHARS, &
+  public :: TAB, WHITESPACE, BACKSLASH, FORWARDSLASH, CARRIAGE_RETURN, COMMENT_CHARACTERS, &
             PUNCTUATION, DOUBLE_QUOTE
   character (len=1), parameter :: TAB = achar(9)
   character (len=2), parameter :: WHITESPACE = " "//achar(9)
   character (len=1), parameter :: BACKSLASH = achar(92)
   character (len=1), parameter :: FORWARDSLASH = achar(47)
   character (len=1), parameter :: CARRIAGE_RETURN = achar(13)
-  character (len=3), parameter :: COMMENT_CHARS = "#!%"
+  character (len=3), parameter :: COMMENT_CHARACTERS = "#!%"
   character (len=1), parameter :: DOUBLE_QUOTE = achar(34)
   character (len=3), parameter :: PUNCTUATION = ",;:"
 
@@ -179,6 +183,18 @@ module fstring
   real (c_double), parameter  :: NA_DOUBLE = - (huge(1._c_double)-1._c_double)
 
 contains
+
+  ! remove file path from a filename
+  function strip_full_pathname_fn( filename )   result(value)
+
+    character (len=*), intent(in)   :: filename
+    character (len=:), allocatable  :: value
+
+    if (filename  .contains. "/") value = right( value, substring="/")
+    if (filename  .contains. "\") value = right( value, substring="\")
+
+  end function strip_full_pathname_fn  
+
 
   impure elemental function string_to_integer_fn(text)  result(value)
 
@@ -852,15 +868,24 @@ contains
 
   !--------------------------------------------------------------------------------------------------
 
-  subroutine split_and_return_text_sub(str, substr, delimiter_chr)
+  subroutine split_and_return_text_sub(str, substr, delimiter_chr, remove_extra_delimiters)
 
     character (len=*), intent(inout)                     :: str
     character (len=*), intent(out)                       :: substr
     character (len=*), intent(in), optional              :: delimiter_chr
+    logical (c_bool), intent(in), optional               :: remove_extra_delimiters
 
     ! [ LOCALS ]
     character (len=:), allocatable :: delimiter_chr_
-    integer (c_int) :: iIndex
+    logical (c_bool)     :: remove_extra_delimiters_
+    integer (kind=c_int) :: iIndex
+    integer (c_int)      :: n
+
+    if ( present(remove_extra_delimiters)) then
+      remove_extra_delimiters_ = remove_extra_delimiters
+    else
+      remove_extra_delimiters_ = .false._c_bool
+    endif
 
     if ( present(delimiter_chr) ) then
       select case (delimiter_chr)
@@ -888,7 +913,18 @@ contains
     else
       ! delimiters were found; split and return the chunks of text
       substr = trim( str(1:iIndex-1) )
-      str = trim( adjustl( str(iIndex + 1:) ) )
+      str = trim( str(iIndex + 1: ) )
+      ! inelegant, but something like this is needed to detect the presence of duplicate delimiters in cases where
+      ! more than one delimiter in a row should just be ignored
+      if (remove_extra_delimiters_) then
+        do
+          n = len_trim(str)
+          if (n == 0 ) exit
+          ! if we still have delimiters (whitespace, for example) in the first position, lop it off and try again
+          if ( scan( string=str(1:1), set=delimiter_chr_) == 0) exit
+          str = trim(str(2:n))
+        enddo
+      endif  
     endif
 
   end subroutine split_and_return_text_sub

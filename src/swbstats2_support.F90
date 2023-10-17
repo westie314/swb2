@@ -782,8 +782,7 @@ contains
       this%output_conversion_factor = this%unit_conversion_factor
     endif
 
-    this%filename_modifier_string = trim(this%filename_modifier_string)   &
-                                       //"__cubic_meters"
+    this%filename_modifier_string = trim(this%filename_modifier_string)//"__cubic_meters"
 
   end subroutine set_conversion_factors_sub
 

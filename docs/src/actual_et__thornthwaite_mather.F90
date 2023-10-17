@@ -1,3 +1,10 @@
+!> @file
+!>  Contains a single module, \ref actual_et__thornthwaite_mather, which
+!>  provides support for calculating actual evapotranspiration by means of an 
+!>  approximation to the Thornthwaite-Mather soil-moisture retention tables. 
+
+!> Calculate actual ET by means of an approximation to the Thornthwaite-Mather
+!> soil-moisture-retention tables.
 module actual_et__thornthwaite_mather
 
 
@@ -35,10 +42,11 @@ contains
 
       if ( soil_storage_max > NEAR_ZERO ) then
 
-        soil_storage_temp = max( 0.0, min( soil_storage_max, precipitation + soil_storage ) )
+!        soil_storage_temp = max( 0.0, min( soil_storage_max, precipitation + soil_storage ) )
+!        actual_et =  soil_storage_temp * ( 1.0_c_float - exp( -crop_etc / soil_storage_max ) )
 
-        actual_et =  soil_storage_temp * ( 1.0_c_float - exp( -crop_etc / soil_storage_max ) )
-
+        actual_et =  soil_storage * ( 1.0_c_float - exp( P_minus_PE / soil_storage_max ) )
+ 
       else
 
         actual_et = crop_etc - precipitation

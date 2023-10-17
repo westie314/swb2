@@ -152,14 +152,13 @@ contains
     do while ( SIM_DT%curr <= SIM_DT%end )
 
       call cells%update_landuse_codes()
-      call cells%update_irrigation_mask()
 
       do sim_number=1,number_of_simulations
 
         ! modifying module variable from precipitation__method_of_fragments
         SIMULATION_NUMBER = sim_number
 
-        call cells%get_climate_data( )
+        call cells%get_weather_data( )
 
         if (sim_number==1) then
           call LOGS%write("Calculating: "//SIM_DT%curr%prettydate(),  &

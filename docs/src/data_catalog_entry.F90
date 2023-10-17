@@ -13,8 +13,10 @@ module data_catalog_entry
   use file_operations, only      : fully_qualified_filename
   use logfiles
   use fstring
+  use fstring_list
   use grid
   use netcdf4_support
+  use parameters
   use iso_c_binding
   implicit none
 
@@ -33,21 +35,23 @@ module data_catalog_entry
   integer (c_int), public, parameter :: DYNAMIC_GRID = 3
   integer (c_int), parameter         :: DYNAMIC_NETCDF_GRID = 4
   integer (c_int), parameter         :: NO_GRID = 5
+  integer (c_int), parameter         :: TABLE_LOOKUP = 6
 
   integer (c_int), parameter :: FILETYPE_ARC_ASCII = 0
   integer (c_int), parameter :: FILETYPE_SURFER = 1
   integer (c_int), parameter :: FILETYPE_NETCDF = 2
-  integer (c_int), parameter :: FILETYPE_NONE = 3
+  integer (c_int), parameter :: FILETYPE_ASCII_TABLE = 3
+  integer (c_int), parameter :: FILETYPE_NONE = 4
 
   type, public :: DATA_CATALOG_ENTRY_T
     character (len=:), allocatable :: sKeyword
     type (DATA_CATALOG_ENTRY_T), pointer :: previous => null()
     type (DATA_CATALOG_ENTRY_T), pointer :: next     => null()
 
-    integer (c_int)               :: iSourceDataForm = NO_GRID   ! constant, static grid, dynamic grid
-    integer (c_int)               :: iSourceDataType = DATATYPE_NA  ! real, short, integer, etc.
+    integer (c_int)               :: iSourceDataForm = NO_GRID        ! constant, static grid, dynamic grid
+    integer (c_int)               :: iSourceDataType = DATATYPE_NA    ! real, short, integer, etc.
     integer (c_int)               :: iSourceFileType = FILETYPE_NONE  ! Arc ASCII, Surfer, NetCDF
-    integer (c_int)               :: iTargetDataType = DATATYPE_NA  ! Fortran real, integer, etc.
+    integer (c_int)               :: iTargetDataType = DATATYPE_NA    ! Fortran real, integer, etc.
 
     character (len=256)       :: sDescription           = ""
     character (len=256)       :: sSourcePROJ4_string    = ""
@@ -55,10 +59,17 @@ module data_catalog_entry
     character (len=256)       :: sSourceFileType        = ""
     character (len=512)       :: sSourceFilename        = ""
     character (len=512)       :: sFilenameTemplate      = ""
-    integer (c_int)      :: iFilename_Monthname_Capitalization_Rule = FILE_TEMPLATE_CAPITALIZED_MONTHNAME
+    integer (c_int)           :: iFilename_Monthname_Capitalization_Rule = FILE_TEMPLATE_CAPITALIZED_MONTHNAME
     character (len=512)       :: sOldFilename           = ""
     character (len=256)       :: sDateColumnName        = ""
+    character (len=10)        :: sDefaultDateFormat     = "YYYY-MM-DD"
     character (len=256)       :: sValueColumnName       = ""
+
+    real (c_float), allocatable    :: table_values_real(:)
+    type (DATETIME_T), allocatable :: table_dates(:)
+    integer (c_int)                :: table_indx 
+
+    logical (c_bool)          :: lTableValuesHaveBeenRetrieved = FALSE
 
     integer (c_int)      :: iFileCount = -1
     integer (c_int)      :: iFileCountYear = -9999
@@ -68,13 +79,15 @@ module data_catalog_entry
     integer (c_int)      :: iMaxAllowedValue = iBIGVAL      ! no bounds on data
     real (c_float)       :: rMissingValuesCode = -rBIGVAL
     integer (c_int)      :: iMissingValuesCode = -iBIGVAL
-    character (len=2)         :: sMissingValuesOperator = "&&"
+    character (len=2)    :: sMissingValuesOperator = "&&"
     integer (c_int)      :: iMissingValuesAction = 0
 
-    real (c_double)      :: rUserScaleFactor = 1_c_double
-    real (c_double)      :: rUserAddOffset = 0_c_double
+    real (c_double)      :: dUserScaleFactor = 1_c_double
+    real (c_double)      :: dUserAddOffset = 0_c_double
+    real (c_double)      :: dUserSubOffset = 0_c_double
     real (c_double)      :: rX_Coord_AddOffset = 0.0_c_double
     real (c_double)      :: rY_Coord_AddOffset = 0.0_c_double
+    real (c_double)      :: rCoordinateTolerance = 0.0_c_double
 
     logical (c_bool)     :: lAllowMissingFiles = FALSE
     logical (c_bool)     :: lAllowAutomaticDataFlipping = TRUE
@@ -101,12 +114,12 @@ module data_catalog_entry
     type (GRID_BOUNDS_T)     :: GRID_BOUNDS_NATIVE
     type (GRID_BOUNDS_T)     :: GRID_BOUNDS_BASE
 
-    integer (c_int)     :: iNC_FILE_STATUS = NETCDF_FILE_CLOSED
+    integer (c_int)          :: iNC_FILE_STATUS = NETCDF_FILE_CLOSED
     type (T_NETCDF4_FILE)    :: NCFILE
 
-    integer (c_int)     :: iNC_ARCHIVE_STATUS = NETCDF_FILE_CLOSED
+    integer (c_int)          :: iNC_ARCHIVE_STATUS = NETCDF_FILE_CLOSED
     type (T_NETCDF4_FILE)    :: NCFILE_ARCHIVE
-    integer (c_size_t)  :: iNCFILE_RECNUM = 0
+    integer (c_size_t)       :: iNCFILE_RECNUM = 0
 
     integer (c_int)     :: iConstantValue = 0
     real (c_float)      :: rConstantValue = 0.0
@@ -126,28 +139,33 @@ module data_catalog_entry
 
   contains
 
-    procedure         :: setkey => set_keyword_sub
+    procedure  :: setkey => set_keyword_sub
 
     procedure  :: initialize_constant_int_data_object_sub
     procedure  :: initialize_constant_real_data_object_sub
     procedure  :: initialize_gridded_data_object_sub
+    procedure  :: initialize_table_sub
     generic    :: initialize => initialize_constant_int_data_object_sub,    &
-                                        initialize_constant_real_data_object_sub,   &
-                                        initialize_gridded_data_object_sub
+                                initialize_constant_real_data_object_sub,   &
+                                initialize_gridded_data_object_sub,         &
+                                initialize_table_sub
 
     procedure  :: initialize_netcdf => initialize_netcdf_data_object_sub
 
-    procedure  :: set_scale    => set_scale_sub
-    procedure  :: set_offset   => set_offset_sub
-    procedure  :: set_X_offset => set_X_coord_offset_sub
-    procedure  :: set_Y_offset => set_Y_coord_offset_sub
+    procedure  :: set_scale                => set_scale_sub
+    procedure  :: set_sub_offset           => set_sub_offset_sub
+    procedure  :: set_add_offset           => set_add_offset_sub
+    
+    procedure  :: set_X_offset             => set_X_coord_offset_sub
+    procedure  :: set_Y_offset             => set_Y_coord_offset_sub
+    procedure  :: set_coordinate_tolerance => set_coordinate_tolerance_sub
 
     procedure  :: set_majority_filter_flag => set_majority_filter_flag_sub
 
     procedure  :: set_minimum_allowable_value_int_sub
     procedure  :: set_minimum_allowable_value_real_sub
     generic    :: set_valid_minimum => set_minimum_allowable_value_int_sub,    &
-                                               set_minimum_allowable_value_real_sub
+                                       set_minimum_allowable_value_real_sub
 
     procedure  :: set_maximum_allowable_value_int_sub
     procedure  :: set_maximum_allowable_value_real_sub
@@ -212,8 +230,6 @@ module data_catalog_entry
 
     procedure  :: calc_project_boundaries => calc_project_boundaries_sub
     procedure  :: test_for_need_to_pad_values => test_for_need_to_pad_values_fn
-    
-    final      :: nullify_pointers_sub
 
   end type DATA_CATALOG_ENTRY_T
 
@@ -301,6 +317,33 @@ contains
 
 !--------------------------------------------------------------------------------------------------
 
+  subroutine initialize_constant_int_data_object_sub( this, &
+    sDescription, &
+    iConstant )
+
+    class (DATA_CATALOG_ENTRY_T)    :: this
+    character (len=*), intent(in)   :: sDescription
+    integer (c_int), intent(in)     :: iConstant
+
+    this%iConstantValue = iConstant
+    this%sDescription = trim(sDescription)
+    this%iSourceDataForm = CONSTANT_GRID
+    this%iSourceDataType = DATATYPE_INT
+    this%iTargetDataType = DATATYPE_INT
+    this%iSourceFileType = FILETYPE_NONE
+
+    call this%nullify_pointers()
+
+    this%pGrdBase => grid_Create(iNX=BNDS%iNumCols, iNY=BNDS%iNumRows, &
+      rX0=BNDS%fX_ll, rY0=BNDS%fY_ll, rGridCellSize=BNDS%fGridCellSize, iDataType=DATATYPE_INT)
+
+    this%pGrdBase%sPROJ4_string = trim( BNDS%sPROJ4_string )
+    this%pGrdBase%sFilename = "None: constant value entered from control file."
+
+  end subroutine initialize_constant_int_data_object_sub
+
+!--------------------------------------------------------------------------------------------------
+
   subroutine initialize_constant_real_data_object_sub( this, &
     sDescription, &
     rConstant )
@@ -328,30 +371,46 @@ contains
 
 !--------------------------------------------------------------------------------------------------
 
-  subroutine initialize_constant_int_data_object_sub( this, &
-    sDescription, &
-    iConstant )
+  subroutine initialize_table_sub( this, sDescription, sDateColumnName, sValueColumnName, sType)
 
-    class (DATA_CATALOG_ENTRY_T) :: this
-    character (len=*) :: sDescription
-    integer (c_int), intent(in) :: iConstant
+    class (DATA_CATALOG_ENTRY_T)  :: this
+    character (len=*), intent(in) :: sDescription
+    character (len=*), intent(in) :: sDateColumnName
+    character (len=*), intent(in) :: sValueColumnName
+    character (len=*), intent(in) :: sType
 
-    this%iConstantValue = iConstant
-    this%sDescription = trim(sDescription)
-    this%iSourceDataForm = CONSTANT_GRID
-    this%iSourceDataType = DATATYPE_INT
-    this%iTargetDataType = DATATYPE_INT
-    this%iSourceFileType = FILETYPE_NONE
+    this%sDescription     = trim(sDescription)
+    this%iSourceDataForm  = TABLE_LOOKUP
+    this%iSourceDataType  = DATATYPE_REAL
+    this%iTargetDataType  = DATATYPE_REAL
+    this%iSourceFileType  = FILETYPE_ASCII_TABLE
+    this%sDateColumnName  = sDateColumnName
+    this%sValueColumnName = sValueColumnName
 
     call this%nullify_pointers()
 
-    this%pGrdBase => grid_Create(iNX=BNDS%iNumCols, iNY=BNDS%iNumRows, &
-      rX0=BNDS%fX_ll, rY0=BNDS%fY_ll, rGridCellSize=BNDS%fGridCellSize, iDataType=DATATYPE_INT)
+    select case (asLowercase(sType))
+
+      case ("float", "real" )
+
+        this%iSourceDataType  = DATATYPE_REAL
+        this%iTargetDataType  = DATATYPE_REAL
+        this%pGrdBase => grid_Create(iNX=BNDS%iNumCols, iNY=BNDS%iNumRows, &
+        rX0=BNDS%fX_ll, rY0=BNDS%fY_ll, rGridCellSize=BNDS%fGridCellSize, iDataType=DATATYPE_REAL)
+      
+      case ("int", "integer")
+
+        this%iSourceDataType  = DATATYPE_INT
+        this%iTargetDataType  = DATATYPE_INT
+        this%pGrdBase => grid_Create(iNX=BNDS%iNumCols, iNY=BNDS%iNumRows, &
+        rX0=BNDS%fX_ll, rY0=BNDS%fY_ll, rGridCellSize=BNDS%fGridCellSize, iDataType=DATATYPE_INT)
+      
+    end select  
 
     this%pGrdBase%sPROJ4_string = BNDS%sPROJ4_string
-    this%pGrdBase%sFilename = "None: constant value entered from control file."
+    this%pGrdBase%sFilename = "None: daily value found in table of values."
 
-  end subroutine initialize_constant_int_data_object_sub
+  end subroutine initialize_table_sub
 
 !--------------------------------------------------------------------------------------------------
 
@@ -495,33 +554,21 @@ end subroutine initialize_netcdf_data_object_sub
     class (DATA_CATALOG_ENTRY_T) :: this
     type (DATETIME_T), optional  :: dt
 
-    print *, "---------------------------------------------------"
-    print *, dquote(this%sSourceFile), "  line: ", __LINE__
-    print *, "  data form: ", this%iSourceDataForm
-    print *, "  GridHasChanged? ", this%lGridHasChanged
-    print *, ""
-
     if(this%iSourceDataForm == DYNAMIC_GRID ) then
 
       call getvalues_gridded_sub( this, dt )
 
     elseif ( this%iSourceDataForm == DYNAMIC_NETCDF_GRID ) then
 
-      print *, "---------------------------------------------------"
-      print *, dquote(this%sSourceFile), "  line: ", __LINE__
-      print *, "  GridHasChanged? ", this%lGridHasChanged
-      print *, ""
-
       call getvalues_dynamic_netcdf_sub( this, dt )
-
-      print *, "---------------------------------------------------"
-      print *, dquote(this%sSourceFile), "  line: ", __LINE__
-      print *, "  GridHasChanged? ", this%lGridHasChanged
-      print *, ""
 
     elseif ( this%iSourceDataForm == STATIC_NETCDF_GRID ) then
 
       call getvalues_static_netcdf_sub( this )
+
+    elseif( this%iSourceDataForm == TABLE_LOOKUP ) then
+
+      call getvalues_from_lookup_table( this, dt )
 
     elseif(this%iSourceDataForm == STATIC_GRID ) then
 
@@ -538,11 +585,6 @@ end subroutine initialize_netcdf_data_object_sub
 
     endif
 
-    print *, "---------------------------------------------------"
-    print *, dquote(this%sSourceFile), "  line: ", __LINE__
-    print *, "  GridHasChanged? ", this%lGridHasChanged
-    print *, ""
-
     ! if grid data hasn't changed this timestep, we do not want to *reapply* the
     ! scale and offset values
     if ( this%lGridHasChanged ) then
@@ -551,13 +593,16 @@ end subroutine initialize_netcdf_data_object_sub
       if (this%iTargetDataType == DATATYPE_REAL) then
 
         call apply_scale_and_offset(fResult=this%pGrdBase%rData, fValue=this%pGrdBase%rData,          &
-              dUserScaleFactor=this%rUserScaleFactor, dUserAddOffset=this%rUserAddOffset )
-
+              dUserSubOffset=this%dUserSubOffset,                                                     &
+              dUserScaleFactor=this%dUserScaleFactor,                                                 &
+              dUserAddOffset=this%dUserAddOffset )
 
       elseif ( this%iTargetDataType == DATATYPE_INT ) then
 
-         call apply_scale_and_offset(iResult=this%pGrdBase%iData, iValue=this%pGrdBase%iData,          &
-              dUserScaleFactor=this%rUserScaleFactor, dUserAddOffset=this%rUserAddOffset )
+         call apply_scale_and_offset(iResult=this%pGrdBase%iData, iValue=this%pGrdBase%iData,         &
+              dUserSubOffset=this%dUserSubOffset,                                                     &
+              dUserScaleFactor=this%dUserScaleFactor,                                                 &
+              dUserAddOffset=this%dUserAddOffset )
 
       else
 
@@ -571,27 +616,29 @@ end subroutine initialize_netcdf_data_object_sub
 
 !--------------------------------------------------------------------------------------------------
 
-elemental subroutine apply_scale_and_offset_float(fResult, fValue, dUserScaleFactor, dUserAddOffset )
+elemental subroutine apply_scale_and_offset_float(fResult, fValue, dUserScaleFactor, dUserSubOffset, dUserAddOffset )
 
   real (c_float), intent(out)  :: fResult
   real (c_float), intent(in)   :: fValue
   real (c_double), intent(in)   :: dUserScaleFactor
+  real (c_double), intent(in)   :: dUserSubOffset
   real (c_double), intent(in)   :: dUserAddOffset
 
-  fResult = ( fValue * dUserScaleFactor ) + dUserAddOffset
+  fResult = ( (fValue - dUserSubOffset) * dUserScaleFactor ) + dUserAddOffset
 
 end subroutine apply_scale_and_offset_float
 
 !--------------------------------------------------------------------------------------------------
 
-elemental subroutine apply_scale_and_offset_int(iResult, iValue, dUserScaleFactor, dUserAddOffset )
+elemental subroutine apply_scale_and_offset_int(iResult, iValue, dUserScaleFactor, dUserSubOffset, dUserAddOffset )
 
   integer (c_int), intent(out) :: iResult
   integer (c_int), intent(in)  :: iValue
   real (c_double), intent(in)   :: dUserScaleFactor
+  real (c_double), intent(in)   :: dUserSubOffset
   real (c_double), intent(in)   :: dUserAddOffset
 
-  iResult = ( real( iValue, c_float) * dUserScaleFactor ) + dUserAddOffset
+  iResult = ( ( real( iValue, c_float) - dUserSubOffset ) * dUserScaleFactor ) + dUserAddOffset
 
 end subroutine apply_scale_and_offset_int
 
@@ -630,6 +677,117 @@ subroutine getvalues_constant_sub( this  )
     end select
 
   end subroutine getvalues_constant_sub
+
+!--------------------------------------------------------------------------------------------------
+
+  subroutine getvalues_from_lookup_table( this, dt )
+
+    class (DATA_CATALOG_ENTRY_T)   :: this
+    type (DATETIME_T), intent(in)  :: dt
+
+    integer (c_int) :: indx
+    integer (c_int) :: n
+    integer (c_int) :: status_code
+  
+    ! [ LOCALS ]
+    type (FSTRING_LIST_T) :: slDateValues
+
+    if ( .not. associated(this%pGrdBase) ) &
+      call die("Internal programming error--attempt to use null pointer", __FILE__, __LINE__)
+
+    if ( .not. this%lTableValuesHaveBeenRetrieved ) then
+
+      this%lTableValuesHaveBeenRetrieved = TRUE
+      this%table_indx = 1
+
+      select case (this%iSourceDataType)
+
+      case ( DATATYPE_REAL )
+
+        call PARAMS%get_parameters(sKey="date", slValues=slDateValues)
+
+        n = slDateValues%count
+
+        !@TODO: more tests needed to ensure user can't feed in more than one column with same name, 
+        !!      dates out of order, dates missing, mismatched numbers of dates versus values, etc.
+        allocate(this%table_dates(n), stat=status_code)
+        allocate(this%table_values_real(n), stat=status_code)
+
+        call this%table_dates(1)%setDateFormat(this%sDefaultDateFormat)
+        
+        call PARAMS%get_parameters(sKey=this%sValueColumnName, fValues=this%table_values_real)
+
+        if (     ( size( this%table_values_real,1) /= n)      &
+            .or. ( size( this%table_values_real,1) == 1 ) )   &
+            call die("Did not find values associated with a required table entry ("//squote(this%sValueColumnName)//"). ",   &
+            __FILE__, __LINE__)
+
+        do indx=1, n
+          call this%table_dates(indx)%parseDate(slDateValues%get(indx),__FILE__, __LINE__)
+        enddo 
+
+      case ( DATATYPE_INT)
+
+
+      case default
+
+        call dump_data_structure_sub(this)
+
+        call assert(FALSE, "INTERNAL PROGRAMMING ERROR - Unhandled data type: " &
+          //"name="//dquote(this%sDescription) &
+          //"; value="//trim(asCharacter(this%iSourceDataType)), &
+          __FILE__, __LINE__)
+
+      end select
+
+    endif
+
+    do
+
+      if ( this%table_indx < lbound(this%table_dates,1))  exit
+      if ( this%table_indx > ubound(this%table_dates,1))  exit
+
+      if (this%table_dates(this%table_indx) < dt) then
+        this%table_indx = this%table_indx + 1
+      elseif (this%table_dates(this%table_indx) > dt) then
+        this%table_indx = this%table_indx - 1
+      else 
+        exit 
+      endif
+
+    enddo
+
+    if ( this%table_dates(this%table_indx) == dt ) then
+
+      select case (this%iSourceDataType)
+    
+        case ( DATATYPE_REAL )
+    
+          this%lGridHasChanged = TRUE
+    
+          this%pGrdBase%rData = this%table_values_real(this%table_indx)
+    
+        case ( DATATYPE_INT)
+    
+        case default
+    
+          call dump_data_structure_sub(this)
+    
+          call assert(FALSE, "INTERNAL PROGRAMMING ERROR - Unhandled data type: " &
+            //"name="//dquote(this%sDescription) &
+            //"; value="//trim(asCharacter(this%iSourceDataType)), &
+            __FILE__, __LINE__)
+    
+      end select
+
+    else 
+
+      call die("Missing or out-of-order value supplied for "//squote(this%sValueColumnName),   &
+          __FILE__, __LINE__)
+        
+    endif
+
+    end subroutine getvalues_from_lookup_table
 
 !--------------------------------------------------------------------------------------------------
 
@@ -1183,7 +1341,6 @@ end subroutine set_constant_value_real
 
     enddo
 
-
   end function test_for_need_to_pad_values_fn
 
 !--------------------------------------------------------------------------------------------------
@@ -1199,14 +1356,14 @@ end subroutine set_constant_value_real
     logical (c_bool) :: lDateTimeFound
     real (c_double) :: dAddOffset
     real (c_double) :: dScaleFactor
+    integer (c_int) :: iMonth
+    integer (c_int) :: iDay
+    integer (c_int) :: iYear
 
     if ( .not. associated(this%pGrdBase) ) &
       call die("Internal programming error--attempt to use null pointer", __FILE__, __LINE__)
 
     this%lPadValues = FALSE
-
-    dAddOffset = this%NCFILE%rAddOffset(NC_Z)
-    dScaleFactor = this%NCFILE%rScaleFactor(NC_Z)
 
     ! call once at start of run...
     if ( this%iFileCountYear < 0 ) call this%set_filecount(-1, dt%iYear)
@@ -1226,7 +1383,7 @@ end subroutine set_constant_value_real
           this%iNC_FILE_STATUS = NETCDF_FILE_CLOSED
         endif
 
-      endif
+      endif  ! end of block to process if NETCDF_FILE_OPEN
 
       if ( this%iNC_FILE_STATUS == NETCDF_FILE_CLOSED ) then
 
@@ -1254,40 +1411,42 @@ end subroutine set_constant_value_real
             if( ( len_trim( this%sSourcePROJ4_string ) > 0 )                    &
               .and. ( .not. ( this%sSourcePROJ4_string .strequal. "<NA>") ) ) then
 
-              ! calculate the project boundaries in the coordinate system of
+                ! calculate the project boundaries in the coordinate system of
               ! the native data file
               call this%calc_project_boundaries(pGrdBase=this%pGrdBase)
 
               if ( this%lRequireCompleteSpatialCoverage ) then
 
-                call netcdf_open_and_prepare_as_input(NCFILE=this%NCFILE, &
-                  sFilename=this%sSourceFilename, &
-                  lFlipHorizontal=this%lFlipHorizontal, &
-                  lFlipVertical=this%lFlipVertical, &
-                  lAllowAutomaticDataFlipping=this%lAllowAutomaticDataFlipping, &
-                  rX_Coord_AddOffset = this%rX_Coord_AddOffset, &
-                  rY_Coord_AddOffset = this%rY_Coord_AddOffset, &
-                  sVariableOrder=this%sVariableOrder, &
-                  sVarName_x=this%sVariableName_x, &
-                  sVarName_y=this%sVariableName_y, &
-                  sVarName_z=this%sVariableName_z, &
-                  sVarName_time=this%sVariableName_time, &
+                call netcdf_open_and_prepare_as_input(NCFILE=this%NCFILE,          &
+                  sFilename=this%sSourceFilename,                                  &
+                  lFlipHorizontal=this%lFlipHorizontal,                            &
+                  lFlipVertical=this%lFlipVertical,                                &
+                  lAllowAutomaticDataFlipping=this%lAllowAutomaticDataFlipping,    &
+                  rX_Coord_AddOffset = this%rX_Coord_AddOffset,                    &
+                  rY_Coord_AddOffset = this%rY_Coord_AddOffset,                    &
+                  sVariableOrder=this%sVariableOrder,                              &
+                  sVarName_x=this%sVariableName_x,                                 &
+                  sVarName_y=this%sVariableName_y,                                 &
+                  sVarName_z=this%sVariableName_z,                                 &
+                  sVarName_time=this%sVariableName_time,                           &
+                  rCoordinateTolerance=this%rCoordinateTolerance,                  &
                   tGridBounds=this%GRID_BOUNDS_NATIVE )
 
               else
 
-                call netcdf_open_and_prepare_as_input(NCFILE=this%NCFILE, &
-                  sFilename=this%sSourceFilename, &
-                  lFlipHorizontal=this%lFlipHorizontal, &
-                  lFlipVertical=this%lFlipVertical, &
-                  lAllowAutomaticDataFlipping=this%lAllowAutomaticDataFlipping, &
-                  rX_Coord_AddOffset = this%rX_Coord_AddOffset, &
-                  rY_Coord_AddOffset = this%rY_Coord_AddOffset, &
-                  sVariableOrder=this%sVariableOrder, &
-                  sVarName_x=this%sVariableName_x, &
-                  sVarName_y=this%sVariableName_y, &
-                  sVarName_z=this%sVariableName_z, &
-                  sVarName_time=this%sVariableName_time )
+                call netcdf_open_and_prepare_as_input(NCFILE=this%NCFILE,          &
+                  sFilename=this%sSourceFilename,                                  &
+                  lFlipHorizontal=this%lFlipHorizontal,                            &
+                  lFlipVertical=this%lFlipVertical,                                &
+                  lAllowAutomaticDataFlipping=this%lAllowAutomaticDataFlipping,    &
+                  rX_Coord_AddOffset = this%rX_Coord_AddOffset,                    &
+                  rY_Coord_AddOffset = this%rY_Coord_AddOffset,                    &
+                  sVariableOrder=this%sVariableOrder,                              &
+                  sVarName_x=this%sVariableName_x,                                 &
+                  sVarName_y=this%sVariableName_y,                                 &
+                  sVarName_z=this%sVariableName_z,                                 &
+                  sVarName_time=this%sVariableName_time,                           &
+                  rCoordinateTolerance=this%rCoordinateTolerance )
 
               endif
 
@@ -1295,15 +1454,16 @@ end subroutine set_constant_value_real
 
               ! assume source NetCDF file is in same projection and
               ! of same dimensions as base grid
-              call netcdf_open_and_prepare_as_input(NCFILE=this%NCFILE, &
-                sFilename=this%sSourceFilename, &
-                lFlipHorizontal=this%lFlipHorizontal, &
-                lFlipVertical=this%lFlipVertical, &
-                lAllowAutomaticDataFlipping=this%lAllowAutomaticDataFlipping, &
-                sVariableOrder=this%sVariableOrder, &
-                sVarName_x=this%sVariableName_x, &
-                sVarName_y=this%sVariableName_y, &
-                sVarName_z=this%sVariableName_z, &
+              call netcdf_open_and_prepare_as_input(NCFILE=this%NCFILE,              &
+                sFilename=this%sSourceFilename,                                      &
+                lFlipHorizontal=this%lFlipHorizontal,                                &
+                lFlipVertical=this%lFlipVertical,                                    &
+                lAllowAutomaticDataFlipping=this%lAllowAutomaticDataFlipping,        &
+                sVariableOrder=this%sVariableOrder,                                  &
+                sVarName_x=this%sVariableName_x,                                     &
+                sVarName_y=this%sVariableName_y,                                     &
+                sVarName_z=this%sVariableName_z,                                     &
+                rCoordinateTolerance=this%rCoordinateTolerance,                       &
                 sVarName_time=this%sVariableName_time )
 
               this%NCFILE%iNX = this%pGrdBase%iNX
@@ -1348,14 +1508,11 @@ end subroutine set_constant_value_real
           else
             ! Projection settings can be left alone; read values from new
             ! NetCDF file with same grid boundaries, projection, etc.
-
-  !          call netcdf_open_file(NCFILE=this%NCFILE, sFilename=this%sSourceFilename, iLU=LU_LOG)
             call netcdf_open_file(NCFILE=this%NCFILE, sFilename=this%sSourceFilename)
 
             this%iNC_FILE_STATUS = NETCDF_FILE_OPEN
 
           endif
-
 
           if ( netcdf_date_within_range(NCFILE=this%NCFILE,                    &
                iJulianDay=int(dt%iJulianDay, c_int) ) ) then
@@ -1373,13 +1530,21 @@ end subroutine set_constant_value_real
 
           else
 
-            call LOGS%write("Valid date range (NetCDF): "//trim(asCharacter(this%NCFILE%iFirstDayJD)) &
-              //" to "//trim(asCharacter(this%NCFILE%iLastDayJD)) )
-
-            call LOGS%write("Current Julian Day value: "//trim(asCharacter(dt%iJulianDay)) )
+            call gregorian_date(this%NCFILE%iFirstDayJD,iYear, iMonth, iDay )
+            call LOGS%write("NetCDF start date:            "//trim(asCharacter(iMonth, "i2.2"))  &
+              //"/"//trim(asCharacter(iDay, "i2.2"))//"/"//trim(asCharacter(iYear, "i4.4")))
+              !//" to "//trim(asCharacter(this%NCFILE%iLastDayJD)) )
+            
+            call gregorian_date(this%NCFILE%iLastDayJD,iYear, iMonth, iDay )
+            call LOGS%write("NetCDF end date:              "//trim(asCharacter(iMonth, "i2.2"))  &
+              //"/"//trim(asCharacter(iDay, "i2.2"))//"/"//trim(asCharacter(iYear, "i4.4")))
+  
+            call gregorian_date(int(dt%iJulianDay, c_int),iYear, iMonth, iDay )
+            call LOGS%write("Current SWB simulation date:  "//trim(asCharacter(iMonth, "i2.2"))  &
+              //"/"//trim(asCharacter(iDay, "i2.2"))//"/"//trim(asCharacter(iYear, "i4.4")))
 
             call assert (FALSE, "Date range for currently open NetCDF file" &
-              //" does not include the present simulation date.", &
+              //" does not include the current simulation date.", &
               __FILE__, __LINE__)
 
           endif
@@ -1406,8 +1571,14 @@ end subroutine set_constant_value_real
         call netcdf_get_variable_slice(NCFILE=this%NCFILE, rValues=this%pGrdNative%rData)
         this%lGridHasChanged = TRUE
 
-        this%pGrdNative%rData = this%pGrdNative%rData * dScaleFactor + dAddOffset
+       ! this initialization must take place here so that initialization may
+       ! occur *after* the netCDF file has been opened. previously initialization
+       ! took place tens of lines above, which resulted in an 'add_offset' of 0.0
+       ! and a 'scale_factor' of 1.0 being applied for the first time step.
+        dAddOffset = this%NCFILE%rAddOffset(NC_Z)
+        dScaleFactor = this%NCFILE%rScaleFactor(NC_Z)
 
+        this%pGrdNative%rData = this%pGrdNative%rData * dScaleFactor + dAddOffset
 
         call this%handle_missing_values(this%pGrdNative%rData)
         call this%enforce_limits(this%pGrdNative%rData)
@@ -1427,12 +1598,6 @@ end subroutine set_constant_value_real
 
       call LOGS%write( repeat("=", 60) )
       call LOGS%write( "Missing day found in NetCDF file - padding values" )
-!      call stats_WriteMinMeanMax( iLU=6, &
-!        sText=trim(this%NCFILE%sFilename), &
-!        rData=this%pGrdNative%rData)
-!      call stats_WriteMinMeanMax( iLU=6, &
-!        sText=trim(this%NCFILE%sFilename), &
-!        rData=this%pGrdNative%rData)
       call LOGS%write( repeat("=", 60) )
 
     endif
@@ -1649,7 +1814,7 @@ end subroutine set_constant_value_real
        iStart=[this%iNCFILE_RECNUM], &
        iCount=[1_c_size_t], &
        iStride=[1_c_size_t], &
-       dpValues=[real(this%iNCFILE_RECNUM, c_double)])
+       rValues=[real(this%iNCFILE_RECNUM, c_float)])
 
     this%iNCFILE_RECNUM = this%iNCFILE_RECNUM + 1
 
@@ -1761,12 +1926,12 @@ end subroutine set_constant_value_real
 
 !--------------------------------------------------------------------------------------------------
 
-subroutine set_scale_sub(this, rScaleFactor)
+subroutine set_scale_sub(this, dScaleFactor)
 
    class (DATA_CATALOG_ENTRY_T) :: this
-   real (c_float) :: rScaleFactor
+   real (c_double) :: dScaleFactor
 
-   this%rUserScaleFactor = rScaleFactor
+   this%dUserScaleFactor = dScaleFactor
 
 end subroutine set_scale_sub
 
@@ -1797,7 +1962,7 @@ end subroutine set_X_coord_offset_sub
 subroutine set_Y_coord_offset_sub(this, rYOffset)
 
    class (DATA_CATALOG_ENTRY_T) :: this
-   real (c_double)         :: rYOffset
+   real (c_double)              :: rYOffset
 
    this%rY_Coord_AddOffset = rYOffset
 
@@ -1805,14 +1970,36 @@ end subroutine set_Y_coord_offset_sub
 
 !----------------------------------------------------------------------
 
-subroutine set_offset_sub(this, rAddOffset)
+subroutine set_coordinate_tolerance_sub(this, rCoordinateTolerance)
+
+  class (DATA_CATALOG_ENTRY_T) :: this
+  real (c_double)              :: rCoordinateTolerance
+
+  this%rCoordinateTolerance = rCoordinateTolerance
+
+end subroutine set_coordinate_tolerance_sub  
+
+!----------------------------------------------------------------------
+
+subroutine set_add_offset_sub(this, dAddOffset)
 
    class (DATA_CATALOG_ENTRY_T) :: this
-   real (c_float)          :: rAddOffset
+   real (c_double)              :: dAddOffset
 
-   this%rUserAddOffset = rAddOffset
+   this%dUserAddOffset = dAddOffset
 
-end subroutine set_offset_sub
+end subroutine set_add_offset_sub
+
+!----------------------------------------------------------------------
+
+subroutine set_sub_offset_sub(this, dSubOffset)
+
+  class (DATA_CATALOG_ENTRY_T) :: this
+  real (c_double)              :: dSubOffset
+
+  this%dUserSubOffset = dSubOffset
+
+end subroutine set_sub_offset_sub
 
 !--------------------------------------------------------------------------------------------------
 
@@ -1911,53 +2098,60 @@ end subroutine set_maximum_allowable_value_real_sub
 
     ! [ LOCALS ]
     integer (c_int) :: iRetVal
-    real (c_float) :: rMultiplier = 1.
+    real (c_float) :: rMultiplier = 0.
     real (c_double), dimension(4) :: rX, rY
 
     ! ensure that there is sufficient coverage on all sides of grid
-    rX(1) = pGrdBase%rX0 - pGrdBase%rGridCellSize * rMultiplier ! Xll
-    rY(1) = pGrdBase%rY0 - pGrdBase%rGridCellSize * rMultiplier ! Yll
-    rX(2) = pGrdBase%rX1 + pGrdBase%rGridCellSize * rMultiplier ! Xlr
-    rY(2) = pGrdBase%rY0 - pGrdBase%rGridCellSize * rMultiplier ! Ylr
-    rX(3) = pGrdBase%rX0 - pGrdBase%rGridCellSize * rMultiplier ! Xul
-    rY(3) = pGrdBase%rY1 + pGrdBase%rGridCellSize * rMultiplier ! Yul
-    rX(4) = pGrdBase%rX1 + pGrdBase%rGridCellSize * rMultiplier ! Xur
-    rY(4) = pGrdBase%rY1 + pGrdBase%rGridCellSize * rMultiplier ! Yur
+    rX(1) = pGrdBase%rX0 ! - pGrdBase%rGridCellSize * rMultiplier ! Xll
+    rY(1) = pGrdBase%rY0 ! - pGrdBase%rGridCellSize * rMultiplier ! Yll
+    rX(2) = pGrdBase%rX1 ! + pGrdBase%rGridCellSize * rMultiplier ! Xlr
+    rY(2) = pGrdBase%rY0 ! - pGrdBase%rGridCellSize * rMultiplier ! Ylr
+    rX(3) = pGrdBase%rX0 ! - pGrdBase%rGridCellSize * rMultiplier ! Xul
+    rY(3) = pGrdBase%rY1 ! + pGrdBase%rGridCellSize * rMultiplier ! Yul
+    rX(4) = pGrdBase%rX1 ! + pGrdBase%rGridCellSize * rMultiplier ! Xur
+    rY(4) = pGrdBase%rY1 ! + pGrdBase%rGridCellSize * rMultiplier ! Yur
 
-    ! now transform the project coordinates to native coordinates so we can
-    ! use the native coordinate boundaries to "cookie-cut" only the data
-    ! pertinent to our project area.
-    iRetVal = pj_init_and_transform(trim(pGrdBase%sPROJ4_string)//C_NULL_CHAR, &
-                trim(this%sSourcePROJ4_string)//C_NULL_CHAR,                   &
-                __FILE__//C_NULL_CHAR,                                   &
-                __LINE__,                                                      &
-                4_c_long,                                                      &
-                rX, rY )
+    ! don't invoke PROJ4 unless projections are at least superficially different
+    if ( .not. trim( pGrdBase%sPROJ4_string) == trim(this%sSourcePROJ4_string)) then
 
-  call grid_CheckForPROJ4Error(iRetVal=iRetVal, &
-     sFromPROJ4=trim(pGrdBase%sPROJ4_string), &
-     sToPROJ4=trim(this%sSourcePROJ4_string))
+      ! now transform the project coordinates to native coordinates so we can
+      ! use the native coordinate boundaries to "cookie-cut" only the data
+      ! pertinent to our project area.
+      iRetVal = pj_init_and_transform(trim(pGrdBase%sPROJ4_string)//C_NULL_CHAR, &
+                  trim(this%sSourcePROJ4_string)//C_NULL_CHAR,                   &
+                  __FILE__//C_NULL_CHAR,                                   &
+                  __LINE__,                                                      &
+                  4_c_long,                                                      &
+                  rX, rY )
+
+      call grid_CheckForPROJ4Error(iRetVal=iRetVal, &
+        sFromPROJ4=trim(pGrdBase%sPROJ4_string), &
+        sToPROJ4=trim(this%sSourcePROJ4_string))
+
+    endif
 
   ! because PROJ4 works in RADIANS if data are unprojected (i.e. GEOGRAPHIC),
   ! we need to convert back to degrees on the assumption that the coordinates
   ! referenced in the file will also be i degrees
-!  if( index(string=trim(this%sSourcePROJ4_string), substring="latlon") > 0 &
-!      .or. index(string=trim(this%sSourcePROJ4_string), substring="lonlat") > 0 ) then
+  !  if( index(string=trim(this%sSourcePROJ4_string), substring="latlon") > 0 &
+  !      .or. index(string=trim(this%sSourcePROJ4_string), substring="lonlat") > 0 ) then
 
-  if (      ( this%sSourcePROJ4_string .containssimilar. "latlon" )            &
-       .or. ( this%sSourcePROJ4_string .containssimilar. "latlong" )           &
-       .or. ( this%sSourcePROJ4_string .containssimilar. "lonlat" )            &
-       .or. ( this%sSourcePROJ4_string .containssimilar. "longlat" ) ) then
+    if (      ( this%sSourcePROJ4_string .containssimilar. "latlon" )            &
+         .or. ( this%sSourcePROJ4_string .containssimilar. "latlong" )           &
+         .or. ( this%sSourcePROJ4_string .containssimilar. "lonlat" )            &
+         .or. ( this%sSourcePROJ4_string .containssimilar. "longlat" ) ) then
 
-    rX = rad_to_deg(rX)
-    rY = rad_to_deg(rY)
+      rX = rad_to_deg(rX)
+      rY = rad_to_deg(rY)
 
-  endif
+    endif
 
-   this%GRID_BOUNDS_NATIVE%rXll = rX(1); this%GRID_BOUNDS_NATIVE%rXlr = rX(2)
-   this%GRID_BOUNDS_NATIVE%rYll = rY(1); this%GRID_BOUNDS_NATIVE%rYlr = rY(2)
-   this%GRID_BOUNDS_NATIVE%rXul = rX(3); this%GRID_BOUNDS_NATIVE%rXur = rX(4)
-   this%GRID_BOUNDS_NATIVE%rYul = rY(3); this%GRID_BOUNDS_NATIVE%rYur = rY(4)
+    ! GRID_BOUNDS_NATIVE will contain the SWB model bounds as defined in the
+    ! projection of the particular dataset
+    this%GRID_BOUNDS_NATIVE%rXll = rX(1); this%GRID_BOUNDS_NATIVE%rXlr = rX(2)
+    this%GRID_BOUNDS_NATIVE%rYll = rY(1); this%GRID_BOUNDS_NATIVE%rYlr = rY(2)
+    this%GRID_BOUNDS_NATIVE%rXul = rX(3); this%GRID_BOUNDS_NATIVE%rXur = rX(4)
+    this%GRID_BOUNDS_NATIVE%rYul = rY(3); this%GRID_BOUNDS_NATIVE%rYur = rY(4)
 
 #ifdef DEBUG_PRINT
    print *, " "

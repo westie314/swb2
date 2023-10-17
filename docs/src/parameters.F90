@@ -1,6 +1,7 @@
 module parameters
 
   use iso_c_binding, only    : c_int, c_float, c_double, c_bool
+  use datetime, only         : DATETIME_T
   use exceptions
   use file_operations, only  : ASCII_FILE_T
   use logfiles
@@ -79,96 +80,144 @@ contains
     character (len=*), intent(in), optional       :: sCommentChars
 
     ! [ LOCALS ]
-    character (len=:), allocatable  :: sDelimiters_l
-    character (len=:), allocatable  :: sCommentChars_l
-
-    if (present(sDelimiters) ) then
-      sDelimiters_l = sDelimiters
-    else
-      sDelimiters_l = WHITESPACE
-    endif
+    character (len=:), allocatable  :: sDelimiters_
+    character (len=:), allocatable  :: sCommentChars_
 
     if ( present(sCommentChars) ) then
-      sCommentChars_l = sCommentChars
+      sCommentChars_ = sCommentChars
     else
-      sCommentChars_l = "#!"
+      sCommentChars_ = COMMENT_CHARACTERS
+    endif
+
+    if (present(sDelimiters) ) then
+      sDelimiters_ = sDelimiters
+    else
+      sDelimiters_ = TAB
     endif
 
     this%count = this%count + 1
 
     call this%filenames%append( sFilename )
-    call this%delimiters%append( sDelimiters_l )
-    call this%comment_chars%append( sCommentChars_l )
+    call this%delimiters%append( sDelimiters_ )
+    call this%comment_chars%append( sCommentChars_ )
 
   end subroutine add_filename_to_list_sub
 
 !--------------------------------------------------------------------------------------------------
 
-  subroutine munge_files_and_add_to_param_list_sub(this)
+  subroutine munge_files_and_add_to_param_list_sub(this, comment_chars, delimiters)
 
     class (PARAMETERS_T)    :: this
+    character (len=*), intent(in), optional  :: comment_chars
+    character (len=*), intent(in), optional  :: delimiters
 
     ! [ LOCALS ]
-    integer (c_int)                :: iFileIndex, iColIndex
+    integer (c_int)                :: iFileIndex, iColIndex, iTempIndex
     integer (c_int)                :: iStat
     type (ASCII_FILE_T)            :: DF
     type (DICT_ENTRY_T), pointer   :: pDict
     type (DICT_ENTRY_T), pointer   :: pCurrentDict
     integer (c_int)                :: iNumberOfHeaderLines
     character (len=:), allocatable :: sNumberOfHeaderLines
-    character (len=256)            :: tempstr
+    character (len=256)            :: column_name
+    character (len=256)            :: tempstr2
+    character (len=256)            :: qualified_column_name
+    character (len=256)            :: filename1
+    character (len=:), allocatable :: comment_chars_
+    character (len=:), allocatable :: delimiters_
+    logical (c_bool), allocatable  :: skip_this_column(:)
+    type (FSTRING_LIST_T)          :: unique_file_list
+    integer (kind=c_int)           :: row_indx
+    integer (c_int)                :: number_of_columns
     character (len=MAX_TABLE_RECORD_LEN) :: sRecord, sItem
 
-    if ( this%count > 0 ) then
+    if ( present(comment_chars) ) then
+      comment_chars_ = trim(comment_chars)
+    else
+      comment_chars_ = COMMENT_CHARACTERS
+    endif
 
-      ! iterate over the list of files
+    if ( present(delimiters) ) then
+      delimiters_ = trim(delimiters)
+    else
+      delimiters_ = TAB
+    endif
+
+    !
+    ! proper way to screen for duplicate filenames is further down in loop
+    !
+    !unique_file_list = this%filenames%unique()
+    !if ( unique_file_list%get(1) .ne. '<NA>' ) then
+
+    if ( this%filenames%get(1) .ne. '<NA>' ) then
+
       do iFileIndex = 1, this%filenames%count
 
-       ! open the file associated with current file index value
-        call DF%open(sFilename = this%filenames%get(iFileIndex),             &
-                     sCommentChars = this%comment_chars%get(iFileIndex),     &
-                     sDelimiters = this%delimiters%get(iFileIndex) )
+        filename1 = this%filenames%get(iFileIndex)
+
+        ! if this filename has already been seen and processed, ignore and move on to next filename
+        if ( unique_file_list%count_matching(filename1) > 0 ) cycle
+
+        call unique_file_list%append(filename1)
+
+        ! open the file associated with current file index value
+        call DF%open(sFilename = filename1,                                  &
+                     sCommentChars = comment_chars_,                         &
+                     sDelimiters = delimiters_ )
 
         ! obtain the headers from the file
         DF%slColNames = DF%readHeader()
 
-        call LOGS%write( "Number of columns in file: "//asCharacter( DF%slColNames%count ), iTab=35)
+        number_of_columns = DF%slColNames%count
+
+        call LOGS%write( "Number of columns in file: "//asCharacter( number_of_columns ), iTab=35)
 
         !call DF%slColNames%print()
+
+        if (allocated(skip_this_column))  deallocate(skip_this_column)
+        allocate(skip_this_column(number_of_columns))
+        skip_this_column = FALSE
 
         ! loop over each column header
         do iColIndex = 1, DF%slColNames%count
 
-          ! create and allocate memory for dictionary entry
+          column_name = DF%slColNames%get(iColIndex)
 
-          pDict => null()
-          allocate( pDict, stat=iStat )
-          call assert(iStat == 0, "Failed to allocate memory for dictionary object", &
-              __FILE__, __LINE__ )
+          if ( PARAMS_DICT%key_already_in_use( column_name ) ) then
 
-          ! this is first obvious failure point when compiling under Intel
-          tempstr = DF%slColNames%get(iColIndex)
+            skip_this_column( iColIndex ) = TRUE
 
-          if ( PARAMS_DICT%key_already_in_use( tempstr ) ) then
+            call warn("Column name "//sQuote(column_name)//" already in use. Data in this column will be ignored." &
+              //" [filename = "//sQuote(filename1)//"]")
 
-            ! add dictionary entry to dictionary, tack "DUP" on end of name
-            tempstr = trim(adjustl(tempstr))//"_DUP"
-            ! update the string list to reflect duplicate entry
+            ! Dec 2019: let try eliminating duplicates from the dictionary altogether
 
-            call DF%slColNames%replace( iColIndex, tempstr )
-            call pDict%add_key( asUppercase( tempstr ) )
-            call PARAMS_DICT%add_entry( pDict )
+            ! ! add dictionary entry to dictionary, tack "DUP" on end of name
+            ! tempstr = trim(adjustl(tempstr))//"_DUP"
+            ! ! update the string list to reflect duplicate entry
+
+            ! call DF%slColNames%replace( iColIndex, tempstr )
+            ! call pDict%add_key( asUppercase( tempstr ) )
+            ! call PARAMS_DICT%add_entry( pDict )
 
           else
 
+            ! create and allocate memory for dictionary entry
+            pDict => null()
+            allocate( pDict, stat=iStat )
+            call assert(iStat == 0, "Failed to allocate memory for dictionary object", &
+              __FILE__, __LINE__ )
+
             ! first add the key to the dictionary entry,
             ! then add dictionary entry to dictionary
-            call pDict%add_key( asUppercase( DF%slColNames%get(iColIndex) ) )
+            call pDict%add_key( column_name )
             call PARAMS_DICT%add_entry( pDict )
 
           endif
 
         enddo
+
+        row_indx = 0
 
         ! now read in the remainder of the file
         do while ( .not. DF%isEOF() )
@@ -179,15 +228,21 @@ contains
           ! skip blank lines
           if ( len_trim(sRecord) == 0 ) cycle
 
+          row_indx = row_indx + 1
+
           ! loop over each column header
           do iColIndex = 1, DF%slColNames%count
 
-            ! find pointer associated with header name
-            ! (inefficient, but should be OK for small # of columns)
-            pCurrentDict => PARAMS_DICT%get_entry( DF%slColNames%get(iColIndex) )
-
             ! break off next column of data for the current record
             call chomp(sRecord, sItem, this%delimiters%get(iFileIndex) )
+
+            if ( skip_this_column(iColIndex) )  cycle
+
+            column_name = DF%slColNames%get(iColIndex)
+          
+            ! find pointer associated with header name
+            ! (inefficient, but should be OK for small # of columns)
+            pCurrentDict => PARAMS_DICT%get_entry( column_name )
 
             if ( associated( pCurrentDict )) then
 
@@ -207,9 +262,12 @@ contains
 
         enddo
 
+        deallocate(skip_this_column)
+
         call DF%close()
 
       enddo
+      
     endif
 
   end subroutine munge_files_and_add_to_param_list_sub
@@ -367,6 +425,46 @@ contains
 
 !--------------------------------------------------------------------------------------------------
 
+  subroutine get_parameter_values_datetime( this, dtValues, slKeys, sKey, lFatal )
+
+    class (PARAMETERS_T)                                        :: this
+    type (DATETIME_T), intent(in out), allocatable              :: dtValues(:)
+    type (FSTRING_LIST_T), intent(in out),             optional :: slKeys
+    character (len=*),    intent(in ),                 optional :: sKey
+    logical (c_bool), intent(in),                      optional :: lFatal
+
+    ! [ LOCALS ]
+    logical (c_bool)                        :: lFatal_l
+    type (FSTRING_LIST_T)                   :: slValues
+    integer (c_int)                         :: n
+    integer (c_int)                         :: istat
+
+    if ( present (lFatal) ) then
+      lFatal_l = lFatal
+    else
+      lFatal_l = FALSE
+    endif
+
+    if ( present( slKeys) ) then
+
+      call PARAMS_DICT%get_values( slKeys=slKeys, slString=slValues, is_fatal=lFatal_l )
+
+    else if ( present( sKey) ) then
+
+      call PARAMS_DICT%get_values( sKey=sKey, slString=slValues )
+
+    endif
+
+    allocate(dtValues(slValues%count), stat=istat)
+
+    do n=1, slValues%count
+      call dtValues(n)%parseDate(slValues%get(n))
+    enddo  
+
+  end subroutine get_parameter_values_datetime
+
+  !--------------------------------------------------------------------------------------------------
+
   subroutine get_parameter_values_string_list( this, slValues, slKeys, sKey, lFatal )
 
     class (PARAMETERS_T)                               :: this
@@ -390,7 +488,7 @@ contains
         is_fatal=lFatal_l )
 
        if ( slValues%get(1) .strequal. "<NA>" ) then
-         call warn( "Failed to find a lookup table column named "        &
+         call warn( "Failed to find a lookup table column named "             &
            //dQuote( slKeys%list_all() )//".", lFatal = lFatal_l )
        end if
 
@@ -399,7 +497,7 @@ contains
       call PARAMS_DICT%get_values( sKey=sKey, slString=slValues )
 
       if ( slValues%get(1) .strequal. "<NA>" ) then
-        call warn( "Failed to find a lookup table column named "        &
+        call warn( "Failed to find a lookup table column named "              &
           //dQuote( sKey )//".", lFatal = lFatal_l )
       end if
 
@@ -425,7 +523,6 @@ contains
     else
       lFatal_l = FALSE
     endif
-
 
     if ( present( slKeys) ) then
 
@@ -454,10 +551,10 @@ contains
   subroutine get_parameter_values_float( this, fValues, slKeys, sKey, lFatal )
 
     class (PARAMETERS_T)                                       :: this
-    real (c_float),  intent(in out), allocatable          :: fValues(:)
-    type (FSTRING_LIST_T), intent(in out),             optional :: slKeys
+    real (c_float),  intent(in out), allocatable               :: fValues(:)
+    type (FSTRING_LIST_T), intent(in out),            optional :: slKeys
     character (len=*),    intent(in ),                optional :: sKey
-    logical (c_bool), intent(in),                optional :: lFatal
+    logical (c_bool), intent(in),                     optional :: lFatal
 
     ! [ LOCALS ]
     logical (c_bool) :: lFatal_l
@@ -496,10 +593,10 @@ contains
     use fstring
 
     class (PARAMETERS_T)                                       :: this
-    real (c_float),  intent(in out), allocatable          :: fValues(:,:)
+    real (c_float),  intent(in out), allocatable               :: fValues(:,:)
     character (len=*),    intent(in)                           :: sPrefix
-    integer (c_int), intent(in)                           :: iNumRows
-    logical (c_bool), intent(in),                optional :: lFatal
+    integer (c_int), intent(in)                                :: iNumRows
+    logical (c_bool), intent(in),                     optional :: lFatal
 
     ! [ LOCALS ]
     integer (c_int)             :: iIndex

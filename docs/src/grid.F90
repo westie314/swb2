@@ -155,7 +155,8 @@ module grid
      grid_set_nodata_value,                                                                 &
      grid_CreateComplete, grid_CreateSimple, grid_WriteGrid,                                &
      grid_WriteArcGrid, grid_WriteSurferGrid, grid_set_output_directory_name,               &
-     grid_GetGridRowNum, grid_GetGridColNum
+     grid_GetGridRowNum, grid_GetGridColNum,                                                &
+     grid_RowColFallsInsideGrid, grid_CoordinatesFallInsideGrid
 
   interface grid_Create
     module procedure grid_CreateSimple
@@ -172,7 +173,7 @@ module grid
   !> @todo change these global (module) variables to local variables
   integer (c_int) :: LU_TEMP, LU_GRID
 
-  character (len=64) :: OUTPUT_GRID_DIRECTORY_NAME = ""
+  character (len=256) :: OUTPUT_GRID_DIRECTORY_NAME = ""
 
 contains
 
@@ -779,9 +780,11 @@ subroutine grid_ReadArcGrid_sub ( sFileName, pGrd )
               case ( DATATYPE_INT )
                 do iRow=1,pGrd%iNY
                   read ( unit=LU_GRID, fmt=*, iostat=iStat ) pGrd%iData(:,iRow)
-                  call assert ( iStat == 0, &
-                    "Failed to read integer grid data - file: " &
-                    //trim(sFileName)//"  row num: "//TRIM( asCharacter(iRow)), &
+                  call assert ( iStat == 0,                                       &
+                    "Failed to read integer grid data - file: "                   &
+                    //trim(sFileName)//";  row num: "//TRIM( asCharacter(iRow))   &
+                    //";  line num: "//TRIM( asCharacter(iRow + iHdrRecs))        &
+                    //';  error code: '//as_character(iStat),                     &
                    __FILE__,__LINE__ )
                 end do
                 if(len_trim(sNoDataValue) > 0) then
@@ -792,11 +795,15 @@ subroutine grid_ReadArcGrid_sub ( sFileName, pGrd )
                 endif
 
               case ( DATATYPE_REAL )
+
                 do iRow=1,pGrd%iNY
                   read ( unit=LU_GRID, fmt=*, iostat=iStat ) pGrd%rData(:,iRow)
-                  call assert ( iStat == 0, &
-                    "Failed to read real grid data - file: " &
-                    //trim(sFileName)//"  row num: "//TRIM( asCharacter(iRow)), &
+                  
+                  call assert ( iStat == 0,                                       &
+                    "Failed to read real grid data - file: "                      &
+                    //trim(sFileName)//";  row num: "//TRIM( asCharacter(iRow))   &
+                    //";  line num: "//TRIM( asCharacter(iRow + iHdrRecs))        &
+                    //';  error code: '//as_character(iStat),                     &
                    __FILE__,__LINE__ )
                 end do
                 if(len_trim(sNoDataValue) > 0) then
@@ -809,9 +816,11 @@ subroutine grid_ReadArcGrid_sub ( sFileName, pGrd )
               case ( DATATYPE_DOUBLE )
                 do iRow=1,pGrd%iNY
                   read ( unit=LU_GRID, fmt=*, iostat=iStat ) pGrd%dpData(:,iRow)
-                  call assert ( iStat == 0, &
-                    "Failed to read double-precision grid data - file: "        &
-                    //trim(sFileName)//"  row num: "//TRIM( asCharacter(iRow)), &
+                  call assert ( iStat == 0,                                       &
+                    "Failed to read double-precision grid data - file: "          &
+                    //trim(sFileName)//";  row num: "//TRIM( asCharacter(iRow))   &
+                    //";  line num: "//TRIM( asCharacter(iRow + iHdrRecs))        &
+                    //';  error code: '//as_character(iStat),                     &
                    __FILE__,__LINE__ )
                 end do
                 if(len_trim(sNoDataValue) > 0) then
@@ -1105,22 +1114,22 @@ subroutine grid_WriteArcGrid(sFilename, pGrd)
 
   elseif ( pGrd%iDataType == DATATYPE_REAL ) then
 
-    write ( unit=LU_TEMP, fmt="('NODATA_VALUE ',g14.4)", iostat=istat ) pGrd%rNoDataValue
+    write ( unit=LU_TEMP, fmt="('NODATA_VALUE ',g0.4)", iostat=istat ) pGrd%rNoDataValue
     call assert( istat==0, "Error writing NODATA value", __FILE__, __LINE__)
     do iRow=1,iNumRows
       write( unit=LU_TEMP, fmt=TRIM(sBuf), iostat=istat ) &
-        (TRIM(asCharacter( pGrd%rData(iCol,iRow) )),iCol=1,iNumCols)
+        (TRIM(asCharacter( pGrd%rData(iCol,iRow), fmt_string="g0.5" )),iCol=1,iNumCols)
       call assert( istat==0, "Error writing Arc ASCII REAL grid data", &
         __FILE__, __LINE__)
     end do
 
   elseif ( pGrd%iDataType == DATATYPE_DOUBLE ) then
 
-    write ( unit=LU_TEMP, fmt="('NODATA_VALUE ',g14.4)", iostat=istat ) pGrd%dpNoDataValue
+    write ( unit=LU_TEMP, fmt="('NODATA_VALUE ',g0.4)", iostat=istat ) pGrd%dpNoDataValue
     call assert( istat==0, "Error writing NODATA value", __FILE__, __LINE__)
     do iRow=1,iNumRows
       write( unit=LU_TEMP, fmt=TRIM(sBuf), iostat=istat ) &
-        (TRIM(asCharacter( pGrd%dpData(iCol,iRow) )),iCol=1,iNumCols)
+        (TRIM(asCharacter( pGrd%dpData(iCol,iRow), fmt_string="g0.5" )),iCol=1,iNumCols)
       call assert( istat==0, "Error writing Arc ASCII REAL grid data", &
         __FILE__, __LINE__)
     end do
@@ -1531,8 +1540,8 @@ subroutine grid_Transform(pGrd, sFromPROJ4, sToPROJ4 )
 
   type ( GENERAL_GRID_T ),pointer :: pGrd
   character (len=*) :: sFromPROJ4, sToPROJ4
-  character (C_CHAR, len=len_trim(sFromPROJ4)) :: csFromPROJ4
-  character (C_CHAR, len=len_trim(sToPROJ4)) :: csToPROJ4
+  character (kind=c_char, len=len_trim(sFromPROJ4)) :: csFromPROJ4
+  character (kind=c_char, len=len_trim(sToPROJ4)) :: csToPROJ4
 
   ! [ LOCALS ]
   integer (c_int) :: iRetVal

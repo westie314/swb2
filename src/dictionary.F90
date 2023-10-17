@@ -313,9 +313,10 @@ contains
 
     enddo
 
-    if ( slString%get(1) == '<NA>' )            &
+    if ( slString%get(1) == '<NA>' ) then
       call warn(sMessage="Failed to find a dictionary entry associated with a key value of " &
         //dquote(sKey)//".", sModule=__FILE__, iLine=__LINE__, iLogLevel=LOG_DEBUG, lEcho=FALSE )
+    endif
 
   end function grep_dictionary_key_names_fn
 

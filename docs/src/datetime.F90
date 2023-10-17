@@ -8,15 +8,17 @@
 
 module datetime
 
-  use iso_c_binding, only : c_short, c_int, c_long, c_float, c_double, c_bool
+  use iso_c_binding, only          : c_short, c_int, c_long, c_float, c_double, c_bool
   use fstring
+  use logfiles, only               : LOGS, LOG_ALL
   use exceptions
   use constants_and_conversions
 
   implicit none
   private
 
-  public :: gregorian_date, julian_day, isLeap, day_of_year, mmdd2doy
+  public :: gregorian_date, julian_day, isLeap, day_of_year, mmdd2doy, &
+            count_leap_days_between_dates
 
   public :: assignment(=)
   interface assignment(=)
@@ -27,6 +29,11 @@ module datetime
   interface operator(>)
     module procedure :: is_date_greater_than
   end interface operator(>)
+
+  public :: operator(<)
+  interface operator(<)
+    module procedure :: is_date_less_than
+  end interface operator(<)
 
   type, public :: DATETIME_T
 
@@ -193,12 +200,12 @@ subroutine set_date_format_indices(this, sDateFormat)
     sDATE_FORMAT = sDEFAULT_DATE_FORMAT
   endif
 
-  iScanMM1 = scan(string=sDateFmt,set="M")
-  iScanMM2 = scan(string=sDateFmt,set="M", back=TRUE )
-  iScanDD1 = scan(string=sDateFmt,set="D")
-  iScanDD2 = scan(string=sDateFmt,set="D", back=TRUE )
-  iScanYYYY1 = scan(string=sDateFmt,set="Y")
-  iScanYYYY2 = scan(string=sDateFmt,set="Y", back=TRUE )
+  iScanMM1 = scan(string=sDateFmt,set="Mm")
+  iScanMM2 = scan(string=sDateFmt,set="Mm", back=TRUE )
+  iScanDD1 = scan(string=sDateFmt,set="Dd")
+  iScanDD2 = scan(string=sDateFmt,set="Dd", back=TRUE )
+  iScanYYYY1 = scan(string=sDateFmt,set="Yy")
+  iScanYYYY2 = scan(string=sDateFmt,set="Yy", back=TRUE )
   iScanDelim1 = scan(string=trim(sDateFmt), set=DELIMITERS)
   iScanDelim2 = scan(string=trim(sDateFmt), set=DELIMITERS, back=TRUE)
 
@@ -294,8 +301,8 @@ subroutine parse_text_to_date_sub(this, sString, sFilename, iLinenumber )
   if ( .not. (iStat==0 .and. (iMonth > 0 .and. iMonth <= 12) ) ) then
 
     call Assert(FALSE, &
-      "Error parsing month value - got "//trim(sMonth)//";"// &
-      " date text: "//trim(sStr), __FILE__, __LINE__, sFilename_l, iLinenumber_l )
+      "Error parsing month value. Parsed value: "//squote(sMonth)//";"// &
+      " input date text: "//trim(sStr), __FILE__, __LINE__, sFilename_l, iLinenumber_l )
 
   endif
 
@@ -310,8 +317,8 @@ subroutine parse_text_to_date_sub(this, sString, sFilename, iLinenumber )
   if ( .not. (iStat==0 .and. (iDay > 0 .and. iDay <= 31) ) ) then
 
     call Assert(FALSE, &
-      "Error parsing day value - got "//trim(sDay)//";"// &
-      " date text: "//trim(sStr),sFilename_l, iLinenumber_l, __FILE__, __LINE__ )
+      "Error parsing day value. Parsed value: "//trim(sDay)//";"// &
+      " input date text: "//trim(sStr),sFilename_l, iLinenumber_l, __FILE__, __LINE__ )
 
   endif
 
@@ -321,18 +328,15 @@ subroutine parse_text_to_date_sub(this, sString, sFilename, iLinenumber )
   if ( iStat/=0 ) then
 
     call Assert(FALSE, &
-      "Error parsing year value - got "//trim(sYear)//";"// &
-      " date text: "//trim(sStr),sFilename_l, iLinenumber_l, __FILE__, __LINE__ )
+      "Error parsing year value. Parsed value: "//trim(sYear)//";"// &
+      " input date text: "//trim(sStr),sFilename_l, iLinenumber_l, __FILE__, __LINE__ )
 
   endif
-
-!  if(iYear <= 99 ) iYear = iYear + 1900    ! this might be a lethal assumption
 
   this%iMonth = iMonth
   this%iYear = iYear
   this%iDay = iDay
 
-!  this%dJulianDate = this%dJulianDate + julian_day( iMonth=iMonth, iDay=iDay, iYear=iYear )
   this%dJulianDate = julian_day( iMonth=iMonth, iDay=iDay, iYear=iYear )
 
 end subroutine parse_text_to_date_sub
@@ -634,31 +638,60 @@ end subroutine gregorian_date
 !
 ! SOURCE
 
-function julian_day ( iYear, iMonth, iDay, iOrigin ) result(iJD)
+function julian_day ( iYear, iMonth, iDay, iOrigin, sInputItemName ) result(iJD)
 
   ! [ ARGUMENTS ]
-  integer (c_int), intent(in) :: iYear, iMonth, iDay
-  integer (c_int), optional :: iOrigin
+  integer (c_int), intent(in)     :: iYear, iMonth, iDay
+  integer (c_int), optional       :: iOrigin
+  character (len=*), optional     :: sInputItemName
+
 
   ! [ LOCALS ]
   integer (c_int) i,j,k
   integer (c_int) :: iOffset
   character (len=256) :: sBuf
+  character (len=:), allocatable :: sInputItemName_
+  logical (c_bool) :: illegal_month, illegal_day
 
   ! [ RETURN VALUE ]
   integer (c_int) :: iJD
+  sBuf = ""
+
+   illegal_month = FALSE
+   illegal_day   = FALSE
+
+  if (present(sInputItemName)) then
+    sInputItemName_ = trim(sInputItemName)
+  else
+    sInputItemName_ = "unspecified"
+  endif
 
   i= iYear
   j= iMonth
   k= iDay
 
-  if(.not. (iMonth >= 1 .and. iMonth <= 12)) then
-    write(sBuf,fmt="('Illegal month value given: ',i4)") iMonth
-    call Assert( FALSE, trim(sBuf), __FILE__, __LINE__)
-  elseif(.not. (iDay >= 1 .and. iDay <= 31)) then
-    write(sBuf,fmt="('Illegal day value given: ',i4)") iDay
-    call Assert( FALSE, trim(sBuf), __FILE__, __LINE__)
-  endif
+  select case ( iMonth )
+
+    case (1, 3, 5, 7, 8, 10, 12)
+
+      if ( iDay  < 1 .or. iDay > 31 )   illegal_day = TRUE
+
+    case (2)
+
+      if ( isLeap( iYear) ) then
+        if ( iDay  < 1 .or. iDay > 29 )   illegal_day = TRUE
+      else
+        if ( iDay  < 1 .or. iDay > 28 )   illegal_day = TRUE
+      endif
+    case (4, 6, 9, 11)
+
+      if ( iDay  < 1 .or. iDay > 31 )   illegal_day = TRUE
+
+    case default
+
+      illegal_month = TRUE
+
+  end select
 
   if(present(iOrigin)) then
     iOffset = iOrigin
@@ -671,6 +704,26 @@ function julian_day ( iYear, iMonth, iDay, iOrigin ) result(iJD)
         /12_c_int - 3_c_int *((i + 4900_c_int + (j - 14_c_int) &
         /12_c_int)/100_c_int)/4_c_int ) - iOffset
 
+  if ( illegal_month .or. illegal_day ) then
+!    call LOGS%write(" ** there was a problem converting month, day, year values to a Julian date **",    &
+!      iLinesBefore=2, iLogLevel=LOG_ALL, lEcho=TRUE, iTab=5)
+    call LOGS%write("month value: " + as_character(iMonth), iTab=16)
+    call LOGS%write("day value: " + as_character(iDay), iTab=18)
+    call LOGS%write("year value: " + as_character(iYear), iTab=17)
+    call LOGS%write("input type: " + sInputItemName_, iLinesAfter=1, iTab=17)
+
+    sBuf = "there was a problem converting month, day, year values to a Julian date: "
+
+    if ( illegal_month)     sBuf = adjustl(trim(sBuf) + " month value is illegal. ")
+    if ( illegal_day)       sBuf = adjustl(trim(sBuf) + " day value is illegal.")
+
+    call Assert( FALSE, trim(sBuf), __FILE__, __LINE__)
+
+    ! will never get here normally, but for unit testing purposes, return some nonsensical value
+    iJD = iTINYVAL
+
+  endif
+      
 end function julian_day
 
 !------------------------------------------------------------------------------
@@ -773,6 +826,54 @@ end function is_date_GT_or_equal_to
   endif
 
 end function is_date_equal_to
+
+!------------------------------------------------------------------------------
+
+function count_leap_days_between_dates(date_min, date_max)   result(iCount)
+
+  class(DATETIME_T), intent(in) :: date_min
+  class(DATETIME_T), intent(in) :: date_max
+
+  integer (c_int) :: iNumYears
+  integer (c_int) :: iCount
+
+  ! [ LOCALS ]
+  integer (c_int) :: year_value
+
+  iCount = 0
+
+  iNumYears = date_max%iYear - date_min%iYear
+
+  if (iNumYears == 0) then 
+
+    if (( date_min%isLeapYear() .and.                                                       &
+             (date_min%iMonth <= 2 .and. date_min%iDay <= 28))                              &
+       .and. ((date_max%iMonth == 2 .and. date_min%iDay > 28) .or. date_max%iMonth >=3))    &
+       iCount = 1
+
+  elseif (iNumYears > 0) then 
+
+    if ( date_min%isLeapYear() .and.                                                     &
+       (date_min%iMonth == 1 .or. ( date_min%iMonth == 2 .and. date_min%iDay <= 28)))    &
+         iCount = 1
+
+    if ( date_max%isLeapYear() .and.                                                     &
+       (date_max%iMonth > 2 .or. ( date_max%iMonth == 2 .and. date_max%iDay > 28)))      &
+         iCount = iCount + 1
+
+  endif
+
+  if (iNumYears >=3) then
+
+    do year_value=date_min%iYear+1, date_max%iYear-1
+
+      if (isLeap(year_value)) iCount = iCount + 1
+
+    enddo
+
+  endif
+
+end function count_leap_days_between_dates
 
 !------------------------------------------------------------------------------
 
@@ -1165,8 +1266,12 @@ subroutine date_plus_year_sub(this)
 
   class(DATETIME_T) :: this
 
-  this%iYear = this%iYear + 1_c_int
-  call this%calcJulianDay()
+!  this%iYear = this%iYear + 1_c_int
+!  call this%calcJulianDay()
+
+  this%dJulianDate = this%dJulianDate + 365.25_c_double
+  this%iJulianDay = int(this%dJulianDate, c_long)
+  call this%calcGregorianDate()
 
 end subroutine date_plus_year_sub
 
@@ -1236,8 +1341,12 @@ subroutine date_minus_year_sub(this)
 
   class(DATETIME_T) :: this
 
-  this%iYear = this%iYear - 1_c_int
-  call this%calcJulianDay()
+!  this%iYear = this%iYear - 1_c_int
+!  call this%calcJulianDay()
+
+  this%dJulianDate = this%dJulianDate - 365.25_c_double
+  this%iJulianDay = int(this%dJulianDate, c_long)
+  call this%calcGregorianDate()
 
 end subroutine date_minus_year_sub
 

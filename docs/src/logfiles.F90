@@ -23,8 +23,9 @@ module logfiles
   end enum
 
   type LOGFILE_T
+    character (len=:), allocatable  :: sPathname
     character (len=:), allocatable  :: sFilePrefix
-    character (len=64)              :: sFilename(2)
+    character (len=256)             :: sFilename(2)
     logical (c_bool)                :: lIsOpen(2)       = .false._c_bool
     integer (c_int)                 :: iUnitNum(2)      = -999
     integer (c_int)                 :: iStat(2)
@@ -60,10 +61,10 @@ module logfiles
 
   type (LOGFILE_T), public :: LOGS
 
-  integer (c_int)               :: CURRENT_LOG_LEVEL     = LOG_GENERAL
-  logical (c_bool)              :: CURRENT_LOG_ECHO      = .false._c_bool
-  character (len=64)            :: OUTPUT_DIRECTORY_NAME = ""
-  logical (c_bool), parameter   :: TRUE = .true._c_bool
+  integer (c_int)                   :: CURRENT_LOG_LEVEL     = LOG_GENERAL
+  logical (c_bool)                  :: CURRENT_LOG_ECHO      = .false._c_bool
+  logical (c_bool), parameter       :: TRUE = .true._c_bool
+  character (len=:), allocatable    :: LOGFILE_DIRECTORY_NAME
 
 contains
 
@@ -72,7 +73,7 @@ contains
     class (LOGFILE_T)                           :: this
     character (len=*), intent(in)               :: sDirName
 
-    OUTPUT_DIRECTORY_NAME = trim(sDirName)
+    LOGFILE_DIRECTORY_NAME = trim(sDirName)
 
   end subroutine set_output_directory_name_sub
 
@@ -81,7 +82,7 @@ contains
   subroutine set_log_level_sub( this, iLogLevel )
 
     class (LOGFILE_T)                           :: this
-    integer (c_int), intent(in)            :: iLogLevel
+    integer (c_int), intent(in)                 :: iLogLevel
 
     CURRENT_LOG_LEVEL = iLogLevel
 
@@ -92,7 +93,7 @@ contains
   subroutine set_screen_echo_sub( this, lEcho )
 
     class (LOGFILE_T)                           :: this
-    logical (c_bool), intent(in)           :: lEcho
+    logical (c_bool), intent(in)                :: lEcho
 
     CURRENT_LOG_ECHO = lEcho
 
@@ -139,7 +140,7 @@ contains
   subroutine open_files_write_access_sub(this, lWrite_SWB_Info )
 
     class (LOGFILE_T), intent(inout)             :: this
-    logical (c_bool), intent(in), optional  :: lWrite_SWB_Info
+    logical (c_bool), intent(in), optional       :: lWrite_SWB_Info
 
     ! [ LOCALS ]
     integer (c_int) :: iIndex
@@ -158,7 +159,7 @@ contains
 
       do iIndex = 1, min(this%iLogLevel, 2)
 
-        sFilename = trim(OUTPUT_DIRECTORY_NAME)//trim(this%sFilePrefix)//trim(sDescriptor(iIndex))//".md"
+        sFilename = trim(LOGFILE_DIRECTORY_NAME)//trim(this%sFilePrefix)//trim(sDescriptor(iIndex))//".md"
 
         if (.not. this%lIsOpen(iIndex) ) then
 

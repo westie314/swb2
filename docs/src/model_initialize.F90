@@ -35,8 +35,8 @@ module model_initialize
   type GRIDDED_DATASETS_T
     character (len=38)             :: sName
     character (len=256)            :: sPathname
-    logical (c_bool)          :: lOptional
-    integer (c_int)           :: iDataType
+    logical (c_bool)               :: lOptional
+    integer (c_int)                :: iDataType
   end type GRIDDED_DATASETS_T
 
   type METHODS_LIST_T
@@ -44,14 +44,14 @@ module model_initialize
     logical (c_bool)  :: lOptional
   end type METHODS_LIST_T
 
-  integer (c_int), parameter :: NUMBER_OF_KNOWN_GRIDS   = 44
+  integer (c_int), parameter :: NUMBER_OF_KNOWN_GRIDS   = 46
   integer (c_int), parameter :: NUMBER_OF_KNOWN_METHODS = 18
 
   type (GRIDDED_DATASETS_T)    :: KNOWN_GRIDS( NUMBER_OF_KNOWN_GRIDS ) =                             &
 
-    [ GRIDDED_DATASETS_T("PRECIPITATION                         ", "", FALSE, DATATYPE_FLOAT ),     &
-      GRIDDED_DATASETS_T("TMIN                                  ", "", FALSE, DATATYPE_FLOAT ),     &
-      GRIDDED_DATASETS_T("TMAX                                  ", "", FALSE, DATATYPE_FLOAT ),     &
+    [ GRIDDED_DATASETS_T("PRECIPITATION                         ", "", TRUE, DATATYPE_FLOAT ),      &
+      GRIDDED_DATASETS_T("TMIN                                  ", "", TRUE, DATATYPE_FLOAT ),      &
+      GRIDDED_DATASETS_T("TMAX                                  ", "", TRUE, DATATYPE_FLOAT ),      &
       GRIDDED_DATASETS_T("AVAILABLE_WATER_CONTENT               ", "", TRUE, DATATYPE_FLOAT ),      &
       GRIDDED_DATASETS_T("REFERENCE_ET0                         ", "", TRUE, DATATYPE_FLOAT ),      &
       GRIDDED_DATASETS_T("POTENTIAL_ET                          ", "", TRUE, DATATYPE_FLOAT ),      &
@@ -69,6 +69,8 @@ module model_initialize
       GRIDDED_DATASETS_T("INITIAL_PERCENT_SOIL_MOISTURE         ", "", FALSE, DATATYPE_FLOAT),      &
       GRIDDED_DATASETS_T("INITIAL_SNOW_COVER_STORAGE            ", "", TRUE, DATATYPE_FLOAT),       &
       GRIDDED_DATASETS_T("INITIAL_CONTINUOUS_FROZEN_GROUND_INDEX", "", TRUE, DATATYPE_FLOAT),       &
+      GRIDDED_DATASETS_T("CFGI_LOWER_LIMIT                      ", "" ,TRUE, DATATYPE_FLOAT),       &
+      GRIDDED_DATASETS_T("CFGI_UPPER_LIMIT                      ", "" ,TRUE, DATATYPE_FLOAT),       &
       GRIDDED_DATASETS_T("PERCENT_CANOPY_COVER                  ", "", TRUE, DATATYPE_FLOAT ),      &
       GRIDDED_DATASETS_T("PERCENT_PERVIOUS_COVER                ", "", TRUE, DATATYPE_FLOAT ),      &
       GRIDDED_DATASETS_T("PERCENT_IMPERVIOUS_COVER              ", "", TRUE, DATATYPE_FLOAT ),      &
@@ -120,37 +122,36 @@ module model_initialize
 
 contains
 
-  subroutine initialize_all( output_prefix, output_dirname, data_dirname,         &
-                             weather_data_dirname )
+  subroutine initialize_all( output_prefix, output_dirname, data_dirname,          &
+                             lookup_table_dirname, weather_data_dirname )
 
 !    use polygon_summarize, only : initialize_polygon_summarize
 
-    character (len=*), intent(in) :: output_prefix, output_dirname, data_dirname, &
-                                     weather_data_dirname
+    character (len=*), intent(in) :: output_prefix, output_dirname, data_dirname,  &
+                                     lookup_table_dirname, weather_data_dirname
 
     ! [ LOCALS ]
-    integer (c_int) :: iIndex
+    integer (c_int)  :: iIndex
+    logical (c_bool) :: using_tabular_precip_and_temperature
 
     call MODEL%set_default_method_pointers()
 
     ! set output directory names for NetCDF and Surfer/Arc ASCII grid output
     call grid_set_output_directory_name( output_dirname )
     call set_data_directory( data_dirname )
+    call set_lookup_table_directory( lookup_table_dirname )
     call set_weather_data_directory( weather_data_dirname )
     call set_output_directory( output_dirname )
     call MODEL%set_output_directory( output_dirname )
     call set_output_prefix( output_prefix )
 
-    print *, trim(__FILE__), ": ", __LINE__
     ! define SWB project boundary and geographic projection
     call initialize_grid_options()
-
-    print *, trim(__FILE__), ": ", __LINE__
 
     ! define the start and end date for the simulation
     call initialize_start_and_end_dates()
 
-    ! read in and munge all tables that have been defined in the control file as ***_LOOKUP_TABLE
+    ! specify all tables that have been defined in the control file as ***_LOOKUP_TABLE
     call initialize_lookup_tables()
 
     ! scan input file entries for keywords associated with known gridded datasets
@@ -167,6 +168,13 @@ contains
                                     iDataType=KNOWN_GRIDS(iIndex)%iDataType )
 
     enddo
+
+    ! at this point the list of files that need to be incorporated into the parameter
+    ! database should be complete; munge each file in turn and add the parameter values to
+    ! the parameter dictionary
+    
+    ! this should be OK to run again; duplicate entries should now be ignored
+    call PARAMS%munge_file()
 
     ! scan the control file input for method specifications
     ! (e.g. EVAPOTRANSPIRATION_METHOD HARGREAVES-SAMANI )
@@ -297,7 +305,18 @@ contains
 
   end subroutine initialize_ancillary_values
 
-!--------------------------------------------------------------------------------------------------
+ !--------------------------------------------------------------------------------------------------
+
+  subroutine set_lookup_table_directory( lookup_table_dirname )
+
+    character(len=*), intent(in) :: lookup_table_dirname
+
+    ! setting the MODULE variable LOOKUP_TABLE_DIRECTORY_NAME, module = constants_and_conversions
+    if( len_trim(lookup_table_dirname) > 0 )  LOOKUP_TABLE_DIRECTORY_NAME = lookup_table_dirname
+
+  end subroutine set_lookup_table_directory
+
+ !--------------------------------------------------------------------------------------------------
 
   subroutine set_data_directory( data_dirname )
 
@@ -305,22 +324,26 @@ contains
 
     integer (c_int) :: indx
 
-    do indx=1,ubound(KNOWN_GRIDS,1)
+    if ( len_trim(data_dirname) > 0 ) then
 
-      select case (trim(KNOWN_GRIDS(indx)%sName))
+      do indx=1,ubound(KNOWN_GRIDS,1)
 
-        case("PRECIPITATION","TMIN","TMAX")
+        select case (trim(KNOWN_GRIDS(indx)%sName))
 
-        case default
+          case("PRECIPITATION","TMIN","TMAX")
 
-          KNOWN_GRIDS(indx)%sPathname = trim( data_dirname )
+          case default
 
-      end select
+            KNOWN_GRIDS(indx)%sPathname = trim( data_dirname )
 
-    enddo
+        end select
 
-    ! setting the MODULE variable DATA_DIRECTORY_NAME, module = file_operations
-    DATA_DIRECTORY_NAME = data_dirname
+      enddo
+
+      ! setting the MODULE variable DATA_DIRECTORY_NAME, module = file_operations
+      DATA_DIRECTORY_NAME = data_dirname
+
+    endif
 
   end subroutine set_data_directory
 
@@ -870,6 +893,10 @@ contains
                   sCommentChars = "#%!+=|[{(-*$",   &
                   sDelimiters = "WHITESPACE",       &
                   lHasHeader = .false._c_bool )
+
+    ! set flag to have 'chomp' remove extra whitespace characters if found between items of interest 
+    CF%remove_extra_delimiters = TRUE
+
     do
 
       ! read in next line of the control file
@@ -884,7 +911,7 @@ contains
             __FILE__, __LINE__ )
 
       ! break off key value for the current record
-      call chomp(sRecord, sKey, CF%sDelimiters )
+      call chomp(sRecord, sKey, CF%sDelimiters, CF%remove_extra_delimiters )
 
       if ( len_trim( sKey ) > 0 ) then
 
@@ -899,14 +926,14 @@ contains
         call CF_ENTRY%add_key( sKey )
 
         ! break off first directive for the current record
-        call chomp( sRecord, sValue, CF%sDelimiters )
+        call chomp( sRecord, sValue, CF%sDelimiters, CF%remove_extra_delimiters )
 
         do while ( len_trim( sValue ) > 0 )
 
           ! add the next directive snippet to dictionary entry data structure
           call CF_ENTRY%add_value( sValue )
           ! break off next directive for the current record
-          call chomp( sRecord, sValue, CF%sDelimiters )
+          call chomp( sRecord, sValue, CF%sDelimiters, CF%remove_extra_delimiters )
 
         enddo
 
@@ -949,14 +976,16 @@ contains
     ! [ LOCALS ]
     type (FSTRING_LIST_T)                 :: myDirectives
     type (FSTRING_LIST_T)                 :: myOptions
-    integer (c_int)                      :: iIndex
-    character (len=512)       :: sCmdText
-    character (len=512)       :: sArgText
-    character (len=512)       :: sArgText_1
-    character (len=512)       :: sArgText_2
-    integer (c_int)                      :: iStat
-    type (DATA_CATALOG_ENTRY_T), pointer :: pENTRY
-    logical (c_bool)                     :: lGridPresent
+    integer (c_int)                       :: iIndex
+    character (len=512)                   :: sCmdText
+    character (len=512)                   :: sArgText
+    character (len=512)                   :: sArgText_1
+    character (len=512)                   :: sArgText_2
+    character (len=512)                   :: sArgText_3
+    character (len=512)                   :: sArgText_4
+    integer (c_int)                       :: iStat
+    type (DATA_CATALOG_ENTRY_T), pointer  :: pENTRY
+    logical (c_bool)                      :: lGridPresent
 
     pENTRY => null()
     lGridPresent = FALSE
@@ -993,6 +1022,8 @@ contains
       sArgText = ""
       sArgText_1 = ""
       sArgText_2 = ""
+      sArgText_3 = ""
+      sArgText_4= ""
       call myOptions%clear()
 
       ! process all known directives associated with key word
@@ -1008,8 +1039,10 @@ contains
         ! most of the time, we only care about the first dictionary entry, obtained below
         sArgText_1 = myOptions%get(1)
         sArgText_2 = myOptions%get(2)
+        sArgText_3 = myOptions%get(3)
+        sArgText_4 = myOptions%get(4)
 
-        ! dictionary entries are initially space-delimited; sArgText_1 contains
+        ! dictionary entries are initially space-delimited; sArgText contains
         ! all dictionary entries present, concatenated, with a space between entries
         sArgText = myOptions%get(1, myOptions%count )
 
@@ -1049,6 +1082,38 @@ contains
 
             end select
 
+          elseif (    (sArgText_1 .strapprox. "TABLE")                  &
+                 .or. (sArgText_1 .strapprox. "TABLE_LOOKUP") ) then
+           
+            if (len_trim(sArgText_2) > 0)   &
+            call PARAMS%add_file( fix_pathname(trim(sPathname)//sArgText_2))
+
+            select case ( iDataType )
+
+              case ( DATATYPE_FLOAT )
+
+              call pENTRY%initialize(                        &
+                sDescription=trim(sCmdText),                 &
+                sDateColumnName = "date",                    &
+                sValueColumnName = pENTRY%sVariableName_z,   &
+                sType = "float")
+              lGridPresent = TRUE
+
+            case ( DATATYPE_INT )
+
+              call pENTRY%initialize(                        &
+                sDescription=trim(sCmdText),                 &
+                sDateColumnName = "date",                    &
+                sValueColumnName = pENTRY%sVariableName_z,   &
+                sType = "integer")
+              lGridPresent = TRUE
+
+            case default
+
+              call die( "INTERNAL PROGRAMMING ERROR: Unhandled data type selected.", &
+                __FILE__, __LINE__ )
+              end select
+  
           elseif ( (sArgText_1 .strapprox. "ARC_ASCII")              &
               .or. (sArgText_1 .strapprox. "SURFER")                 &
               .or. (sArgText_1 .strapprox. "ARC_GRID") ) then
@@ -1068,9 +1133,11 @@ contains
               iDataType=iDataType )
             lGridPresent = TRUE
 
-          elseif ( sArgText_1 .strapprox. "TABLE" ) then
+          ! elseif ( sArgText_1 .strapprox. "TABLE" ) then
 
-            ! add code to get the table header name and table values
+          !   ! add code to get the table header name and table values
+          !   if (len_trim(sArgText_2) > 0)   &
+          !     call PARAMS%add_file( fix_pathname(trim(sPathname)//sArgText_2))
 
           else
 
@@ -1099,27 +1166,7 @@ contains
 
         elseif ( sCmdText .containssimilar. "_CONVERSION_FACTOR" ) then
 
-          call pENTRY%set_scale(asFloat(sArgText_1))
-
-        elseif ( sCmdText .containssimilar. "_SCALE" ) then
-
-          call pENTRY%set_scale(asFloat(sArgText_1))
-
-        elseif ( sCmdText .containssimilar. "_OFFSET" ) then
-
-          call pENTRY%set_offset(asFloat(sArgText_1))
-
-        elseif ( sCmdText .containssimilar. "NETCDF_X_VAR" ) then
-
-          pENTRY%sVariableName_x = trim(sArgText_1)
-
-        elseif ( sCmdText .containssimilar. "NETCDF_Y_VAR" ) then
-
-          pENTRY%sVariableName_y = trim(sArgText_1)
-
-        elseif ( sCmdText .containssimilar. "NETCDF_Z_VAR" ) then
-
-          pENTRY%sVariableName_z = trim(sArgText_1)
+          call pENTRY%set_scale(asDouble(sArgText_1))
 
         elseif ( sCmdText .containssimilar. "NETCDF_X_VAR_ADD_OFFSET" ) then
 
@@ -1129,7 +1176,52 @@ contains
 
           call pENTRY%set_Y_offset( asDouble( sArgText_1 ) )
 
-        elseif ( sCmdText .containssimilar. "NETCDF_TIME_VAR" ) then
+        elseif ( sCmdText .containssimilar. "_SCALE_FACTOR" ) then
+
+          call pENTRY%set_scale(asDouble(sArgText_1))
+
+        elseif ( sCmdText .containssimilar. "_ADD_OFFSET" ) then
+
+          call pENTRY%set_add_offset(asDouble(sArgText_1))
+
+        elseif ( sCmdText .containssimilar. "_SUBTRACT_OFFSET" ) then
+
+          call pENTRY%set_sub_offset(asDouble(sArgText_1))
+
+        elseif ( sCmdText .containssimilar. "_UNITS_KELVIN" ) then
+
+          call pENTRY%set_sub_offset(FREEZING_POINT_OF_WATER_KELVIN)
+          call pENTRY%set_add_offset(FREEZING_POINT_OF_WATER_FAHRENHEIT)
+          call pENTRY%set_scale(F_PER_C)
+
+        elseif ( sCmdText .containssimilar. "_UNITS_CELSIUS" ) then
+
+          call pENTRY%set_add_offset(FREEZING_POINT_OF_WATER_FAHRENHEIT)
+          call pENTRY%set_scale(F_PER_C)
+          
+        elseif ( sCmdText .containssimilar. "_UNITS_MILLIMETERS" ) then
+
+          call pENTRY%set_scale(1.0_c_double / MM_PER_IN)
+  
+        elseif ( sCmdText .containssimilar. "_COORDINATE_TOLERANCE" ) then
+
+          call pENTRY%set_coordinate_tolerance( asDouble(sArgText_1))
+
+        elseif ( sCmdText .containssimilar. "NETCDF_X_VAR" ) then
+
+          pENTRY%sVariableName_x = trim(sArgText_1)
+
+        elseif ( sCmdText .containssimilar. "NETCDF_Y_VAR" ) then
+
+          pENTRY%sVariableName_y = trim(sArgText_1)
+
+        elseif (      (sCmdText .containssimilar. "NETCDF_Z_VAR")                &
+                 .or. (sCmdText .containssimilar. "COLUMN_NAME") )  then
+
+          pENTRY%sVariableName_z = trim(sArgText_1)
+
+        elseif (      (sCmdText .containssimilar. "NETCDF_TIME_VAR")             &
+                 .or. (sCmdText .containssimilar. "DATE_COLUMN_NAME") ) then
 
           pENTRY%sVariableName_time = trim(sArgText_1)
 
@@ -1223,7 +1315,7 @@ contains
 
       ! if an unadorned grid specification directive was processed, then we can add the key and
       ! the data_catalog_entry to the data_catalog
-      if ( lGridPresent )call DAT%add( key=sKey, data=pENTRY )
+      if ( lGridPresent )  call DAT%add( key=sKey, data=pENTRY )
 
       pENTRY => null()
 
@@ -1315,11 +1407,6 @@ contains
     BNDS%fX_ur = rX1
     BNDS%fGridCellSize = rGridCellSize
     BNDS%sPROJ4_string = trim(sArgText)
-
-    print *, trim(__FILE__), ': ', __LINE__
-
-    print *, 'BNDS: '
-    print *, BNDS
 
     MODEL%PROJ4_string = trim(sArgText)
 
@@ -1512,17 +1599,17 @@ contains
     type (FSTRING_LIST_T)             :: myDirectives
     type (FSTRING_LIST_T)             :: myOptions
     type (FSTRING_LIST_T)             :: slString
-    integer (c_int)             :: iIndex
-    character (len=:), allocatable   :: sCmdText
-    character (len=:), allocatable   :: sOptionText
-    character (len=:), allocatable   :: sArgText
-    character (len=:), allocatable   :: sText
-    character (len=256)              :: sBuf
-    integer (c_int)             :: iStat
-    type (PARAMETERS_T)              :: PARAMS
-    integer (c_int)             :: iCount
-    type (DICT_ENTRY_T), pointer     :: pDict1
-    type (DICT_ENTRY_T), pointer     :: pDict2
+    integer (c_int)                   :: iIndex
+    character (len=:), allocatable    :: sCmdText
+    character (len=:), allocatable    :: sOptionText
+    character (len=:), allocatable    :: sArgText
+    character (len=:), allocatable    :: sText
+    character (len=256)               :: sBuf
+    integer (c_int)                   :: iStat
+    type (PARAMETERS_T)               :: PARAMS_LU_TABLE
+    integer (c_int)                   :: iCount
+    type (DICT_ENTRY_T), pointer      :: pDict1
+    type (DICT_ENTRY_T), pointer      :: pDict2
 
     iCount = 0
 
@@ -1556,10 +1643,14 @@ contains
 
         ! most of the time, we only care about the first dictionary entry, obtained below
         sOptionText = fix_pathname( myOptions%get(1) )
+        if (allocated(LOOKUP_TABLE_DIRECTORY_NAME)) then
+          if (len_trim(LOOKUP_TABLE_DIRECTORY_NAME) > 0)                                 &
+            sOptionText = trim(LOOKUP_TABLE_DIRECTORY_NAME)//trim(sOptionText)
+        endif
 
         if ( index(string=sCmdText, substring="LOOKUP_TABLE" ) > 0 ) then
 
-            call PARAMS%add_file( sOptionText )
+            call PARAMS_LU_TABLE%add_file( fix_pathname( sOptionText ))
             iCount = iCount + 1
 
         else
@@ -1573,7 +1664,7 @@ contains
 
       if ( iCount > 0 ) then
 
-        call PARAMS%munge_file()
+        call PARAMS_LU_TABLE%munge_file(delimiters=TAB)
         call PARAMS_DICT%print_all(sDescription="LOOKUP TABLE dictionary",      &
                                    iLogLevel=LOG_DEBUG, lEcho=FALSE)
 
@@ -1588,21 +1679,21 @@ contains
   subroutine initialize_generic_method( sKey, lOptional)
 
     character (len=*), intent(in)     :: sKey
-    logical (c_bool), intent(in) :: lOptional
+    logical (c_bool), intent(in)      :: lOptional
 
     ! [ LOCALS ]
     type (FSTRING_LIST_T)             :: myDirectives
     type (FSTRING_LIST_T)             :: myOptions
-    integer (c_int)             :: iIndex
-    integer (c_int)             :: indx
-    character (len=:), allocatable   :: sCmdText
+    integer (c_int)                   :: iIndex
+    integer (c_int)                   :: indx
+    character (len=:), allocatable    :: sCmdText
 !    character (len=:), allocatable   :: sOptionText
     type (FSTRING_LIST_T)             :: argv_list
-    character (len=:), allocatable   :: sArgText
-    integer (c_int)             :: iStat
-    integer (c_int)             :: status
-    logical (c_bool)            :: lFatal
-    integer (c_int)             :: num_elements
+    character (len=:), allocatable    :: sArgText
+    integer (c_int)                   :: iStat
+    integer (c_int)                   :: status
+    logical (c_bool)                  :: lFatal
+    integer (c_int)                   :: num_elements
 
     ! obtain a list of control file directives whose key values contain the string sKey
     myDirectives = CF_DICT%grep_keys( trim(sKey) )
@@ -1633,7 +1724,7 @@ contains
         sArgText = myOptions%get(1, myOptions%count )
 
         ! echo the original directive and dictionary entries to the logfile
-        call LOGS%write("> "//sCmdText//" "//sArgText, iLinesBefore=1 )
+        call LOGS%write("> "//sCmdText//" "//sArgText, iLinesBefore=1, iLogLevel=LOG_ALL, lEcho=FALSE )
 
         ! most of the time, we only care about the first dictionary entry, obtained below
 !        sOptionText = myOptions%get(1)
@@ -1668,17 +1759,17 @@ contains
     ! [ LOCALS ]
     type (FSTRING_LIST_T)             :: myDirectives
     type (FSTRING_LIST_T)             :: myOptions
-    integer (c_int)             :: iIndex
-    integer (c_int)             :: indx
-    character (len=:), allocatable   :: sCmdText
+    integer (c_int)                   :: iIndex
+    integer (c_int)                   :: indx
+    character (len=:), allocatable    :: sCmdText
 !    character (len=:), allocatable   :: sOptionText
     type (FSTRING_LIST_T)             :: argv_list
-    character (len=:), allocatable   :: sArgText
-    integer (c_int)             :: iStat
-    integer (c_int)             :: status
-    logical (c_bool)            :: lFatal
-    integer (c_int)             :: num_elements
-    character (len=:), allocatable   :: Option_Name
+    character (len=:), allocatable    :: sArgText
+    integer (c_int)                   :: iStat
+    integer (c_int)                   :: status
+    logical (c_bool)                  :: lFatal
+    integer (c_int)                   :: num_elements
+    character (len=:), allocatable    :: Option_Name
 
     ! obtain a list of control file directives whose key values contain the string sKey
     myDirectives = CF_DICT%grep_keys( "OPTION" )

@@ -20,11 +20,11 @@ program main
   use model_iterate_multiple_simulations, only  : iterate_over_multiple_simulation_days
 
   use fstring, only                   : operator(.containssimilar.),            &
-                                          asCharacter
+                                          asCharacter, right
   use version_control, only           : SWB_VERSION, GIT_COMMIT_HASH_STRING,    &
                                         GIT_BRANCH_STRING, COMPILE_DATE,        &
                                         COMPILE_TIME, SYSTEM_NAME
-  use fstring_list, only               : FSTRING_LIST_T
+  use fstring_list, only              : FSTRING_LIST_T
   use timer, only                     : TIMER_T
   use iso_fortran_env
 
@@ -35,12 +35,14 @@ program main
   character (len=256)            :: sBuf
   character (len=256)            :: sOutputPrefixName
   character (len=256)            :: sOutputDirectoryName
+  character (len=256)            :: sLogfileDirectoryName
   character (len=256)            :: sDataDirectoryName
+  character (len=256)            :: sLookupTableDirectoryName
   character (len=256)            :: sWeatherDataDirectoryName
   integer (c_int)                :: iNumArgs
   character (len=1024)           :: sCompilerOptions
   character (len=256)            :: sCompilerVersion
-  character (len=256)            :: sCompilerName
+  character (len=:), allocatable :: sCompilerName
   character (len=256)            :: sVersionString
   character (len=256)            :: sCompilationDateString
   character (len=256)            :: sCompilationSystemString
@@ -56,6 +58,8 @@ program main
   sOutputPrefixName         = ""
   sOutputDirectoryName      = ""
   sDataDirectoryName        = ""
+  sLogfileDirectoryName     = ""
+  sLookupTableDirectoryName = ""
   sWeatherDataDirectoryName = ""
   number_of_simulations = 1
 
@@ -70,9 +74,7 @@ program main
   sCompilerVersion = COMPILER_VERSION()
   sExecutableDescription = "USGS Soil-Water-Balance Code version "//trim( sVersionString )
 
-  if (     (SYSTEM_NAME .containssimilar. "Windows")                           &
-      .or. (SYSTEM_NAME .containssimilar. "Mingw")                             &
-      .or. (sCompilerVersion .containssimilar. "Windows")) then
+  if ( SYSTEM_NAME == "Windows" ) then
     OS_NATIVE_PATH_DELIMITER = "\"
   else
     OS_NATIVE_PATH_DELIMITER = "/"
@@ -87,7 +89,7 @@ program main
 #ifdef __INTEL_COMPILER
   ! populate with empty string, since for Intel the COMPILER_VERSION string contains
   ! the compiler name already
-  sCompilerName = trim(sCompilerVersion)
+  sCompilerName = "Intel Fortran,"//right(string=sCompilerVersion, substring=",")
   sCompilerVersion = ""
 !  write(UNIT=*,FMT="(a,/)") "compiler build date:"//TRIM(asCharacter(__INTEL_COMPILER_BUILD_DATE))
 #endif
@@ -108,12 +110,17 @@ program main
 
   if(iNumArgs == 0 ) then
 
+  write(UNIT=*,FMT="(a)")       " Compiler options :  "
+  write(UNIT=*,FMT="(a,/,a,/)") "==================== ", trim( sCompilerOptions )
+
     call write_provisional_disclaimer()
 
-    write(UNIT=*,FMT="(//,a,/,/,5(a,/))")  "Usage: swb2 [ options ] control_file_name ",                   &
+    write(UNIT=*,FMT="(//,a,/,/,6(a,/))")  "Usage: swb2 [ options ] control_file_name ",                   &
              "[ --output_prefix= ]     :: text to use as a prefix for output filenames",                   &
              "[ --output_dir= ]        :: directory to place output in (may be relative or absolute)",     &
-             "[ --data_dir= ]          :: directory to search for input grids or lookup tables",           &
+             "[ --lookup_dir= ]        :: directory to search for lookup tables",                          &
+             "[ --logfile_dir= ]       :: directory to write logfiles to",                                 &
+             "[ --data_dir= ]          :: directory to search for input data grids",                       &
              "[ --weather_data_dir= ]  :: directory to search for weather data grids"
 !               "[ --random_start= ]      :: advance random number generator to this position in the series", &
 !               "[ --number_of_sims= ]    :: number of simulations to run when 'method of fragments' is used"
@@ -134,8 +141,6 @@ program main
       ! qualified filenames later
       if ( .not. sOutputDirectoryName(iLen:iLen) .eq. OS_NATIVE_PATH_DELIMITER )  &
         sOutputDirectoryName = trim(sOutputDirectoryName)//OS_NATIVE_PATH_DELIMITER
-
-      call LOGS%set_output_directory( sOutputDirectoryName )
 
     elseif( sBuf(1:15) .eq."--random_start=" ) then
 
@@ -160,6 +165,35 @@ program main
       if ( .not. sDataDirectoryName(iLen:iLen) .eq. OS_NATIVE_PATH_DELIMITER )  &
         sDataDirectoryName = trim(sDataDirectoryName)//OS_NATIVE_PATH_DELIMITER
 
+    elseif ( sBuf(1:14) .eq. "--logfile_dir=" ) then
+      sLogfileDirectoryName = sBuf(15:)
+      iLen = len_trim( sLogfileDirectoryName )
+
+      ! if there is no trailing "/", append one so we can form (more) fully
+      ! qualified filenames later
+      if ( .not. sLogfileDirectoryName(iLen:iLen) .eq. OS_NATIVE_PATH_DELIMITER )  &
+      sLogfileDirectoryName = trim(sLogfileDirectoryName)//OS_NATIVE_PATH_DELIMITER
+
+    elseif ( sBuf(1:13) .eq. "--lookup_dir=" ) then
+
+      sLookupTableDirectoryName = sBuf(14:)
+      iLen = len_trim( sLookupTableDirectoryName )
+
+      ! if there is no trailing "/", append one so we can form (more) fully
+      ! qualified filenames later
+      if ( .not. sLookupTableDirectoryName(iLen:iLen) .eq. OS_NATIVE_PATH_DELIMITER )  &
+      sLookupTableDirectoryName = trim(sLookupTableDirectoryName)//OS_NATIVE_PATH_DELIMITER
+
+    elseif ( sBuf(1:19) .eq. "--lookup_table_dir=" ) then
+
+      sLookupTableDirectoryName = sBuf(20:)
+      iLen = len_trim( sLookupTableDirectoryName )
+
+      ! if there is no trailing "/", append one so we can form (more) fully
+      ! qualified filenames later
+      if ( .not. sLookupTableDirectoryName(iLen:iLen) .eq. OS_NATIVE_PATH_DELIMITER )  &
+      sLookupTableDirectoryName = trim(sLookupTableDirectoryName)//OS_NATIVE_PATH_DELIMITER
+
     elseif ( sBuf(1:19) .eq. "--weather_data_dir=" ) then
 
       sWeatherDataDirectoryName = sBuf(20:)
@@ -180,15 +214,27 @@ program main
   enddo
 
   ! open and initialize logfiles
+
+  ! allow for modification of the location in which logfiles will be written
+  if ( len_trim( sLogfileDirectoryName ) /= 0 ) then
+    call LOGS%set_output_directory( trim( sLogfileDirectoryName ) )
+  elseif ( len_trim( sOutputDirectoryName ) /= 0 ) then
+    call LOGS%set_output_directory( trim( sOutputDirectoryName ) )
+  endif  
+
   call LOGS%initialize( iLogLevel = LOG_DEBUG )
 
   call log_provisional_disclaimer()
 
-  call LOGS%write( sMessage='Base data directory name set to:',lEcho=.TRUE._c_bool )
+  call LOGS%write( sMessage='Grid data directory name set to:',lEcho=.TRUE._c_bool )
   call LOGS%write( sMessage='"'//trim( sDataDirectoryName )//'"', iTab=4,lEcho=.TRUE._c_bool )
+  call LOGS%write( sMessage='Lookup table directory name set to:',lEcho=.TRUE._c_bool )
+  call LOGS%write( sMessage='"'//trim( sLookupTableDirectoryName )//'"', iTab=4,lEcho=.TRUE._c_bool )
   call LOGS%write( sMessage='Weather data directory (precip, tmin, tmax grids) name set to: ',lEcho=.TRUE._c_bool )
   call LOGS%write( '"'//trim( sWeatherDataDirectoryName )//'"',iTab=4,lEcho=.TRUE._c_bool )
 
+  call LOGS%write( sMessage='Output will be written to: ',lEcho=.TRUE._c_bool )
+  call LOGS%write( '"'//trim( sOutputDirectoryName )//'"',iTab=4,lEcho=.TRUE._c_bool )
   call LOGS%write( sMessage='Output file prefix set to:',lEcho=.TRUE._c_bool )
   call LOGS%write( sMessage='"'//trim( sOutputPrefixName )//'"', iTab=4, lEcho=.TRUE._c_bool )
 
@@ -212,12 +258,9 @@ program main
 
   call slControlFiles%clear()
 
-  print *, trim(__FILE__), ': ', __LINE__
-
   call initialize_all( sOutputPrefixName, sOutputDirectoryName,                &
-                       sDataDirectoryName, sWeatherDataDirectoryName )
-
-  print *, trim(__FILE__), ': ', __LINE__
+                       sDataDirectoryName, sLookupTableDirectoryName,          &
+                       sWeatherDataDirectoryName )
 
   call runtimer%stop()
   call runtimer%calc_time_values("split")

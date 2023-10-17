@@ -55,21 +55,22 @@ module constants_and_conversions
 
     ! [ evil global variables ]
   character (len=1)            :: OS_NATIVE_PATH_DELIMITER
-  integer (c_long_long)   :: RANDOM_START = 0
+  integer (c_long_long)        :: RANDOM_START = 0
 
   ! [ select conversion factors ]
   real (c_double), parameter, public :: C_PER_F    = 5.0_c_double / 9.0_c_double
   real (c_double), parameter, public :: F_PER_C    = 9.0_c_double / 5.0_c_double
   real (c_double), parameter, public :: M_PER_FOOT = 0.3048_c_double
   real (c_double), parameter, public :: MM_PER_IN  = 25.4_c_double
+  real (c_double), parameter, public :: FREEZING_POINT_OF_WATER_KELVIN = 273.15_c_double
+  real (c_double), parameter, public :: FREEZING_POINT_OF_WATER_FAHRENHEIT = 32.0_c_double
 
-  public :: OUTPUT_DIRECTORY_NAME, OUTPUT_PREFIX_NAME, DATA_DIRECTORY_NAME,      &
+  public :: OUTPUT_PREFIX_NAME, OUTPUT_DIRECTORY_NAME, DATA_DIRECTORY_NAME,     &
             LOOKUP_TABLE_DIRECTORY_NAME
   character (len=:), allocatable    :: OUTPUT_DIRECTORY_NAME
   character (len=:), allocatable    :: OUTPUT_PREFIX_NAME
   character (len=:), allocatable    :: DATA_DIRECTORY_NAME
   character (len=:), allocatable    :: LOOKUP_TABLE_DIRECTORY_NAME
-
 
   type BOUNDS_T
     character (len=:), allocatable  :: sPROJ4_string
@@ -174,6 +175,13 @@ module constants_and_conversions
     module procedure inches_to_mm_sgl_fn
     module procedure inches_to_mm_dbl_fn
   end interface in_to_mm
+
+  public :: clip
+  interface clip
+    module procedure enforce_bounds_int_fn
+    module procedure enforce_bounds_sgl_fn
+    module procedure enforce_bounds_dbl_fn
+  end interface clip
 
   public :: char_ptr_to_fortran_string
   public :: c_to_fortran_string
@@ -966,5 +974,37 @@ end function fortran_to_c_string
 
   end function keepnumeric
 
+  elemental function enforce_bounds_int_fn(value, minval, maxval)  result(retval)
+
+    integer (c_int), intent(in)   :: value
+    integer (c_int), intent(in)   :: minval
+    integer (c_int), intent(in)   :: maxval
+    integer (c_int)               :: retval
+
+    retval = min( max( value, minval ), maxval)
+
+  end function enforce_bounds_int_fn 
+
+  elemental function enforce_bounds_sgl_fn(value, minval, maxval)  result(retval)
+
+    real (c_float), intent(in)   :: value
+    real (c_float), intent(in)   :: minval
+    real (c_float), intent(in)   :: maxval
+    real (c_float)               :: retval
+
+    retval = min( max( value, minval ), maxval)
+
+  end function enforce_bounds_sgl_fn 
+
+  elemental function enforce_bounds_dbl_fn(value, minval, maxval)  result(retval)
+  
+    real (c_double), intent(in)   :: value
+    real (c_double), intent(in)   :: minval
+    real (c_double), intent(in)   :: maxval
+    real (c_double)               :: retval
+  
+    retval = min( max( value, minval ), maxval)
+  
+  end function enforce_bounds_dbl_fn 
 
 end module constants_and_conversions

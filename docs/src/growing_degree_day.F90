@@ -15,6 +15,7 @@ module growing_degree_day
 
   public :: GDD_BASE, GDD_MAX, GDD_RESET_DATE
   public :: growing_degree_day_calculate, growing_degree_day_initialize
+  public :: modified_growing_degree_day_calculate
 
   real (c_float), allocatable  :: GDD_BASE(:)
   real (c_float), allocatable  :: GDD_MAX(:)
@@ -133,30 +134,45 @@ contains
 
 !--------------------------------------------------------------------------------------------------
 
-  elemental subroutine growing_degree_day_calculate( gdd, tmean, order )
+  impure elemental subroutine growing_degree_day_calculate( gdd, tmean, order )
 
     ! [ ARGUMENTS ]
     real (c_float), intent(inout)       :: gdd
     real (c_float), intent(in)          :: tmean
     integer (c_int), intent(in)         :: order
 
-    ! [ LOCALS ]
-    real (c_float)    :: delta
-
     associate( doy_to_reset_gdd => GDD_RESET_DATE( order ),         &
                gdd_max => GDD_MAX( order ),                         &
                gdd_base => GDD_BASE( order ) )
 
       if ( SIM_DT%iDOY == doy_to_reset_gdd )  gdd = 0.0_c_float
-
-      delta = min(tmean, gdd_max - gdd_base)
-
-      if ( delta > 0.0_c_float ) gdd = gdd + delta
+      
+      gdd = gdd + max(tmean, gdd_base) - gdd_base
 
     end associate
 
   end subroutine growing_degree_day_calculate
 
 !--------------------------------------------------------------------------------------------------
+
+  impure elemental subroutine modified_growing_degree_day_calculate( gdd, tmin, tmax, order )
+
+  ! [ ARGUMENTS ]
+  real (c_float), intent(inout)       :: gdd
+  real (c_float), intent(in)          :: tmin
+  real (c_float), intent(in)          :: tmax
+  integer (c_int), intent(in)         :: order
+
+  associate( doy_to_reset_gdd => GDD_RESET_DATE( order ),         &
+             gdd_max => GDD_MAX( order ),                         &
+             gdd_base => GDD_BASE( order ) )
+
+    if ( SIM_DT%iDOY == doy_to_reset_gdd )  gdd = 0.0_c_float
+    
+    gdd = gdd + max((max(tmin, gdd_base) + min(tmax,gdd_max))/2.0_c_float, gdd_base) - gdd_base
+
+  end associate
+
+end subroutine modified_growing_degree_day_calculate
 
 end module growing_degree_day
