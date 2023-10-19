@@ -73,7 +73,7 @@
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip"
                  data-bs-placement="bottom" data-html="true"
-                 title=" 0.4% of total for procedures.">76 statements</a>
+                 title=" 0.8% of total for procedures.">72 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -86,7 +86,7 @@
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb justify-content-end mb-0">
                 <li class="breadcrumb-item"><a href='../sourcefile/swbstats2_support.f90.html'>swbstats2_support.F90</a></li>
-                <li class="breadcrumb-item"><a href='../module/swbstats2_support~2.html'>swbstats2_support</a></li>
+                <li class="breadcrumb-item"><a href='../module/swbstats2_support.html'>swbstats2_support</a></li>
             <li class="breadcrumb-item active" aria-current="page">output_zonal_stats</li>
           </ol>
         </nav>
@@ -125,12 +125,6 @@
   
   
   
-    <div class="card card-primary">
-      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
-      <div class="list-group">
-        <a class="list-group-item" href="../proc/output_zonal_stats.html#src">output_zonal_stats</a>
-      </div>
-    </div>
 
 
   </div>
@@ -144,7 +138,7 @@
 
 
     <h3>Type Bound</h3>
-    <p><a href='../type/swbstats_t~2.html'>SWBSTATS_T</a></p>
+    <p><a href='../type/swbstats_t.html'>SWBSTATS_T</a></p>
 
     <h3>Arguments</h3>
         <table class="table table-striped varlist">
@@ -160,7 +154,7 @@
         <tr>
             <td>
               <span class="anchor" id="variable-this~220"></span>
-              class(<a href='../type/swbstats_t~2.html'>SWBSTATS_T</a>),
+              class(<a href='../type/swbstats_t.html'>SWBSTATS_T</a>),
             </td>
 <td>intent(inout)</td>
               <td></td>            <td>
@@ -337,154 +331,6 @@
 
 
     
-    <section>
-    <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre><span></span><span class="w">  </span><span class="k">subroutine </span><span class="n">output_zonal_stats</span><span class="p">(</span><span class="n">this</span><span class="p">,</span><span class="w">                                          </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                </span><span class="n">start_date</span><span class="p">,</span><span class="w">                                    </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                </span><span class="n">end_date</span><span class="p">,</span><span class="w">                                      </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                </span><span class="n">values</span><span class="p">,</span><span class="w">                                        </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                </span><span class="n">zone_ids</span><span class="p">,</span><span class="w">                                      </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                </span><span class="n">unique_zone_list</span><span class="p">,</span><span class="w">                              </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                </span><span class="n">delimiter</span><span class="p">,</span><span class="w">                                     </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                </span><span class="n">funit</span><span class="p">,</span><span class="w">                                         </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                </span><span class="n">zone2_ids</span><span class="p">,</span><span class="w">                                     </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                </span><span class="n">unique_zone2_list</span><span class="p">,</span><span class="w">                             </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                </span><span class="n">comparison_values</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">class</span><span class="w"> </span><span class="p">(</span><span class="n">SWBSTATS_T</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w">               </span><span class="kd">::</span><span class="w"> </span><span class="n">this</span><span class="w"></span>
-<span class="w">    </span><span class="k">type</span><span class="w"> </span><span class="p">(</span><span class="n">DATETIME_T</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">                   </span><span class="kd">::</span><span class="w"> </span><span class="n">start_date</span><span class="w"></span>
-<span class="w">    </span><span class="k">type</span><span class="w"> </span><span class="p">(</span><span class="n">DATETIME_T</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">                   </span><span class="kd">::</span><span class="w"> </span><span class="n">end_date</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_double</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w">                  </span><span class="kd">::</span><span class="w"> </span><span class="n">values</span><span class="p">(:,:)</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w">                  </span><span class="kd">::</span><span class="w"> </span><span class="n">zone_ids</span><span class="p">(:,:)</span><span class="w"></span>
-<span class="w">    </span><span class="k">type</span><span class="w"> </span><span class="p">(</span><span class="n">FSTRING_LIST_T</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w">            </span><span class="kd">::</span><span class="w"> </span><span class="n">unique_zone_list</span><span class="w"></span>
-<span class="w">    </span><span class="kt">character</span><span class="w"> </span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="w"> </span><span class="k">optional</span><span class="w">         </span><span class="kd">::</span><span class="w"> </span><span class="n">delimiter</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="w"> </span><span class="k">optional</span><span class="w">           </span><span class="kd">::</span><span class="w"> </span><span class="n">funit</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">),</span><span class="w"> </span><span class="k">optional</span><span class="w">        </span><span class="kd">::</span><span class="w"> </span><span class="n">zone2_ids</span><span class="p">(:,:)</span><span class="w"></span>
-<span class="w">    </span><span class="k">type</span><span class="w"> </span><span class="p">(</span><span class="n">FSTRING_LIST_T</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">),</span><span class="w"> </span><span class="k">optional</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">unique_zone2_list</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_double</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">),</span><span class="w"> </span><span class="k">optional</span><span class="w">        </span><span class="kd">::</span><span class="w"> </span><span class="n">comparison_values</span><span class="p">(:,:)</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! [ LOCALS ]</span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">                </span><span class="kd">::</span><span class="w"> </span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="n">m</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">                </span><span class="kd">::</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="w">   </span><span class="kd">::</span><span class="w"> </span><span class="n">zone_values</span><span class="p">(:)</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="w">   </span><span class="kd">::</span><span class="w"> </span><span class="n">zone2_values</span><span class="p">(:)</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">                </span><span class="kd">::</span><span class="w"> </span><span class="n">number_of_matches</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_double</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="w">   </span><span class="kd">::</span><span class="w"> </span><span class="n">stats</span><span class="p">(:)</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">                </span><span class="kd">::</span><span class="w"> </span><span class="n">funit_l</span><span class="w"></span>
-<span class="w">    </span><span class="kt">character</span><span class="w"> </span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">delimiter_</span><span class="w"></span>
-<span class="w">    </span><span class="kt">character</span><span class="w"> </span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">6</span><span class="p">),</span><span class="w"> </span><span class="k">parameter</span><span class="w">   </span><span class="kd">::</span><span class="w"> </span><span class="n">NUM_FMT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;g25.16&quot;</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">funit</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
-<span class="k">      </span><span class="n">funit_l</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">funit</span><span class="w"></span>
-<span class="w">    </span><span class="k">else</span>
-<span class="k">      </span><span class="n">funit_l</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">OUTPUT_UNIT</span><span class="w"></span>
-<span class="w">    </span><span class="k">endif</span>
-
-<span class="k">    if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">delimiter</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">      </span><span class="n">delimiter_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">trim</span><span class="p">(</span><span class="n">delimiter</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">else</span>
-<span class="k">      </span><span class="n">delimiter_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;,&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="k">endif</span>
-
-<span class="k">    if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">zone2_ids</span><span class="p">)</span><span class="w"> </span><span class="p">.</span><span class="nb">and</span><span class="p">.</span><span class="w"> </span><span class="nb">present</span><span class="p">(</span><span class="n">unique_zone2_list</span><span class="p">))</span><span class="w"> </span><span class="k">then</span><span class="w"></span>
-
-<span class="w">      </span><span class="c">! sort the values before use</span>
-<span class="w">      </span><span class="k">call </span><span class="n">unique_zone_list</span><span class="p">%</span><span class="n">sort_integer</span><span class="p">()</span><span class="w"></span>
-<span class="w">      </span><span class="k">call </span><span class="n">unique_zone2_list</span><span class="p">%</span><span class="n">sort_integer</span><span class="p">()</span><span class="w"></span>
-
-<span class="w">      </span><span class="c">! obtain list of unique integers present in the zone grid</span>
-<span class="w">      </span><span class="n">zone_values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">unique_zone_list</span><span class="p">%</span><span class="n">get_integer</span><span class="p">()</span><span class="w"></span>
-<span class="w">      </span><span class="n">zone2_values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">unique_zone2_list</span><span class="p">%</span><span class="n">get_integer</span><span class="p">()</span><span class="w"></span>
-
-<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">comparison_values</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
-
-<span class="k">        do </span><span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="nb">ubound</span><span class="p">(</span><span class="n">zone_values</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
-<span class="w">          </span><span class="k">do </span><span class="n">j</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="nb">ubound</span><span class="p">(</span><span class="n">zone2_values</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
-<span class="w">            </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">zone_values</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w"></span>
-<span class="w">            </span><span class="n">m</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">zone2_values</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="w"></span>
-<span class="w">            </span><span class="k">call </span><span class="n">calc_multizonal_stats</span><span class="p">(</span><span class="n">values</span><span class="p">,</span><span class="w"> </span><span class="n">zone_ids</span><span class="p">,</span><span class="w"> </span><span class="n">target_id</span><span class="o">=</span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="n">target2_id</span><span class="o">=</span><span class="n">m</span><span class="p">,</span><span class="w">    </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                  </span><span class="n">result_vector</span><span class="o">=</span><span class="n">stats</span><span class="p">,</span><span class="w">                                 </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                  </span><span class="n">zone2_ids</span><span class="o">=</span><span class="n">zone2_ids</span><span class="p">,</span><span class="w">                                 </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                  </span><span class="n">comparison_values</span><span class="o">=</span><span class="n">comparison_values</span><span class="p">)</span><span class="w"></span>
-<span class="w">  </span>
-<span class="w">            </span><span class="k">write</span><span class="p">(</span><span class="n">unit</span><span class="o">=</span><span class="n">funit_l</span><span class="p">,</span><span class="w"> </span><span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;(2(a,a),2(i0,a),4(&quot;</span><span class="o">//</span><span class="n">NUM_FMT</span><span class="o">//</span><span class="s2">&quot;,a),i0,a,4(&quot;</span><span class="o">//</span><span class="n">NUM_FMT</span><span class="o">//</span><span class="s2">&quot;,a),i0)&quot;</span><span class="p">)</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">              </span><span class="n">start_date</span><span class="p">%</span><span class="n">prettydate</span><span class="p">(),</span><span class="n">delimiter_</span><span class="p">,</span><span class="w">                                                     </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">              </span><span class="n">end_date</span><span class="p">%</span><span class="n">prettydate</span><span class="p">(),</span><span class="w"> </span><span class="n">delimiter_</span><span class="p">,</span><span class="w">                                                      </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">              </span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="n">delimiter_</span><span class="p">,</span><span class="w"> </span><span class="n">m</span><span class="p">,</span><span class="w"> </span><span class="n">delimiter_</span><span class="p">,</span><span class="w">                                                           </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">              </span><span class="n">stats</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="n">delimiter_</span><span class="p">,</span><span class="w"> </span><span class="n">stats</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span><span class="w"> </span><span class="n">delimiter_</span><span class="p">,</span><span class="w"> </span><span class="n">stats</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span><span class="w"> </span><span class="n">delimiter_</span><span class="p">,</span><span class="w">                       </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">              </span><span class="n">stats</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span><span class="w"> </span><span class="n">delimiter_</span><span class="p">,</span><span class="w"> </span><span class="nb">int</span><span class="p">(</span><span class="n">stats</span><span class="p">(</span><span class="mi">5</span><span class="p">)),</span><span class="w"> </span><span class="n">delimiter_</span><span class="p">,</span><span class="w">                                        </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">              </span><span class="n">stats</span><span class="p">(</span><span class="mi">6</span><span class="p">),</span><span class="w"> </span><span class="n">delimiter_</span><span class="p">,</span><span class="w"> </span><span class="n">stats</span><span class="p">(</span><span class="mi">7</span><span class="p">),</span><span class="w"> </span><span class="n">delimiter_</span><span class="p">,</span><span class="w"> </span><span class="n">stats</span><span class="p">(</span><span class="mi">8</span><span class="p">),</span><span class="w"> </span><span class="n">delimiter_</span><span class="p">,</span><span class="w">                       </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">              </span><span class="n">stats</span><span class="p">(</span><span class="mi">9</span><span class="p">),</span><span class="w"> </span><span class="n">delimiter_</span><span class="p">,</span><span class="w"> </span><span class="nb">int</span><span class="p">(</span><span class="n">stats</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span><span class="w"></span>
-
-<span class="w">          </span><span class="k">enddo</span>
-<span class="k">        enddo</span>
-
-<span class="k">      else </span>
-
-<span class="k">        do </span><span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="nb">ubound</span><span class="p">(</span><span class="n">zone_values</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
-<span class="w">          </span><span class="k">do </span><span class="n">j</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="nb">ubound</span><span class="p">(</span><span class="n">zone2_values</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
-<span class="w">            </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">zone_values</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w"></span>
-<span class="w">            </span><span class="n">m</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">zone2_values</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">            </span><span class="k">call </span><span class="n">calc_multizonal_stats</span><span class="p">(</span><span class="n">values</span><span class="p">,</span><span class="w"> </span><span class="n">zone_ids</span><span class="p">,</span><span class="w"> </span><span class="n">target_id</span><span class="o">=</span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="n">target2_id</span><span class="o">=</span><span class="n">m</span><span class="p">,</span><span class="w">    </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">              </span><span class="n">result_vector</span><span class="o">=</span><span class="n">stats</span><span class="p">,</span><span class="w"> </span><span class="n">zone2_ids</span><span class="o">=</span><span class="n">zone2_ids</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">            </span><span class="k">write</span><span class="p">(</span><span class="n">unit</span><span class="o">=</span><span class="n">funit_l</span><span class="p">,</span><span class="w"> </span><span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;(2(a,a),2(i0,a),4(&quot;</span><span class="o">//</span><span class="n">NUM_FMT</span><span class="o">//</span><span class="s2">&quot;,a),i0)&quot;</span><span class="p">)</span><span class="w">          </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">              </span><span class="n">start_date</span><span class="p">%</span><span class="n">prettydate</span><span class="p">(),</span><span class="w"> </span><span class="n">delimiter_</span><span class="p">,</span><span class="w">                                     </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">              </span><span class="n">end_date</span><span class="p">%</span><span class="n">prettydate</span><span class="p">(),</span><span class="w"> </span><span class="n">delimiter_</span><span class="p">,</span><span class="w">                                       </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">              </span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="n">delimiter_</span><span class="p">,</span><span class="w"> </span><span class="n">m</span><span class="p">,</span><span class="w"> </span><span class="n">delimiter_</span><span class="p">,</span><span class="w">                                            </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">              </span><span class="n">stats</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="n">delimiter_</span><span class="p">,</span><span class="w"> </span><span class="n">stats</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span><span class="w"> </span><span class="n">delimiter_</span><span class="p">,</span><span class="w"> </span><span class="n">stats</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span><span class="w"> </span><span class="n">delimiter_</span><span class="p">,</span><span class="w">        </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">              </span><span class="n">stats</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span><span class="w"> </span><span class="n">delimiter_</span><span class="p">,</span><span class="w"> </span><span class="nb">int</span><span class="p">(</span><span class="n">stats</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span><span class="w"></span>
-<span class="w">          </span><span class="k">enddo</span>
-<span class="k">        enddo</span>
-
-<span class="k">      endif  </span>
-
-<span class="k">    else</span><span class="w"></span>
-<span class="w">      </span><span class="c">! obtain list of unique integers present in the zone grid</span>
-<span class="w">      </span><span class="n">zone_values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">unique_zone_list</span><span class="p">%</span><span class="n">get_integer</span><span class="p">()</span><span class="w"></span>
-
-<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">comparison_values</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
-
-<span class="k">        do </span><span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="nb">ubound</span><span class="p">(</span><span class="n">zone_values</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
-<span class="w">          </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">zone_values</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w"></span>
-<span class="w">   </span>
-<span class="w">          </span><span class="k">call </span><span class="n">calc_zonal_stats</span><span class="p">(</span><span class="n">values</span><span class="p">,</span><span class="w"> </span><span class="n">zone_ids</span><span class="p">,</span><span class="w"> </span><span class="n">target_id</span><span class="o">=</span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="n">result_vector</span><span class="o">=</span><span class="n">stats</span><span class="p">,</span><span class="w">   </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">            </span><span class="n">comparison_values</span><span class="o">=</span><span class="n">comparison_values</span><span class="p">)</span><span class="w"></span>
-<span class="w">          </span><span class="k">write</span><span class="p">(</span><span class="n">unit</span><span class="o">=</span><span class="n">funit_l</span><span class="p">,</span><span class="w"> </span><span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;(2(a,a),i0,a,4(&quot;</span><span class="o">//</span><span class="n">NUM_FMT</span><span class="o">//</span><span class="s2">&quot;,a),i0,a,4(&quot;</span><span class="o">//</span><span class="n">NUM_FMT</span><span class="o">//</span><span class="s2">&quot;,a),i0)&quot;</span><span class="p">)</span><span class="w">    </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">            </span><span class="n">start_date</span><span class="p">%</span><span class="n">prettydate</span><span class="p">(),</span><span class="w"> </span><span class="n">delimiter_</span><span class="p">,</span><span class="w">                                                    </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">            </span><span class="n">end_date</span><span class="p">%</span><span class="n">prettydate</span><span class="p">(),</span><span class="w"> </span><span class="n">delimiter_</span><span class="p">,</span><span class="w">                                                      </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">            </span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="n">delimiter_</span><span class="p">,</span><span class="w">                                                                          </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">            </span><span class="n">stats</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="n">delimiter_</span><span class="p">,</span><span class="w"> </span><span class="n">stats</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span><span class="w"> </span><span class="n">delimiter_</span><span class="p">,</span><span class="w"> </span><span class="n">stats</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span><span class="w"> </span><span class="n">delimiter_</span><span class="p">,</span><span class="w">                       </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">            </span><span class="n">stats</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span><span class="w"> </span><span class="n">delimiter_</span><span class="p">,</span><span class="w"> </span><span class="nb">int</span><span class="p">(</span><span class="n">stats</span><span class="p">(</span><span class="mi">5</span><span class="p">)),</span><span class="w"> </span><span class="n">delimiter_</span><span class="p">,</span><span class="w">                                        </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">            </span><span class="n">stats</span><span class="p">(</span><span class="mi">6</span><span class="p">),</span><span class="w"> </span><span class="n">delimiter_</span><span class="p">,</span><span class="w"> </span><span class="n">stats</span><span class="p">(</span><span class="mi">7</span><span class="p">),</span><span class="w"> </span><span class="n">delimiter_</span><span class="p">,</span><span class="w"> </span><span class="n">stats</span><span class="p">(</span><span class="mi">8</span><span class="p">),</span><span class="w"> </span><span class="n">delimiter_</span><span class="p">,</span><span class="w">                       </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">            </span><span class="n">stats</span><span class="p">(</span><span class="mi">9</span><span class="p">),</span><span class="w"> </span><span class="n">delimiter_</span><span class="p">,</span><span class="w"> </span><span class="nb">int</span><span class="p">(</span><span class="n">stats</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span><span class="w"></span>
-
-<span class="w">        </span><span class="k">enddo</span>
-<span class="k">      </span>
-<span class="k">      else</span>
-
-<span class="k">        do </span><span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="nb">ubound</span><span class="p">(</span><span class="n">zone_values</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
-<span class="w">          </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">zone_values</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">          </span><span class="k">call </span><span class="n">calc_zonal_stats</span><span class="p">(</span><span class="n">values</span><span class="p">,</span><span class="w"> </span><span class="n">zone_ids</span><span class="p">,</span><span class="w"> </span><span class="n">target_id</span><span class="o">=</span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="n">result_vector</span><span class="o">=</span><span class="n">stats</span><span class="p">)</span><span class="w"></span>
-<span class="w">          </span><span class="k">write</span><span class="p">(</span><span class="n">unit</span><span class="o">=</span><span class="n">funit_l</span><span class="p">,</span><span class="w"> </span><span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;(2(a,a),i0,a,4(&quot;</span><span class="o">//</span><span class="n">NUM_FMT</span><span class="o">//</span><span class="s2">&quot;,a),i0)&quot;</span><span class="p">)</span><span class="w">                </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">            </span><span class="n">start_date</span><span class="p">%</span><span class="n">prettydate</span><span class="p">(),</span><span class="w"> </span><span class="n">delimiter_</span><span class="p">,</span><span class="w">                                        </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">            </span><span class="n">end_date</span><span class="p">%</span><span class="n">prettydate</span><span class="p">(),</span><span class="w"> </span><span class="n">delimiter_</span><span class="p">,</span><span class="w">                                          </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">            </span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="n">delimiter_</span><span class="p">,</span><span class="w">                                                              </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">            </span><span class="n">stats</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="n">delimiter_</span><span class="p">,</span><span class="w"> </span><span class="n">stats</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span><span class="w"> </span><span class="n">delimiter_</span><span class="p">,</span><span class="w"> </span><span class="n">stats</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span><span class="w"> </span><span class="n">delimiter_</span><span class="p">,</span><span class="w">           </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">            </span><span class="n">stats</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span><span class="w"> </span><span class="n">delimiter_</span><span class="p">,</span><span class="w"> </span><span class="nb">int</span><span class="p">(</span><span class="n">stats</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span><span class="w"></span>
-<span class="w">        </span><span class="k">enddo</span>
-
-<span class="k">      endif</span>
-
-<span class="k">    endif</span>
-
-<span class="k">  end subroutine </span><span class="n">output_zonal_stats</span><span class="w"></span>
-</pre></div>
-
-    </section>
-    <br>
     
     </div>
   </div>
@@ -501,7 +347,7 @@
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-10-17T14:19:59.727997             </p>
+ on 2023-10-19T16:28:40.743458             </p>
           </div>
         </div>
         <br>

@@ -73,7 +73,7 @@
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip"
                  data-bs-placement="bottom" data-html="true"
-                 title=" 0.3% of total for procedures.">49 statements</a>
+                 title=" 0.6% of total for procedures.">49 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -86,7 +86,7 @@
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb justify-content-end mb-0">
                 <li class="breadcrumb-item"><a href='../sourcefile/model_domain.f90.html'>model_domain.F90</a></li>
-                <li class="breadcrumb-item"><a href='../module/model_domain~2.html'>model_domain</a></li>
+                <li class="breadcrumb-item"><a href='../module/model_domain.html'>model_domain</a></li>
             <li class="breadcrumb-item active" aria-current="page">initialize_landuse_codes</li>
           </ol>
         </nav>
@@ -125,13 +125,8 @@
   
   
   
-    <div class="card card-primary">
-      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
-      <div class="list-group">
-        <a class="list-group-item" href="../proc/initialize_landuse_codes.html#src">initialize_landuse_codes</a>
-      </div>
-    </div>
 
+    <em>None</em>
 
   </div>
 
@@ -162,102 +157,6 @@
 
 
     
-    <section>
-    <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre><span></span><span class="w">  </span><span class="k">subroutine </span><span class="n">initialize_landuse_codes</span><span class="p">()</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! [ LOCALS ]</span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">                 </span><span class="kd">::</span><span class="w"> </span><span class="n">iIndex</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="w">    </span><span class="kd">::</span><span class="w"> </span><span class="n">iLandUseCodes</span><span class="p">(:)</span><span class="w"></span>
-<span class="w">    </span><span class="k">type</span><span class="w"> </span><span class="p">(</span><span class="n">DATA_CATALOG_ENTRY_T</span><span class="p">),</span><span class="w"> </span><span class="k">pointer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">pLULC</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">                 </span><span class="kd">::</span><span class="w"> </span><span class="n">iIndex2</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">                 </span><span class="kd">::</span><span class="w"> </span><span class="n">iCount</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">                 </span><span class="kd">::</span><span class="w"> </span><span class="n">iStat</span><span class="w"></span>
-<span class="w">    </span><span class="kt">logical</span><span class="w"> </span><span class="p">(</span><span class="kt">c_bool</span><span class="p">)</span><span class="w">                </span><span class="kd">::</span><span class="w"> </span><span class="n">lMatch</span><span class="w"></span>
-<span class="w">    </span><span class="k">type</span><span class="w"> </span><span class="p">(</span><span class="n">FSTRING_LIST_T</span><span class="p">)</span><span class="w">                 </span><span class="kd">::</span><span class="w"> </span><span class="n">slList</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">call </span><span class="n">slList</span><span class="p">%</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;LU_Code&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">call </span><span class="n">slList</span><span class="p">%</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;LU_code&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">call </span><span class="n">slList</span><span class="p">%</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Landuse_Code&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">call </span><span class="n">slList</span><span class="p">%</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;LULC_Code&quot;</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">!&gt; Determine how many landuse codes are present</span>
-<span class="w">    </span><span class="k">call </span><span class="n">PARAMS</span><span class="p">%</span><span class="n">get_parameters</span><span class="p">(</span><span class="w"> </span><span class="n">slKeys</span><span class="o">=</span><span class="n">slList</span><span class="p">,</span><span class="w"> </span><span class="n">iValues</span><span class="o">=</span><span class="n">iLanduseCodes</span><span class="p">,</span><span class="w"> </span><span class="n">lFatal</span><span class="o">=</span><span class="n">TRUE</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! obtain a pointer to the LAND_USE grid</span>
-<span class="w">    </span><span class="n">pLULC</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">DAT</span><span class="p">%</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;LAND_USE&quot;</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="nb">associated</span><span class="p">(</span><span class="n">pLULC</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-
-<span class="k">      if</span><span class="w"> </span><span class="p">(</span><span class="nb">associated</span><span class="p">(</span><span class="w"> </span><span class="n">pLULC</span><span class="p">%</span><span class="n">pGrdBase</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">        </span><span class="n">MODEL</span><span class="p">%</span><span class="n">landuse_code</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">pack</span><span class="p">(</span><span class="w"> </span><span class="n">pLULC</span><span class="p">%</span><span class="n">pGrdBase</span><span class="p">%</span><span class="n">iData</span><span class="p">,</span><span class="w"> </span><span class="n">MODEL</span><span class="p">%</span><span class="n">active</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">      </span><span class="k">else</span>
-<span class="k">        call </span><span class="n">die</span><span class="p">(</span><span class="s2">&quot;INTERNAL PROGRAMMING ERROR: attempted use of NULL pointer&quot;</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">FILE__</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">LINE__</span><span class="p">)</span><span class="w"></span>
-<span class="w">      </span><span class="k">endif</span>
-<span class="k">    else</span>
-<span class="k">      call </span><span class="n">die</span><span class="p">(</span><span class="s2">&quot;Attempted use of NULL pointer. Failed to find LAND_USE data element.&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="err">__</span><span class="n">FILE__</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">LINE__</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">endif</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! setting this to a value that is likely valid; if this is set to a negative value, a landuse</span>
-<span class="w">    </span><span class="c">! code that is present in the grid but not in the lookup table will trigger a fatal error, however,</span>
-<span class="w">    </span><span class="c">! processing will continue until a bounds error is triggered somewhere else in the code,</span>
-<span class="w">    </span><span class="n">MODEL</span><span class="p">%</span><span class="n">landuse_index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mi">9999</span><span class="w"></span>
-
-<span class="w">    </span><span class="n">iCount</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! only run through matching process if we have found a LU_Code entry in the</span>
-<span class="w">    </span><span class="c">! parameter dictionary</span>
-
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="k">all</span><span class="p">(</span><span class="w"> </span><span class="n">iLandUseCodes</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-
-<span class="k">      do </span><span class="n">iIndex</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nb">ubound</span><span class="p">(</span><span class="n">MODEL</span><span class="p">%</span><span class="n">landuse_code</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">        </span><span class="n">lMatch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FALSE</span><span class="w"></span>
-
-<span class="w">        </span><span class="k">do </span><span class="n">iIndex2</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nb">ubound</span><span class="p">(</span><span class="n">iLandUseCodes</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">          </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">MODEL</span><span class="p">%</span><span class="n">landuse_code</span><span class="p">(</span><span class="n">iIndex</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">iLandUseCodes</span><span class="p">(</span><span class="n">iIndex2</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">            </span><span class="n">MODEL</span><span class="p">%</span><span class="n">landuse_index</span><span class="p">(</span><span class="n">iIndex</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">iIndex2</span><span class="w"></span>
-<span class="w">            </span><span class="n">iCount</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">iCount</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
-<span class="w">            </span><span class="n">lMatch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TRUE</span><span class="w"></span>
-<span class="w">            </span><span class="k">exit</span>
-<span class="k">          endif</span>
-
-<span class="k">        enddo</span>
-
-<span class="k">        if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="p">.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="n">lMatch</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">          call </span><span class="n">warn</span><span class="p">(</span><span class="n">sMessage</span><span class="o">=</span><span class="s2">&quot;Failed to match landuse code &quot;</span><span class="o">//</span><span class="n">asCharacter</span><span class="p">(</span><span class="n">MODEL</span><span class="p">%</span><span class="n">landuse_code</span><span class="p">(</span><span class="n">iIndex</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">            </span><span class="o">//</span><span class="s2">&quot; with a corresponding landuse code from lookup tables.&quot;</span><span class="p">,</span><span class="w">                                </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">            </span><span class="n">sHints</span><span class="o">=</span><span class="s2">&quot;Make sure your lookup table(s) have landuse codes corresponding to all values in &quot;</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">            </span><span class="o">//</span><span class="s2">&quot;the land-use grid.&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">lFatal</span><span class="o">=</span><span class="n">TRUE</span><span class="p">,</span><span class="w"> </span><span class="n">iLogLevel</span><span class="o">=</span><span class="n">LOG_ALL</span><span class="p">,</span><span class="w"> </span><span class="n">lEcho</span><span class="o">=</span><span class="n">TRUE</span><span class="p">)</span><span class="w"></span>
-<span class="w">          </span><span class="c">! we are setting this value to a valid value. this should not cause problems with any</span>
-<span class="w">          </span><span class="c">! calculations because we have already thrown a fatal error</span>
-<span class="w">          </span><span class="n">MODEL</span><span class="p">%</span><span class="n">landuse_index</span><span class="p">(</span><span class="n">iIndex</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
-<span class="w">        </span><span class="k">endif</span>
-<span class="k">      enddo</span>
-
-<span class="k">      call </span><span class="n">LOGS</span><span class="p">%</span><span class="k">write</span><span class="p">(</span><span class="s2">&quot;Matches were found between landuse grid value and table value for &quot;</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="o">//</span><span class="n">asCharacter</span><span class="p">(</span><span class="n">iCount</span><span class="p">)</span><span class="o">//</span><span class="s2">&quot; cells out of a total of &quot;</span><span class="o">//</span><span class="n">asCharacter</span><span class="p">(</span><span class="nb">ubound</span><span class="p">(</span><span class="n">MODEL</span><span class="p">%</span><span class="n">landuse_code</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span><span class="o">//</span><span class="s2">&quot; active cells.&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="n">iLinesBefore</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">iLinesAfter</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">iLogLevel</span><span class="o">=</span><span class="n">LOG_ALL</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">      </span><span class="k">call </span><span class="n">slList</span><span class="p">%</span><span class="n">clear</span><span class="p">()</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">endif</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! if we have more than one cell for which an index value could not be assigned, trigger fatal error</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="nb">count</span><span class="p">(</span><span class="n">MODEL</span><span class="p">%</span><span class="n">landuse_index</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">      call </span><span class="n">warn</span><span class="p">(</span><span class="n">asCharacter</span><span class="p">(</span><span class="nb">count</span><span class="p">(</span><span class="n">MODEL</span><span class="p">%</span><span class="n">landuse_index</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">))</span><span class="o">//</span><span class="s2">&quot; landuse codes could not be &quot;</span><span class="w">        </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">      </span><span class="o">//</span><span class="s2">&quot; assigned a landuse index value.&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">lFatal</span><span class="o">=</span><span class="n">TRUE</span><span class="p">,</span><span class="w"> </span><span class="n">sHints</span><span class="o">=</span><span class="s2">&quot;Make sure that you have an &quot;</span><span class="w">        </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">      </span><span class="o">//</span><span class="s2">&quot;entry in the landuse lookup table for each unique code contained in your landuse grid.&quot;</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">endif</span>
-
-
-<span class="k">  end subroutine </span><span class="n">initialize_landuse_codes</span><span class="w"></span>
-</pre></div>
-
-    </section>
-    <br>
     
     </div>
   </div>
@@ -274,7 +173,7 @@
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-10-17T14:19:59.727997             </p>
+ on 2023-10-19T16:28:40.743458             </p>
           </div>
         </div>
         <br>

@@ -73,7 +73,7 @@
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip"
                  data-bs-placement="bottom" data-html="true"
-                 title=" 0.2% of total for procedures.">34 statements</a>
+                 title=" 0.4% of total for procedures.">34 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -86,7 +86,7 @@
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb justify-content-end mb-0">
                 <li class="breadcrumb-item"><a href='../sourcefile/model_initialize.f90.html'>model_initialize.F90</a></li>
-                <li class="breadcrumb-item"><a href='../module/model_initialize~2.html'>model_initialize</a></li>
+                <li class="breadcrumb-item"><a href='../module/model_initialize.html'>model_initialize</a></li>
             <li class="breadcrumb-item active" aria-current="page">write_control_file</li>
           </ol>
         </nav>
@@ -125,12 +125,6 @@
   
   
   
-    <div class="card card-primary">
-      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
-      <div class="list-group">
-        <a class="list-group-item" href="../proc/write_control_file.html#src">write_control_file</a>
-      </div>
-    </div>
 
 
   </div>
@@ -157,7 +151,7 @@
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-sfilename~28"></span>
+              <span class="anchor" id="variable-sfilename~17"></span>
               character(len=*),
             </td>
 <td>intent(in)</td>
@@ -215,68 +209,6 @@
 
 
     
-    <section>
-    <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre><span></span><span class="w">  </span><span class="k">subroutine </span><span class="n">write_control_file</span><span class="p">(</span><span class="w"> </span><span class="n">sFilename</span><span class="p">,</span><span class="w"> </span><span class="n">sGridSpecification</span><span class="p">,</span><span class="w"> </span><span class="n">slExtraDirectives</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="kt">character</span><span class="w"> </span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">              </span><span class="kd">::</span><span class="w"> </span><span class="n">sFilename</span><span class="w"></span>
-<span class="w">    </span><span class="kt">character</span><span class="w"> </span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="w"> </span><span class="k">optional</span><span class="w">    </span><span class="kd">::</span><span class="w"> </span><span class="n">sGridSpecification</span><span class="w"></span>
-<span class="w">    </span><span class="k">type</span><span class="w"> </span><span class="p">(</span><span class="n">FSTRING_LIST_T</span><span class="p">),</span><span class="w"> </span><span class="k">optional</span><span class="w">             </span><span class="kd">::</span><span class="w"> </span><span class="n">slExtraDirectives</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! [ LOCALS ]</span>
-<span class="w">    </span><span class="kt">character</span><span class="w"> </span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">256</span><span class="p">)</span><span class="w">             </span><span class="kd">::</span><span class="w"> </span><span class="n">sRecord</span><span class="p">,</span><span class="w"> </span><span class="n">sSubstring</span><span class="w"></span>
-<span class="w">    </span><span class="kt">character</span><span class="w"> </span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="w"> </span><span class="k">allocatable</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">sText</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">            </span><span class="kd">::</span><span class="w"> </span><span class="n">iStat</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">            </span><span class="kd">::</span><span class="w"> </span><span class="n">iIndex</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">            </span><span class="kd">::</span><span class="w"> </span><span class="n">iCount</span><span class="w"></span>
-<span class="w">    </span><span class="k">type</span><span class="w"> </span><span class="p">(</span><span class="n">ASCII_FILE_T</span><span class="p">)</span><span class="w">             </span><span class="kd">::</span><span class="w"> </span><span class="n">CF</span><span class="w"></span>
-<span class="w">    </span><span class="k">type</span><span class="w"> </span><span class="p">(</span><span class="n">DICT_ENTRY_T</span><span class="p">),</span><span class="w"> </span><span class="k">pointer</span><span class="w">    </span><span class="kd">::</span><span class="w"> </span><span class="n">pDict</span><span class="w"></span>
-
-<span class="w">    </span><span class="n">pDict</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="nb">null</span><span class="p">()</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">call </span><span class="n">CF</span><span class="p">%</span><span class="k">open</span><span class="p">(</span><span class="w"> </span><span class="n">sFilename</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sFilename</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! get GRID specification and move pointer past it; discard values</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="nb">present</span><span class="p">(</span><span class="w"> </span><span class="n">sGridSpecification</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">      call </span><span class="n">CF_DICT</span><span class="p">%</span><span class="n">get_value</span><span class="p">(</span><span class="n">sText</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;GRID&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="w">      </span><span class="n">pDict</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">CF_DICT</span><span class="p">%</span><span class="n">get_next_entry</span><span class="p">()</span><span class="w"></span>
-<span class="w">      </span><span class="k">call </span><span class="n">assert</span><span class="p">(</span><span class="w"> </span><span class="nb">associated</span><span class="p">(</span><span class="w"> </span><span class="n">pDict</span><span class="w"> </span><span class="p">),</span><span class="w"> </span><span class="s2">&quot;INTERNAL PROGRAMMING ERROR -- Attempted use of null poitner&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="err">__</span><span class="n">FILE__</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">LINE__</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">      </span><span class="k">call </span><span class="n">CF</span><span class="p">%</span><span class="n">writeLine</span><span class="p">(</span><span class="w"> </span><span class="nb">trim</span><span class="p">(</span><span class="w"> </span><span class="n">sGridSpecification</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">else</span>
-
-<span class="k">      </span><span class="n">pDict</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">CF_DICT</span><span class="p">%</span><span class="n">get_entry</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">endif</span>
-
-<span class="k">    do while</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="nb">associated</span><span class="p">(</span><span class="w"> </span><span class="n">pDict</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">      </span><span class="k">call </span><span class="n">CF_DICT</span><span class="p">%</span><span class="n">get_value</span><span class="p">(</span><span class="w"> </span><span class="n">sText</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">      </span><span class="k">call </span><span class="n">CF</span><span class="p">%</span><span class="n">writeLine</span><span class="p">(</span><span class="w"> </span><span class="nb">trim</span><span class="p">(</span><span class="n">pDict</span><span class="p">%</span><span class="n">key</span><span class="p">)</span><span class="o">//</span><span class="s2">&quot; &quot;</span><span class="o">//</span><span class="n">sText</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">      </span><span class="n">pDict</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">CF_DICT</span><span class="p">%</span><span class="n">get_next_entry</span><span class="p">()</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">enddo</span>
-
-<span class="k">    if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="nb">present</span><span class="p">(</span><span class="w"> </span><span class="n">slExtraDirectives</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-
-<span class="k">      </span><span class="n">iCount</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">slExtraDirectives</span><span class="p">%</span><span class="nb">count</span>
-
-<span class="nb">      </span><span class="k">do </span><span class="n">iIndex</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">iCount</span><span class="w"></span>
-
-<span class="w">        </span><span class="k">call </span><span class="n">CF</span><span class="p">%</span><span class="n">writeLine</span><span class="p">(</span><span class="w"> </span><span class="nb">trim</span><span class="p">(</span><span class="w"> </span><span class="n">slExtraDirectives</span><span class="p">%</span><span class="n">get</span><span class="p">(</span><span class="w"> </span><span class="n">iIndex</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">      </span><span class="k">enddo</span>
-
-<span class="k">    endif</span>
-
-<span class="k">    call </span><span class="n">CF</span><span class="p">%</span><span class="k">close</span><span class="p">()</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">end subroutine </span><span class="n">write_control_file</span><span class="w"></span>
-</pre></div>
-
-    </section>
-    <br>
     
     </div>
   </div>
@@ -293,7 +225,7 @@
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-10-17T14:19:59.727997             </p>
+ on 2023-10-19T16:28:40.743458             </p>
           </div>
         </div>
         <br>

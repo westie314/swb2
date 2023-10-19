@@ -73,7 +73,7 @@
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip"
                  data-bs-placement="bottom" data-html="true"
-                 title=" 0.1% of total for procedures.">20 statements</a>
+                 title=" 0.2% of total for procedures.">20 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -86,7 +86,7 @@
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb justify-content-end mb-0">
                 <li class="breadcrumb-item"><a href='../sourcefile/netcdf4_support.f90.html'>netcdf4_support.F90</a></li>
-                <li class="breadcrumb-item"><a href='../module/netcdf4_support~2.html'>netcdf4_support</a></li>
+                <li class="breadcrumb-item"><a href='../module/netcdf4_support.html'>netcdf4_support</a></li>
             <li class="breadcrumb-item active" aria-current="page">netcdf_open_file</li>
           </ol>
         </nav>
@@ -125,12 +125,6 @@
   
   
   
-    <div class="card card-primary">
-      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
-      <div class="list-group">
-        <a class="list-group-item" href="../proc/netcdf_open_file.html#src">netcdf_open_file</a>
-      </div>
-    </div>
 
 
   </div>
@@ -164,8 +158,8 @@ SAME PROVIDER!! MUST UPDATE TO ENSURE THAT THE INDICES ARE STILL RELEVANT</p>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-ncfile~10"></span>
-              type(<a href='../type/t_netcdf4_file~2.html'>T_NETCDF4_FILE</a>)
+              <span class="anchor" id="variable-ncfile~9"></span>
+              type(<a href='../type/t_netcdf4_file.html'>T_NETCDF4_FILE</a>)
             </td>
 <td></td>
               <td></td>            <td>
@@ -179,7 +173,7 @@ SAME PROVIDER!! MUST UPDATE TO ENSURE THAT THE INDICES ARE STILL RELEVANT</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-sfilename~32"></span>
+              <span class="anchor" id="variable-sfilename~21"></span>
               character(len=*)
             </td>
 <td></td>
@@ -222,66 +216,6 @@ SAME PROVIDER!! MUST UPDATE TO ENSURE THAT THE INDICES ARE STILL RELEVANT</p>
 
 
     
-    <section>
-    <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre><span></span><span class="k">subroutine </span><span class="n">netcdf_open_file</span><span class="p">(</span><span class="n">NCFILE</span><span class="p">,</span><span class="w"> </span><span class="n">sFilename</span><span class="p">,</span><span class="w"> </span><span class="n">iLU</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">type</span><span class="w"> </span><span class="p">(</span><span class="n">T_NETCDF4_FILE</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">NCFILE</span><span class="w"></span>
-<span class="w">  </span><span class="kt">character</span><span class="w"> </span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">sFilename</span><span class="w"></span>
-<span class="w">  </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">),</span><span class="w"> </span><span class="k">optional</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">iLU</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">iLU</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-
-<span class="k">    call </span><span class="n">nf_open_file</span><span class="p">(</span><span class="n">NCFILE</span><span class="o">=</span><span class="n">NCFILE</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                    </span><span class="n">sFilename</span><span class="o">=</span><span class="n">sFilename</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                    </span><span class="n">iLU</span><span class="o">=</span><span class="n">iLU</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">else</span>
-
-<span class="k">    call </span><span class="n">nf_open_file</span><span class="p">(</span><span class="n">NCFILE</span><span class="o">=</span><span class="n">NCFILE</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                    </span><span class="n">sFilename</span><span class="o">=</span><span class="n">sFilename</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">endif</span><span class="w"></span>
-
-<span class="w">  </span><span class="c">!&gt; Similarly, the structure of the file may be slightly different from the</span>
-<span class="w">  </span><span class="c">!&gt; previous file</span>
-<span class="w">  </span><span class="k">call </span><span class="n">nf_populate_dimension_struct</span><span class="p">(</span><span class="w"> </span><span class="n">NCFILE</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">  </span><span class="k">call </span><span class="n">nf_populate_variable_struct</span><span class="p">(</span><span class="w"> </span><span class="n">NCFILE</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">  </span><span class="c">!&gt; CANNOT ASSUME THAT THIS WILL REMAIN CONSTANT ACROSS FILES FROM THE</span>
-<span class="w">  </span><span class="c">!&gt; SAME PROVIDER!! MUST UPDATE TO ENSURE THAT THE INDICES ARE STILL RELEVANT</span>
-<span class="w">  </span><span class="k">call </span><span class="n">nf_get_variable_id_and_type</span><span class="p">(</span><span class="w"> </span><span class="n">NCFILE</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">  </span><span class="c">! OK. We only want to attempt to call functions that</span>
-<span class="w">  </span><span class="c">! process the time variable if a time variable actually exists!!</span>
-<span class="w">  </span><span class="c">!</span>
-<span class="w">  </span><span class="c">! NOTE: this was previously coded as &#39;if ( NCFILE%iVarID(NC_TIME) &gt; 0 ) then&#39;, which meant that the code</span>
-<span class="w">  </span><span class="c">!       failed to properly initialize the time units in the event that the TIME variable happened to be</span>
-<span class="w">  </span><span class="c">!       variable number 0</span>
-<span class="w">  </span><span class="c">!</span>
-<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">NCFILE</span><span class="p">%</span><span class="n">iVarID</span><span class="p">(</span><span class="n">NC_TIME</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-
-<span class="k">    </span><span class="n">NCFILE</span><span class="p">%</span><span class="n">dpFirstAndLastTimeValues</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nf_get_first_and_last</span><span class="p">(</span><span class="n">NCFILE</span><span class="o">=</span><span class="n">NCFILE</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="n">iVarIndex</span><span class="o">=</span><span class="n">NCFILE</span><span class="p">%</span><span class="n">iVarIndex</span><span class="p">(</span><span class="n">NC_TIME</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">!&gt; retrieve the origin for the time units associated with this file</span>
-<span class="w">    </span><span class="k">call </span><span class="n">nf_get_time_units</span><span class="p">(</span><span class="n">NCFILE</span><span class="o">=</span><span class="n">NCFILE</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">!&gt; retrieve the time value specific to this file</span>
-<span class="w">    </span><span class="k">call </span><span class="n">nf_get_time_vals</span><span class="p">(</span><span class="n">NCFILE</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">call </span><span class="n">nf_calculate_time_range</span><span class="p">(</span><span class="n">NCFILE</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">endif</span><span class="w"></span>
-
-<span class="w">  </span><span class="c">!&gt; establish scale_factor and add_offset values, if present</span>
-<span class="w">  </span><span class="k">call </span><span class="n">nf_get_scale_and_offset</span><span class="p">(</span><span class="n">NCFILE</span><span class="o">=</span><span class="n">NCFILE</span><span class="p">)</span><span class="w"></span>
-
-<span class="k">end subroutine </span><span class="n">netcdf_open_file</span><span class="w"></span>
-</pre></div>
-
-    </section>
-    <br>
     
     </div>
   </div>
@@ -298,7 +232,7 @@ SAME PROVIDER!! MUST UPDATE TO ENSURE THAT THE INDICES ARE STILL RELEVANT</p>
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-10-17T14:19:59.727997             </p>
+ on 2023-10-19T16:28:40.743458             </p>
           </div>
         </div>
         <br>

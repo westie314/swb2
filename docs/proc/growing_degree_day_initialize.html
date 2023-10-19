@@ -73,7 +73,7 @@
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip"
                  data-bs-placement="bottom" data-html="true"
-                 title=" 0.4% of total for procedures.">64 statements</a>
+                 title=" 0.7% of total for procedures.">64 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -86,7 +86,7 @@
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb justify-content-end mb-0">
                 <li class="breadcrumb-item"><a href='../sourcefile/growing_degree_day.f90.html'>growing_degree_day.F90</a></li>
-                <li class="breadcrumb-item"><a href='../module/growing_degree_day~2.html'>growing_degree_day</a></li>
+                <li class="breadcrumb-item"><a href='../module/growing_degree_day.html'>growing_degree_day</a></li>
             <li class="breadcrumb-item active" aria-current="page">growing_degree_day_initialize</li>
           </ol>
         </nav>
@@ -125,12 +125,6 @@
   
   
   
-    <div class="card card-primary">
-      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
-      <div class="list-group">
-        <a class="list-group-item" href="../proc/growing_degree_day_initialize.html#src">growing_degree_day_initialize</a>
-      </div>
-    </div>
 
 
   </div>
@@ -174,7 +168,7 @@ Determine how many landuse codes are present</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-landuse_index~14"></span>
+              <span class="anchor" id="variable-landuse_index~13"></span>
               integer(kind=c_int),
             </td>
 <td>intent(in)</td>
@@ -202,119 +196,6 @@ Determine how many landuse codes are present</p>
 
 
     
-    <section>
-    <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre><span></span><span class="w">  </span><span class="k">subroutine </span><span class="n">growing_degree_day_initialize</span><span class="p">(</span><span class="w"> </span><span class="n">is_cell_active</span><span class="p">,</span><span class="w"> </span><span class="n">landuse_index</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="kt">logical</span><span class="w"> </span><span class="p">(</span><span class="kt">c_bool</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">     </span><span class="kd">::</span><span class="w"> </span><span class="n">is_cell_active</span><span class="p">(:,:)</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">      </span><span class="kd">::</span><span class="w"> </span><span class="n">landuse_index</span><span class="p">(:)</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! [ LOCALS ]</span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">              </span><span class="kd">::</span><span class="w"> </span><span class="n">status</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">              </span><span class="kd">::</span><span class="w"> </span><span class="n">indx</span><span class="w"></span>
-<span class="w">    </span><span class="k">type</span><span class="w"> </span><span class="p">(</span><span class="n">FSTRING_LIST_T</span><span class="p">)</span><span class="w">              </span><span class="kd">::</span><span class="w"> </span><span class="n">parameter_list</span><span class="w"></span>
-<span class="w">    </span><span class="k">type</span><span class="w"> </span><span class="p">(</span><span class="n">FSTRING_LIST_T</span><span class="p">)</span><span class="w">              </span><span class="kd">::</span><span class="w"> </span><span class="n">gdd_reset_val_list</span><span class="w"></span>
-<span class="w">    </span><span class="kt">character</span><span class="w"> </span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">32</span><span class="p">)</span><span class="w">                </span><span class="kd">::</span><span class="w"> </span><span class="n">sBuf</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">gdd_base_l</span><span class="p">(:)</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">gdd_max_l</span><span class="p">(:)</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">              </span><span class="kd">::</span><span class="w"> </span><span class="n">number_of_landuse_codes</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">landuse_code</span><span class="p">(:)</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">allocate</span><span class="p">(</span><span class="w"> </span><span class="n">GDD_BASE</span><span class="p">(</span><span class="w"> </span><span class="nb">count</span><span class="p">(</span><span class="w"> </span><span class="n">is_cell_active</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">),</span><span class="w"> </span><span class="nb">stat</span><span class="o">=</span><span class="n">status</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">call </span><span class="n">assert</span><span class="p">(</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Problem allocating memory&quot;</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">FILE__</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">LINE__</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">allocate</span><span class="p">(</span><span class="w"> </span><span class="n">GDD_MAX</span><span class="p">(</span><span class="w"> </span><span class="nb">count</span><span class="p">(</span><span class="w"> </span><span class="n">is_cell_active</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">),</span><span class="w"> </span><span class="nb">stat</span><span class="o">=</span><span class="n">status</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">call </span><span class="n">assert</span><span class="p">(</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Problem allocating memory&quot;</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">FILE__</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">LINE__</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">!&gt; create string list that allows for alternate heading identifiers for the landuse code</span>
-<span class="w">    </span><span class="k">call </span><span class="n">parameter_list</span><span class="p">%</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;LU_Code&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">call </span><span class="n">parameter_list</span><span class="p">%</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Landuse_Code&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">call </span><span class="n">parameter_list</span><span class="p">%</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Landuse_Lookup_Code&quot;</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">!&gt; Determine how many landuse codes are present</span>
-<span class="w">    </span><span class="k">call </span><span class="n">PARAMS</span><span class="p">%</span><span class="n">get_parameters</span><span class="p">(</span><span class="w"> </span><span class="n">slKeys</span><span class="o">=</span><span class="n">parameter_list</span><span class="p">,</span><span class="w"> </span><span class="n">iValues</span><span class="o">=</span><span class="n">landuse_code</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="n">number_of_landuse_codes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">count</span><span class="p">(</span><span class="w"> </span><span class="n">landuse_code</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">call </span><span class="n">parameter_list</span><span class="p">%</span><span class="n">clear</span><span class="p">()</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">call </span><span class="n">parameter_list</span><span class="p">%</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;GDD_Base_Temp&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">call </span><span class="n">parameter_list</span><span class="p">%</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;GDD_Base_Temperature&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">call </span><span class="n">parameter_list</span><span class="p">%</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;GDD_Base&quot;</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">call </span><span class="n">PARAMS</span><span class="p">%</span><span class="n">get_parameters</span><span class="p">(</span><span class="w"> </span><span class="n">slKeys</span><span class="o">=</span><span class="n">parameter_list</span><span class="p">,</span><span class="w"> </span><span class="n">fValues</span><span class="o">=</span><span class="n">gdd_base_l</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">call </span><span class="n">parameter_list</span><span class="p">%</span><span class="n">clear</span><span class="p">()</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">call </span><span class="n">parameter_list</span><span class="p">%</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;GDD_Max_Temp&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">call </span><span class="n">parameter_list</span><span class="p">%</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;GDD_Maximum_Temperature&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">call </span><span class="n">parameter_list</span><span class="p">%</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;GDD_Maximum_Temp&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">call </span><span class="n">parameter_list</span><span class="p">%</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;GDD_Max&quot;</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">call </span><span class="n">PARAMS</span><span class="p">%</span><span class="n">get_parameters</span><span class="p">(</span><span class="w"> </span><span class="n">slKeys</span><span class="o">=</span><span class="n">parameter_list</span><span class="p">,</span><span class="w"> </span><span class="n">fValues</span><span class="o">=</span><span class="n">gdd_max_l</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">call </span><span class="n">parameter_list</span><span class="p">%</span><span class="n">clear</span><span class="p">()</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">call </span><span class="n">parameter_list</span><span class="p">%</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;GDD_Reset_Date&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">call </span><span class="n">parameter_list</span><span class="p">%</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;GDD_Reset&quot;</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">call </span><span class="n">PARAMS</span><span class="p">%</span><span class="n">get_parameters</span><span class="p">(</span><span class="w"> </span><span class="n">slKeys</span><span class="o">=</span><span class="n">parameter_list</span><span class="p">,</span><span class="w"> </span><span class="n">slValues</span><span class="o">=</span><span class="n">gdd_reset_val_list</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">call </span><span class="n">parameter_list</span><span class="p">%</span><span class="n">clear</span><span class="p">()</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">allocate</span><span class="p">(</span><span class="w"> </span><span class="n">GDD_RESET_DATE</span><span class="p">(</span><span class="w"> </span><span class="nb">count</span><span class="p">(</span><span class="w"> </span><span class="n">is_cell_active</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">),</span><span class="w"> </span><span class="nb">stat</span><span class="o">=</span><span class="n">status</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">call </span><span class="n">assert</span><span class="p">(</span><span class="w"> </span><span class="n">status</span><span class="o">==</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Problem allocating memory.&quot;</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">FILE__</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">LINE__</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">gdd_reset_val_list</span><span class="p">%</span><span class="nb">count</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">number_of_landuse_codes</span><span class="w">      </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">         </span><span class="p">.</span><span class="nb">and</span><span class="p">.</span><span class="w"> </span><span class="n">gdd_reset_val_list</span><span class="p">%</span><span class="n">count_matching</span><span class="p">(</span><span class="s2">&quot;&lt;NA&gt;&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span><span class="w"></span>
-
-<span class="w">      </span><span class="c">! retrieve gdd reset values; convert mm/dd to DOY</span>
-<span class="w">      </span><span class="k">do </span><span class="n">indx</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">gdd_reset_val_list</span><span class="p">%</span><span class="nb">count</span>
-<span class="nb">        </span><span class="n">sBuf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">gdd_reset_val_list</span><span class="p">%</span><span class="n">get</span><span class="p">(</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">        </span><span class="k">where</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">landuse_index</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">          </span><span class="n">GDD_RESET_DATE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mmdd2doy</span><span class="p">(</span><span class="w"> </span><span class="n">sBuf</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;GDD_RESET_DATE&quot;</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">        </span><span class="k">end where</span>
-
-<span class="k">      enddo</span>
-
-<span class="k">    else</span><span class="w"></span>
-
-<span class="w">      </span><span class="c">! if no GDD_RESET_DATE found in parameter tables, assign the default: reset GDD at end of calendar year</span>
-<span class="w">      </span><span class="n">GDD_RESET_DATE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">365_c_int</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">endif</span>
-
-
-<span class="k">    if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="nb">ubound</span><span class="p">(</span><span class="w"> </span><span class="n">gdd_max_l</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">number_of_landuse_codes</span><span class="w">        </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="p">.</span><span class="nb">and</span><span class="p">.</span><span class="w"> </span><span class="n">gdd_max_l</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">rTINYVAL</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-
-<span class="k">      do </span><span class="n">indx</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nb">ubound</span><span class="p">(</span><span class="w"> </span><span class="n">landuse_index</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
-<span class="w">        </span><span class="n">GDD_MAX</span><span class="p">(</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">gdd_max_l</span><span class="p">(</span><span class="w"> </span><span class="n">landuse_index</span><span class="p">(</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">      </span><span class="k">enddo</span>
-
-<span class="k">    else</span><span class="w"></span>
-
-<span class="w">      </span><span class="c">! if no GDD_MAX found in parameter tables, assign the default FAO-56 value</span>
-<span class="w">      </span><span class="n">GDD_MAX</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">8</span><span class="mf">6.0_c_float</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">endif</span>
-
-
-<span class="k">    if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="nb">ubound</span><span class="p">(</span><span class="w"> </span><span class="n">gdd_base_l</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">number_of_landuse_codes</span><span class="w">        </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="p">.</span><span class="nb">and</span><span class="p">.</span><span class="w"> </span><span class="n">gdd_base_l</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">rTINYVAL</span><span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-
-<span class="k">      do </span><span class="n">indx</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nb">ubound</span><span class="p">(</span><span class="w"> </span><span class="n">landuse_index</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
-<span class="w">        </span><span class="n">GDD_BASE</span><span class="p">(</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">gdd_base_l</span><span class="p">(</span><span class="w"> </span><span class="n">landuse_index</span><span class="p">(</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">      </span><span class="k">enddo</span>
-
-<span class="k">    else</span><span class="w"></span>
-
-<span class="w">      </span><span class="c">! if no GDD_Base found in parameter tables, assign the default FAO-56 value</span>
-<span class="w">      </span><span class="n">GDD_BASE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="mf">0.0_c_float</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">endif</span>
-
-<span class="k">  end subroutine </span><span class="n">growing_degree_day_initialize</span><span class="w"></span>
-</pre></div>
-
-    </section>
-    <br>
     
     </div>
   </div>
@@ -331,7 +212,7 @@ Determine how many landuse codes are present</p>
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-10-17T14:19:59.727997             </p>
+ on 2023-10-19T16:28:40.743458             </p>
           </div>
         </div>
         <br>

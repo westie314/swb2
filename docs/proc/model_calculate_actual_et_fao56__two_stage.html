@@ -73,7 +73,7 @@
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip"
                  data-bs-placement="bottom" data-html="true"
-                 title=" 0.0% of total for procedures.">8 statements</a>
+                 title=" 0.1% of total for procedures.">8 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -86,7 +86,7 @@
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb justify-content-end mb-0">
                 <li class="breadcrumb-item"><a href='../sourcefile/model_domain.f90.html'>model_domain.F90</a></li>
-                <li class="breadcrumb-item"><a href='../module/model_domain~2.html'>model_domain</a></li>
+                <li class="breadcrumb-item"><a href='../module/model_domain.html'>model_domain</a></li>
             <li class="breadcrumb-item active" aria-current="page">model_calculate_actual_et_fao56__two_stage</li>
           </ol>
         </nav>
@@ -125,12 +125,6 @@
   
   
   
-    <div class="card card-primary">
-      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
-      <div class="list-group">
-        <a class="list-group-item" href="../proc/model_calculate_actual_et_fao56__two_stage.html#src">model_calculate_actual_et_fao56__two_stage</a>
-      </div>
-    </div>
 
 
   </div>
@@ -146,7 +140,7 @@
         <ul class="list-group list-group-flush">
             <li class="list-group-item">
               <ul class="list-inline">
-                  <li class="list-inline-item"><a href='../module/actual_et__fao56__two_stage~2.html'>actual_et__fao56__two_stage</a></li>
+                  <li class="list-inline-item"><a href='../module/actual_et__fao56__two_stage.html'>actual_et__fao56__two_stage</a></li>
               </ul>
             </li>
         </ul>
@@ -169,8 +163,8 @@
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-this~533"></span>
-              class(<a href='../type/model_domain_t~2.html'>MODEL_DOMAIN_T</a>),
+              <span class="anchor" id="variable-this~301"></span>
+              class(<a href='../type/model_domain_t.html'>MODEL_DOMAIN_T</a>),
             </td>
 <td>intent(inout)</td>
               <td></td>            <td>
@@ -212,52 +206,6 @@
 
 
     
-    <section>
-    <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre><span></span><span class="w">  </span><span class="k">subroutine </span><span class="n">model_calculate_actual_et_fao56__two_stage</span><span class="p">(</span><span class="w"> </span><span class="n">this</span><span class="p">,</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">use </span><span class="n">actual_et__fao56__two_stage</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">class</span><span class="w"> </span><span class="p">(</span><span class="n">MODEL_DOMAIN_T</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">this</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">            </span><span class="kd">::</span><span class="w"> </span><span class="n">indx</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! [ LOCALS ]</span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">landuse_index</span><span class="w"></span>
-
-<span class="w">    </span><span class="n">landuse_index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">this</span><span class="p">%</span><span class="n">landuse_index</span><span class="p">(</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">call </span><span class="n">calculate_actual_et_fao56_two_stage</span><span class="p">(</span><span class="w">                                                   </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">              </span><span class="n">actual_et</span><span class="o">=</span><span class="n">this</span><span class="p">%</span><span class="n">actual_et_soil</span><span class="p">(</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="p">),</span><span class="w">                                            </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">              </span><span class="n">crop_etc</span><span class="o">=</span><span class="n">this</span><span class="p">%</span><span class="n">crop_etc</span><span class="p">(</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="p">),</span><span class="w">                                                   </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">              </span><span class="n">bare_soil_evap</span><span class="o">=</span><span class="n">this</span><span class="p">%</span><span class="n">bare_soil_evap</span><span class="p">(</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="p">),</span><span class="w">                                       </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">              </span><span class="n">taw</span><span class="o">=</span><span class="n">this</span><span class="p">%</span><span class="n">total_available_water_taw</span><span class="p">(</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="p">),</span><span class="w">                                       </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">              </span><span class="n">raw</span><span class="o">=</span><span class="n">this</span><span class="p">%</span><span class="n">readily_available_water_raw</span><span class="p">(</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="p">),</span><span class="w">                                     </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">              </span><span class="n">fraction_exposed_and_wetted_soil</span><span class="o">=</span><span class="n">this</span><span class="p">%</span><span class="n">fraction_exposed_and_wetted_soil</span><span class="p">(</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="p">),</span><span class="w">   </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">              </span><span class="n">Kr</span><span class="o">=</span><span class="n">this</span><span class="p">%</span><span class="n">evap_reduction_coef_kr</span><span class="p">(</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="p">),</span><span class="w">                                           </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">              </span><span class="n">Ke</span><span class="o">=</span><span class="n">this</span><span class="p">%</span><span class="n">surf_evap_coef_ke</span><span class="p">(</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="p">),</span><span class="w">                                                </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">              </span><span class="n">Ks</span><span class="o">=</span><span class="n">this</span><span class="p">%</span><span class="n">plant_stress_coef_ks</span><span class="p">(</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="p">),</span><span class="w">                                             </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">              </span><span class="n">adjusted_depletion_fraction_p</span><span class="o">=</span><span class="n">this</span><span class="p">%</span><span class="n">adjusted_depletion_fraction_p</span><span class="p">(</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="p">),</span><span class="w">         </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">              </span><span class="n">soil_moisture_deficit</span><span class="o">=</span><span class="n">this</span><span class="p">%</span><span class="n">soil_moisture_deficit</span><span class="p">(</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="p">),</span><span class="w">                         </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">              </span><span class="n">current_plant_height</span><span class="o">=</span><span class="n">this</span><span class="p">%</span><span class="n">current_plant_height</span><span class="p">(</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="p">),</span><span class="w">                           </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">              </span><span class="n">evaporable_water_storage</span><span class="o">=</span><span class="n">this</span><span class="p">%</span><span class="n">evaporable_water_storage</span><span class="p">(</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="p">),</span><span class="w">                   </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">              </span><span class="n">evaporable_water_deficit</span><span class="o">=</span><span class="n">this</span><span class="p">%</span><span class="n">evaporable_water_deficit</span><span class="p">(</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="p">),</span><span class="w">                   </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">              </span><span class="n">it_is_growing_season</span><span class="o">=</span><span class="n">this</span><span class="p">%</span><span class="n">it_is_growing_season</span><span class="p">(</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="p">),</span><span class="w">                           </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">              </span><span class="n">Kcb</span><span class="o">=</span><span class="n">this</span><span class="p">%</span><span class="n">crop_coefficient_kcb</span><span class="p">(</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="p">),</span><span class="w">                                            </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">              </span><span class="n">landuse_index</span><span class="o">=</span><span class="n">this</span><span class="p">%</span><span class="n">landuse_index</span><span class="p">(</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="p">),</span><span class="w">                                         </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">              </span><span class="n">soil_group</span><span class="o">=</span><span class="n">this</span><span class="p">%</span><span class="n">soil_group</span><span class="p">(</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="p">),</span><span class="w">                                               </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">              </span><span class="n">awc</span><span class="o">=</span><span class="n">this</span><span class="p">%</span><span class="n">awc</span><span class="p">(</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="p">),</span><span class="w">                                                             </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">              </span><span class="n">current_rooting_depth</span><span class="o">=</span><span class="n">this</span><span class="p">%</span><span class="n">current_rooting_depth</span><span class="p">(</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="p">),</span><span class="w">                         </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">              </span><span class="n">soil_storage</span><span class="o">=</span><span class="n">this</span><span class="p">%</span><span class="n">soil_storage</span><span class="p">(</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="p">),</span><span class="w">                                           </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">              </span><span class="n">soil_storage_max</span><span class="o">=</span><span class="n">this</span><span class="p">%</span><span class="n">soil_storage_max</span><span class="p">(</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="p">),</span><span class="w">                                   </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">              </span><span class="n">reference_et0</span><span class="o">=</span><span class="nb">max</span><span class="p">(</span><span class="kt">real</span><span class="p">(</span><span class="n">this</span><span class="p">%</span><span class="n">reference_et0</span><span class="p">(</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="p">)</span><span class="w">                                 </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                </span><span class="o">-</span><span class="w"> </span><span class="n">this</span><span class="p">%</span><span class="n">actual_et_interception</span><span class="p">(</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="p">),</span><span class="w"> </span><span class="nb">kind</span><span class="o">=</span><span class="kt">c_float</span><span class="p">),</span><span class="w"> </span><span class="mf">0.0</span><span class="p">),</span><span class="w">     </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">              </span><span class="n">infiltration</span><span class="o">=</span><span class="n">this</span><span class="p">%</span><span class="n">infiltration</span><span class="p">(</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">end subroutine </span><span class="n">model_calculate_actual_et_fao56__two_stage</span><span class="w"></span>
-</pre></div>
-
-    </section>
-    <br>
     
     </div>
   </div>
@@ -274,7 +222,7 @@
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-10-17T14:19:59.727997             </p>
+ on 2023-10-19T16:28:40.743458             </p>
           </div>
         </div>
         <br>

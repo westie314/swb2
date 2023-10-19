@@ -125,12 +125,6 @@
   
   
   
-    <div class="card card-primary">
-      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
-      <div class="list-group">
-        <a class="list-group-item" href="../proc/et0_hargreaves.html#src">ET0_hargreaves</a>
-      </div>
-    </div>
 
 
   </div>
@@ -222,43 +216,6 @@
 
 
     
-    <section>
-    <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre><span></span><span class="k">elemental function </span><span class="n">ET0_hargreaves</span><span class="p">(</span><span class="w"> </span><span class="n">rRa</span><span class="p">,</span><span class="w"> </span><span class="n">rTMinF</span><span class="p">,</span><span class="w"> </span><span class="n">rTMaxF</span><span class="w"> </span><span class="p">)</span><span class="w">   </span><span class="k">result</span><span class="p">(</span><span class="n">rET_0</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">  </span><span class="c">! [ ARGUMENTS ]</span>
-<span class="w">  </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_double</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">rRa</span><span class="w"></span>
-<span class="w">  </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">rTMinF</span><span class="w"></span>
-<span class="w">  </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">rTMaxF</span><span class="w"></span>
-
-<span class="w">  </span><span class="c">! [ RETURN VALUE ]</span>
-<span class="w">  </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">rET_0</span><span class="w"></span>
-
-<span class="w">  </span><span class="c">! [ LOCALS ]</span>
-<span class="w">  </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_double</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">rTDelta</span><span class="w"></span>
-<span class="w">  </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_double</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">rTAvg</span><span class="w"></span>
-
-<span class="w">  </span><span class="n">rTAvg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">rTMinF</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">rTMaxF</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">2.0_c_double</span><span class="w"></span>
-
-<span class="w">  </span><span class="n">rTDelta</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">F_to_K</span><span class="p">(</span><span class="n">rTMaxF</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">F_to_K</span><span class="p">(</span><span class="n">rTMinF</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">  </span><span class="n">rET_0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">MAX</span><span class="p">(</span><span class="n">rZERO</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                </span><span class="n">mm_to_in</span><span class="p">(</span><span class="w"> </span><span class="n">ET_SLOPE</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">rRa</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="n">F_to_C</span><span class="p">(</span><span class="n">rTavg</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">ET_CONSTANT</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="n">rTDelta</span><span class="o">**</span><span class="n">ET_EXPONENT</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="c">!                mm_to_in( 0.0023_c_float * rRa * (F_to_C(rTavg) + 17.8_c_float) * sqrt(rTDelta)) )</span>
-
-
-<span class="c">!  rET_0 = MAX(rZERO, &amp;</span>
-<span class="c">!           ( fET_Slope &amp;</span>
-<span class="c">!           * rRa &amp;</span>
-<span class="c">!           * (F_to_C(rTavg) + pConfig%fET_Constant) &amp;</span>
-<span class="c">!           * (rTDelta**fET_Exponent)) &amp;</span>
-<span class="c">!           / rMM_PER_INCH)</span>
-
-<span class="k">end function </span><span class="n">ET0_hargreaves</span><span class="w"></span>
-</pre></div>
-
-    </section>
-    <br>
     
     </div>
   </div>
@@ -275,7 +232,7 @@
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-10-17T14:19:59.727997             </p>
+ on 2023-10-19T16:28:40.743458             </p>
           </div>
         </div>
         <br>

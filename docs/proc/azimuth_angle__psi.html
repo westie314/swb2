@@ -125,12 +125,6 @@
   
   
   
-    <div class="card card-primary">
-      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
-      <div class="list-group">
-        <a class="list-group-item" href="../proc/azimuth_angle__psi.html#src">azimuth_angle__psi</a>
-      </div>
-    </div>
 
 
   </div>
@@ -236,31 +230,6 @@
 
 
     
-    <section>
-    <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre><span></span><span class="w">  </span><span class="k">function </span><span class="n">azimuth_angle__psi</span><span class="p">(</span><span class="n">rAlpha</span><span class="p">,</span><span class="w"> </span><span class="n">rLatitude</span><span class="p">,</span><span class="w"> </span><span class="n">rDelta</span><span class="p">)</span><span class="w">   </span><span class="k">result</span><span class="p">(</span><span class="n">rPsi</span><span class="p">)</span><span class="w">    </span><span class="k">bind</span><span class="p">(</span><span class="n">c</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_double</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">      </span><span class="kd">::</span><span class="w"> </span><span class="n">rAlpha</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_double</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">      </span><span class="kd">::</span><span class="w"> </span><span class="n">rLatitude</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_double</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">      </span><span class="kd">::</span><span class="w"> </span><span class="n">rDelta</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_double</span><span class="p">)</span><span class="w">                  </span><span class="kd">::</span><span class="w"> </span><span class="n">rPsi</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! [ LOCALS ]</span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_double</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">rTempval</span><span class="w"></span>
-
-<span class="w">    </span><span class="n">rTempval</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="nb">sin</span><span class="p">(</span><span class="w"> </span><span class="n">rAlpha</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nb">sin</span><span class="p">(</span><span class="w"> </span><span class="n">rLatitude</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nb">sin</span><span class="p">(</span><span class="w"> </span><span class="n">rDelta</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w">          </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">              </span><span class="o">/</span><span class="w">   </span><span class="p">(</span><span class="w"> </span><span class="nb">cos</span><span class="p">(</span><span class="w"> </span><span class="n">rAlpha</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nb">cos</span><span class="p">(</span><span class="w"> </span><span class="n">rLatitude</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! avoid a NaN; cap value at 1.0</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="nb">abs</span><span class="p">(</span><span class="w"> </span><span class="n">rTempval</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mf">1.0_c_double</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="n">rTempval</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">sign</span><span class="p">(</span><span class="w"> </span><span class="mf">1.0_c_double</span><span class="p">,</span><span class="w"> </span><span class="n">rTempval</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="n">rPsi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">acos</span><span class="p">(</span><span class="w"> </span><span class="n">rTempval</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">end function </span><span class="n">azimuth_angle__psi</span><span class="w"></span>
-</pre></div>
-
-    </section>
-    <br>
     
     </div>
   </div>
@@ -277,7 +246,7 @@
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-10-17T14:19:59.727997             </p>
+ on 2023-10-19T16:28:40.743458             </p>
           </div>
         </div>
         <br>

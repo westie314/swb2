@@ -73,7 +73,7 @@
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip"
                  data-bs-placement="bottom" data-html="true"
-                 title=" 0.2% of total for procedures.">28 statements</a>
+                 title=" 0.3% of total for procedures.">28 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -86,7 +86,7 @@
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb justify-content-end mb-0">
                 <li class="breadcrumb-item"><a href='../sourcefile/actual_et__thornthwaite_mather_eqns.f90.html'>actual_et__thornthwaite_mather_eqns.F90</a></li>
-                <li class="breadcrumb-item"><a href='../module/actual_et__thornthwaite_mather_eqns~2.html'>actual_et__thornthwaite_mather_eqns</a></li>
+                <li class="breadcrumb-item"><a href='../module/actual_et__thornthwaite_mather_eqns.html'>actual_et__thornthwaite_mather_eqns</a></li>
             <li class="breadcrumb-item active" aria-current="page">calculate_actual_et_thornthwaite_mather_eqns</li>
           </ol>
         </nav>
@@ -125,12 +125,6 @@
   
   
   
-    <div class="card card-primary">
-      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
-      <div class="list-group">
-        <a class="list-group-item" href="../proc/calculate_actual_et_thornthwaite_mather_eqns.html#src">calculate_actual_et_thornthwaite_mather_eqns</a>
-      </div>
-    </div>
 
 
   </div>
@@ -157,7 +151,7 @@
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-actual_et~6"></span>
+              <span class="anchor" id="variable-actual_et~5"></span>
               real(kind=c_double),
             </td>
 <td>intent(inout)</td>
@@ -217,7 +211,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-crop_etc~6"></span>
+              <span class="anchor" id="variable-crop_etc~5"></span>
               real(kind=c_float),
             </td>
 <td>intent(in)</td>
@@ -260,67 +254,6 @@
 
 
     
-    <section>
-    <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre><span></span><span class="k">subroutine </span><span class="n">calculate_actual_et_thornthwaite_mather_eqns</span><span class="p">(</span><span class="w">                             </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                                  </span><span class="n">actual_et</span><span class="p">,</span><span class="w">                         </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                                  </span><span class="n">soil_moisture</span><span class="p">,</span><span class="w">                     </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                                  </span><span class="n">max_soil_moisture</span><span class="p">,</span><span class="w">                 </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                                  </span><span class="n">precipitation</span><span class="p">,</span><span class="w">                     </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                                  </span><span class="n">crop_etc</span><span class="p">,</span><span class="w">                          </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                                  </span><span class="n">indx</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_double</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w">            </span><span class="kd">::</span><span class="w"> </span><span class="n">actual_et</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_double</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">               </span><span class="kd">::</span><span class="w"> </span><span class="n">soil_moisture</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">                </span><span class="kd">::</span><span class="w"> </span><span class="n">max_soil_moisture</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">                </span><span class="kd">::</span><span class="w"> </span><span class="n">precipitation</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">                </span><span class="kd">::</span><span class="w"> </span><span class="n">crop_etc</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">               </span><span class="kd">::</span><span class="w"> </span><span class="n">indx</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! [ LOCALS ]</span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">)</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">P_minus_PE</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_double</span><span class="p">)</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">temp_soil_moisture</span><span class="w"></span>
-
-<span class="w">    </span><span class="n">P_minus_PE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">precipitation</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">crop_etc</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">associate</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">APWL</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">ACCUMULATED_POTENTIAL_WATER_LOSS</span><span class="p">(</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">P_minus_PE</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mf">0.0_c_float</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-
-<span class="k">        </span><span class="n">actual_et</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">crop_etc</span><span class="w"></span>
-
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">max_soil_moisture</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">NEAR_ZERO</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-
-<span class="k">          </span><span class="n">temp_soil_moisture</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">min</span><span class="p">(</span><span class="w"> </span><span class="n">max_soil_moisture</span><span class="p">,</span><span class="w"> </span><span class="n">soil_moisture</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">P_minus_PE</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">          </span><span class="k">call </span><span class="n">thornthwaite_mather_APWL</span><span class="p">(</span><span class="w"> </span><span class="n">APWL</span><span class="p">,</span><span class="w"> </span><span class="n">max_soil_moisture</span><span class="p">,</span><span class="w"> </span><span class="n">temp_soil_moisture</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">        </span><span class="k">endif</span>
-
-<span class="k">      </span><span class="n">elseif</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">P_minus_PE</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mf">0.0_c_float</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-
-<span class="k">        if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">max_soil_moisture</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">NEAR_ZERO</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span><span class="w"></span>
-
-<span class="w">          </span><span class="c">! more PET than can be extracted from soil; update APWL and back-calculate</span>
-<span class="w">          </span><span class="c">! updated soil moisture</span>
-<span class="w">          </span><span class="n">APWL</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">APWL</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">P_minus_PE</span><span class="w"></span>
-<span class="w">          </span><span class="k">call </span><span class="n">thornthwaite_mather_soil_moisture</span><span class="p">(</span><span class="w"> </span><span class="n">temp_soil_moisture</span><span class="p">,</span><span class="w"> </span><span class="n">max_soil_moisture</span><span class="p">,</span><span class="w"> </span><span class="n">APWL</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">          </span><span class="n">actual_et</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">soil_moisture</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">temp_soil_moisture</span><span class="w"></span>
-
-<span class="w">        </span><span class="k">else</span>
-
-<span class="k">          </span><span class="n">actual_et</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">precipitation</span><span class="w"></span>
-
-<span class="w">        </span><span class="k">endif</span>
-
-<span class="k">      endif</span>
-
-<span class="k">    end associate</span>
-
-<span class="k">  end subroutine </span><span class="n">calculate_actual_et_thornthwaite_mather_eqns</span><span class="w"></span>
-</pre></div>
-
-    </section>
-    <br>
     
     </div>
   </div>
@@ -337,7 +270,7 @@
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-10-17T14:19:59.727997             </p>
+ on 2023-10-19T16:28:40.743458             </p>
           </div>
         </div>
         <br>

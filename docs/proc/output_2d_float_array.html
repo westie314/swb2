@@ -73,7 +73,7 @@
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip"
                  data-bs-placement="bottom" data-html="true"
-                 title=" 0.0% of total for procedures.">7 statements</a>
+                 title=" 0.1% of total for procedures.">7 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -86,7 +86,7 @@
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb justify-content-end mb-0">
                 <li class="breadcrumb-item"><a href='../sourcefile/output.f90.html'>output.F90</a></li>
-                <li class="breadcrumb-item"><a href='../module/output~2.html'>output</a></li>
+                <li class="breadcrumb-item"><a href='../module/output.html'>output</a></li>
             <li class="breadcrumb-item active" aria-current="page">output_2D_float_array</li>
           </ol>
         </nav>
@@ -125,12 +125,6 @@
   
   
   
-    <div class="card card-primary">
-      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
-      <div class="list-group">
-        <a class="list-group-item" href="../proc/output_2d_float_array.html#src">output_2D_float_array</a>
-      </div>
-    </div>
 
 
   </div>
@@ -158,7 +152,7 @@
         <tr>
             <td>
               <span class="anchor" id="variable-ncfile_ptr"></span>
-              type(<a href='../type/t_netcdf4_file~2.html'>T_NETCDF4_FILE</a>),
+              type(<a href='../type/t_netcdf4_file.html'>T_NETCDF4_FILE</a>),
             </td>
 <td></td>
               <td></td>            <td>
@@ -172,7 +166,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-values~6"></span>
+              <span class="anchor" id="variable-values~5"></span>
               real(kind=c_float),
             </td>
 <td>intent(in)</td>
@@ -188,7 +182,7 @@
         <tr>
             <td>
               <span class="anchor" id="variable-cells~7"></span>
-              class(<a href='../type/model_domain_t~2.html'>MODEL_DOMAIN_T</a>),
+              class(<a href='../type/model_domain_t.html'>MODEL_DOMAIN_T</a>),
             </td>
 <td>intent(in)</td>
               <td></td>            <td>
@@ -215,37 +209,6 @@
 
 
     
-    <section>
-    <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre><span></span><span class="w">  </span><span class="k">subroutine </span><span class="n">output_2D_float_array</span><span class="p">(</span><span class="w"> </span><span class="n">ncfile_ptr</span><span class="p">,</span><span class="w"> </span><span class="n">values</span><span class="p">,</span><span class="w"> </span><span class="n">cells</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">type</span><span class="w"> </span><span class="p">(</span><span class="n">T_NETCDF4_FILE</span><span class="p">),</span><span class="w"> </span><span class="k">pointer</span><span class="w">      </span><span class="kd">::</span><span class="w"> </span><span class="n">ncfile_ptr</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">     </span><span class="kd">::</span><span class="w"> </span><span class="n">values</span><span class="p">(:)</span><span class="w"></span>
-<span class="w">    </span><span class="k">class</span><span class="w"> </span><span class="p">(</span><span class="n">MODEL_DOMAIN_T</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">cells</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">call </span><span class="n">netcdf_put_variable_vector</span><span class="p">(</span><span class="n">NCFILE</span><span class="o">=</span><span class="n">ncfile_ptr</span><span class="p">,</span><span class="w">                         </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">       </span><span class="n">iVarID</span><span class="o">=</span><span class="n">ncfile_ptr</span><span class="p">%</span><span class="n">iVarID</span><span class="p">(</span><span class="n">NC_TIME</span><span class="p">),</span><span class="w">                                      </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">       </span><span class="n">iStart</span><span class="o">=</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">SIM_DT</span><span class="p">%</span><span class="n">iNumDaysFromOrigin</span><span class="p">,</span><span class="w"> </span><span class="kt">c_size_t</span><span class="p">)],</span><span class="w">                 </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">       </span><span class="n">iCount</span><span class="o">=</span><span class="p">[</span><span class="mi">1_c_size_t</span><span class="p">],</span><span class="w">                                                    </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">       </span><span class="n">iStride</span><span class="o">=</span><span class="p">[</span><span class="mi">1_c_size_t</span><span class="p">],</span><span class="w">                                                </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">       </span><span class="n">rValues</span><span class="o">=</span><span class="p">[</span><span class="kt">real</span><span class="p">(</span><span class="n">SIM_DT</span><span class="p">%</span><span class="n">iNumDaysFromOrigin</span><span class="p">,</span><span class="w"> </span><span class="kt">c_float</span><span class="p">)])</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">call </span><span class="n">netcdf_put_packed_variable_array</span><span class="p">(</span><span class="n">NCFILE</span><span class="o">=</span><span class="n">ncfile_ptr</span><span class="p">,</span><span class="w">                     </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="n">iVarID</span><span class="o">=</span><span class="n">ncfile_ptr</span><span class="p">%</span><span class="n">iVarID</span><span class="p">(</span><span class="n">NC_Z</span><span class="p">),</span><span class="w">                                        </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="n">iStart</span><span class="o">=</span><span class="p">[</span><span class="w"> </span><span class="nb">int</span><span class="p">(</span><span class="n">SIM_DT</span><span class="p">%</span><span class="n">iNumDaysFromOrigin</span><span class="p">,</span><span class="w"> </span><span class="kt">c_size_t</span><span class="p">),</span><span class="w">                </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                </span><span class="mi">0_c_size_t</span><span class="p">,</span><span class="w"> </span><span class="mi">0_c_size_t</span><span class="w"> </span><span class="p">],</span><span class="w">                                      </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="n">iCount</span><span class="o">=</span><span class="p">[</span><span class="w"> </span><span class="mi">1_c_size_t</span><span class="p">,</span><span class="w"> </span><span class="nb">int</span><span class="p">(</span><span class="n">cells</span><span class="p">%</span><span class="n">number_of_rows</span><span class="p">,</span><span class="w"> </span><span class="kt">c_size_t</span><span class="p">),</span><span class="w">         </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                </span><span class="nb">int</span><span class="p">(</span><span class="n">cells</span><span class="p">%</span><span class="n">number_of_columns</span><span class="p">,</span><span class="w"> </span><span class="kt">c_size_t</span><span class="p">)</span><span class="w"> </span><span class="p">],</span><span class="w">                 </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="n">iStride</span><span class="o">=</span><span class="p">[</span><span class="w"> </span><span class="mi">1_c_size_t</span><span class="p">,</span><span class="w"> </span><span class="mi">1_c_size_t</span><span class="p">,</span><span class="w"> </span><span class="mi">1_c_size_t</span><span class="w"> </span><span class="p">],</span><span class="w">               </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="n">lMask</span><span class="o">=</span><span class="n">cells</span><span class="p">%</span><span class="n">active</span><span class="p">,</span><span class="w">                                                    </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="n">rValues</span><span class="o">=</span><span class="n">values</span><span class="p">,</span><span class="w">                                                        </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="n">rField</span><span class="o">=</span><span class="n">cells</span><span class="p">%</span><span class="n">nodata_fill_value</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">end subroutine </span><span class="n">output_2D_float_array</span><span class="w"></span>
-</pre></div>
-
-    </section>
-    <br>
     
     </div>
   </div>
@@ -262,7 +225,7 @@
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-10-17T14:19:59.727997             </p>
+ on 2023-10-19T16:28:40.743458             </p>
           </div>
         </div>
         <br>

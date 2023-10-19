@@ -73,7 +73,7 @@
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip"
                  data-bs-placement="bottom" data-html="true"
-                 title=" 0.2% of total for procedures.">31 statements</a>
+                 title=" 0.4% of total for procedures.">31 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -125,12 +125,6 @@
   
   
   
-    <div class="card card-primary">
-      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
-      <div class="list-group">
-        <a class="list-group-item" href="../proc/most_common_value.html#src">most_common_value</a>
-      </div>
-    </div>
 
 
   </div>
@@ -207,60 +201,6 @@
 
 
     
-    <section>
-    <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre><span></span><span class="w">  </span><span class="k">function </span><span class="n">most_common_value</span><span class="p">(</span><span class="w"> </span><span class="n">int_vector</span><span class="p">,</span><span class="w"> </span><span class="n">cell_selection</span><span class="w"> </span><span class="p">)</span><span class="w">  </span><span class="k">result</span><span class="p">(</span><span class="w"> </span><span class="n">majority_value</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="kt">c_int</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">int_vector</span><span class="p">(:)</span><span class="w"></span>
-<span class="w">    </span><span class="kt">logical</span><span class="w">               </span><span class="kd">::</span><span class="w"> </span><span class="n">cell_selection</span><span class="p">(:)</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! [ LOCALS ]</span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">),</span><span class="w"> </span><span class="k">dimension</span><span class="p">(</span><span class="mi">625</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="k">value</span>
-<span class="k">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">),</span><span class="w"> </span><span class="k">dimension</span><span class="p">(</span><span class="mi">625</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">item_count</span><span class="w"></span>
-<span class="w">    </span><span class="kt">logical</span><span class="w">              </span><span class="kd">::</span><span class="w"> </span><span class="n">match</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="nb">index</span><span class="p">,</span><span class="w"> </span><span class="n">index1</span><span class="p">,</span><span class="w"> </span><span class="n">index2</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">last</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">majority_value</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"></span>
-<span class="w">    </span><span class="n">item_count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"></span>
-<span class="w">    </span><span class="n">last</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">do </span><span class="n">index1</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nb">ubound</span><span class="p">(</span><span class="w"> </span><span class="n">int_vector</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">      </span><span class="c">! skip over cells that do not belong to the current polygon</span>
-<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="p">.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="n">cell_selection</span><span class="p">(</span><span class="w"> </span><span class="n">index1</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w">  </span><span class="k">cycle</span>
-
-<span class="k">      </span><span class="n">match</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.</span><span class="w"></span>
-
-<span class="w">      </span><span class="c">! loop over the items we have already found; if we found another,</span>
-<span class="w">      </span><span class="c">! add to the count of that item</span>
-<span class="w">      </span><span class="k">do </span><span class="n">index2</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">last</span><span class="w"></span>
-<span class="w">       </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="k">value</span><span class="p">(</span><span class="n">index2</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">int_vector</span><span class="p">(</span><span class="w"> </span><span class="n">index1</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">         </span><span class="n">item_count</span><span class="p">(</span><span class="w"> </span><span class="n">index2</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">item_count</span><span class="p">(</span><span class="w"> </span><span class="n">index2</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
-<span class="w">         </span><span class="n">match</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">true</span><span class="p">.</span><span class="w"></span>
-<span class="w">         </span><span class="k">exit</span>
-<span class="k">       endif</span>
-<span class="k">      enddo</span><span class="w"></span>
-
-<span class="w">      </span><span class="c">! this integer value has not been found previously; add the value to the next position</span>
-<span class="w">      </span><span class="c">! and increment counter</span>
-<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="p">.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="n">match</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">       </span><span class="n">last</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">last</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
-<span class="w">       </span><span class="k">value</span><span class="p">(</span><span class="w"> </span><span class="n">last</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">int_vector</span><span class="p">(</span><span class="w"> </span><span class="n">index1</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">       </span><span class="n">item_count</span><span class="p">(</span><span class="w"> </span><span class="n">last</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">item_count</span><span class="p">(</span><span class="w"> </span><span class="n">last</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
-<span class="w">      </span><span class="k">endif</span>
-
-<span class="k">     enddo</span>
-
-<span class="k">     </span><span class="nb">index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">MAXLOC</span><span class="p">(</span><span class="w"> </span><span class="n">item_count</span><span class="p">,</span><span class="w"> </span><span class="nb">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
-<span class="w">     </span><span class="n">majority_value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">value</span><span class="p">(</span><span class="w"> </span><span class="nb">index</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">end function </span><span class="n">most_common_value</span><span class="w"></span>
-</pre></div>
-
-    </section>
-    <br>
     
     </div>
   </div>
@@ -277,7 +217,7 @@
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-10-17T14:19:59.727997             </p>
+ on 2023-10-19T16:28:40.743458             </p>
           </div>
         </div>
         <br>

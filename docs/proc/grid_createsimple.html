@@ -73,7 +73,7 @@
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip"
                  data-bs-placement="bottom" data-html="true"
-                 title=" 0.2% of total for procedures.">38 statements</a>
+                 title=" 0.4% of total for procedures.">38 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -125,12 +125,6 @@
   
   
   
-    <div class="card card-primary">
-      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
-      <div class="list-group">
-        <a class="list-group-item" href="../proc/grid_createsimple.html#src">grid_CreateSimple</a>
-      </div>
-    </div>
 
 
   </div>
@@ -159,7 +153,7 @@
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-inx~6"></span>
+              <span class="anchor" id="variable-inx~4"></span>
               integer(kind=c_int),
             </td>
 <td>intent(in)</td>
@@ -174,7 +168,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-iny~6"></span>
+              <span class="anchor" id="variable-iny~4"></span>
               integer(kind=c_int),
             </td>
 <td>intent(in)</td>
@@ -189,7 +183,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-rx0~4"></span>
+              <span class="anchor" id="variable-rx0~3"></span>
               real(kind=c_double),
             </td>
 <td>intent(in)</td>
@@ -204,7 +198,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-ry0~4"></span>
+              <span class="anchor" id="variable-ry0~3"></span>
               real(kind=c_double),
             </td>
 <td>intent(in)</td>
@@ -219,7 +213,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-rgridcellsize~3"></span>
+              <span class="anchor" id="variable-rgridcellsize~2"></span>
               real(kind=c_double),
             </td>
 <td>intent(in)</td>
@@ -234,7 +228,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-idatatype~8"></span>
+              <span class="anchor" id="variable-idatatype~5"></span>
               integer(kind=c_int),
             </td>
 <td>intent(in)</td>
@@ -269,74 +263,6 @@
 
 
     
-    <section>
-    <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre><span></span><span class="k">function </span><span class="n">grid_CreateSimple</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">iNX</span><span class="p">,</span><span class="w"> </span><span class="n">iNY</span><span class="p">,</span><span class="w"> </span><span class="n">rX0</span><span class="p">,</span><span class="w"> </span><span class="n">rY0</span><span class="p">,</span><span class="w"> </span><span class="n">rGridCellSize</span><span class="p">,</span><span class="w"> </span><span class="n">iDataType</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">result</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">pGrd</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">  </span><span class="c">!! Creates a new iNX-by-iNY T_GRID of data type iDataType, over the extent</span>
-<span class="w">  </span><span class="c">!! (rX0,rY0)-(rX1,rY1), and returns a pointer.</span>
-<span class="w">  </span><span class="c">! ARGUMENTS</span>
-<span class="w">  </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">iNX</span><span class="p">,</span><span class="w"> </span><span class="n">iNY</span><span class="w">        </span><span class="c">! Grid dimensions</span>
-<span class="w">  </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_double</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">rX0</span><span class="p">,</span><span class="w"> </span><span class="n">rY0</span><span class="w">          </span><span class="c">! Lower-left corner (world coords)</span>
-<span class="w">  </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_double</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">rGridCellSize</span><span class="w"></span>
-<span class="w">  </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">iDataType</span><span class="w">       </span><span class="c">! Data type (DATATYPE_INT, etc.)</span>
-
-<span class="w">  </span><span class="c">! RETURN VALUE</span>
-<span class="w">  </span><span class="k">type</span><span class="w"> </span><span class="p">(</span><span class="n">GENERAL_GRID_T</span><span class="p">),</span><span class="w"> </span><span class="k">pointer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">pGrd</span><span class="w"></span>
-<span class="w">  </span><span class="c">! LOCALS</span>
-<span class="w">  </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">iStat</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">allocate</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">pGrd</span><span class="p">,</span><span class="w"> </span><span class="nb">stat</span><span class="o">=</span><span class="n">iStat</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">  </span><span class="k">call </span><span class="n">assert</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">iStat</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">     </span><span class="s2">&quot;Could not allocate pointer to T_GRID object&quot;</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">FILE__</span><span class="p">,</span><span class="err">__</span><span class="n">LINE__</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">  </span><span class="k">call </span><span class="n">assert</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">iNX</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">.</span><span class="nb">and</span><span class="p">.</span><span class="w"> </span><span class="n">iNY</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">     </span><span class="s2">&quot;Illegal grid dimensions specified: NX=&quot;</span><span class="o">//</span><span class="n">asCharacter</span><span class="p">(</span><span class="n">iNX</span><span class="p">)</span><span class="w">      </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">     </span><span class="o">//</span><span class="s2">&quot;  NY=&quot;</span><span class="o">//</span><span class="n">asCharacter</span><span class="p">(</span><span class="n">iNY</span><span class="p">),</span><span class="w"> </span><span class="err">__</span><span class="n">FILE__</span><span class="p">,</span><span class="err">__</span><span class="n">LINE__</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">select case</span><span class="w"> </span><span class="p">(</span><span class="n">iDataType</span><span class="p">)</span><span class="w"></span>
-<span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">GRID_DATATYPE_INT</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">          </span><span class="k">allocate</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">pGrd</span><span class="p">%</span><span class="n">iData</span><span class="p">(</span><span class="w"> </span><span class="n">iNX</span><span class="p">,</span><span class="w"> </span><span class="n">iNY</span><span class="w"> </span><span class="p">),</span><span class="w"> </span><span class="nb">stat</span><span class="o">=</span><span class="n">iStat</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">          </span><span class="k">call </span><span class="n">assert</span><span class="w"> </span><span class="p">(</span><span class="n">iStat</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">             </span><span class="s2">&quot;Could not allocate integer data&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">              </span><span class="err">__</span><span class="n">FILE__</span><span class="p">,</span><span class="err">__</span><span class="n">LINE__</span><span class="p">)</span><span class="w"></span>
-<span class="w">          </span><span class="n">pGrd</span><span class="p">%</span><span class="n">iData</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pGrd</span><span class="p">%</span><span class="n">iNoDataValue</span><span class="w"></span>
-
-<span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">GRID_DATATYPE_REAL</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">          </span><span class="k">allocate</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">pGrd</span><span class="p">%</span><span class="n">rData</span><span class="p">(</span><span class="w"> </span><span class="n">iNX</span><span class="p">,</span><span class="w"> </span><span class="n">iNY</span><span class="w"> </span><span class="p">),</span><span class="w"> </span><span class="nb">stat</span><span class="o">=</span><span class="n">iStat</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">          </span><span class="k">call </span><span class="n">assert</span><span class="w"> </span><span class="p">(</span><span class="n">iStat</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">             </span><span class="s2">&quot;Could not allocate real data&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">              </span><span class="err">__</span><span class="n">FILE__</span><span class="p">,</span><span class="err">__</span><span class="n">LINE__</span><span class="p">)</span><span class="w"></span>
-<span class="w">          </span><span class="n">pGrd</span><span class="p">%</span><span class="n">rData</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pGrd</span><span class="p">%</span><span class="n">rNoDataValue</span><span class="w"></span>
-
-<span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">GRID_DATATYPE_DOUBLE</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">          </span><span class="k">allocate</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">pGrd</span><span class="p">%</span><span class="n">dpData</span><span class="p">(</span><span class="w"> </span><span class="n">iNX</span><span class="p">,</span><span class="w"> </span><span class="n">iNY</span><span class="w"> </span><span class="p">),</span><span class="w"> </span><span class="nb">stat</span><span class="o">=</span><span class="n">iStat</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">          </span><span class="k">call </span><span class="n">assert</span><span class="w"> </span><span class="p">(</span><span class="n">iStat</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">             </span><span class="s2">&quot;Could not allocate double-precision data&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">              </span><span class="err">__</span><span class="n">FILE__</span><span class="p">,</span><span class="err">__</span><span class="n">LINE__</span><span class="p">)</span><span class="w"></span>
-<span class="w">          </span><span class="n">pGrd</span><span class="p">%</span><span class="n">dpData</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pGrd</span><span class="p">%</span><span class="n">dpNoDataValue</span><span class="w"></span>
-
-<span class="w">      </span><span class="k">case </span><span class="n">default</span><span class="w"></span>
-<span class="w">          </span><span class="k">call </span><span class="n">assert</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">FALSE</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Internal error -- illegal grid data type&#39;</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">  </span><span class="k">end select</span>
-
-<span class="k">  </span><span class="n">pGrd</span><span class="p">%</span><span class="n">iDataType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">iDataType</span><span class="w"></span>
-<span class="w">  </span><span class="n">pGrd</span><span class="p">%</span><span class="n">iNX</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">iNX</span><span class="w"></span>
-<span class="w">  </span><span class="n">pGrd</span><span class="p">%</span><span class="n">iNY</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">iNY</span><span class="w"></span>
-<span class="w">  </span><span class="n">pGrd</span><span class="p">%</span><span class="n">rX0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rX0</span><span class="w"></span>
-<span class="w">  </span><span class="n">pGrd</span><span class="p">%</span><span class="n">rX1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rX0</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="kt">real</span><span class="p">(</span><span class="n">iNX</span><span class="p">,</span><span class="w"> </span><span class="kt">c_double</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">rGridCellSize</span><span class="w"></span>
-<span class="w">  </span><span class="n">pGrd</span><span class="p">%</span><span class="n">rY0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rY0</span><span class="w"></span>
-<span class="w">  </span><span class="n">pGrd</span><span class="p">%</span><span class="n">rY1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rY0</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="kt">real</span><span class="p">(</span><span class="n">iNY</span><span class="p">,</span><span class="w"> </span><span class="kt">c_double</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">rGridCellSize</span><span class="w"></span>
-<span class="w">  </span><span class="n">pGrd</span><span class="p">%</span><span class="n">rGridCellSize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rGridCellSize</span><span class="w"></span>
-<span class="w">  </span><span class="n">pGrd</span><span class="p">%</span><span class="n">iNumGridCells</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">iNX</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">iNY</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">allocate</span><span class="p">(</span><span class="n">pGrd</span><span class="p">%</span><span class="n">iMask</span><span class="p">(</span><span class="n">iNX</span><span class="p">,</span><span class="w"> </span><span class="n">iNY</span><span class="p">))</span><span class="w"></span>
-<span class="w">  </span><span class="n">pGrd</span><span class="p">%</span><span class="n">iMask</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GRID_ACTIVE_CELL</span><span class="w"></span>
-
-<span class="k">end function </span><span class="n">grid_CreateSimple</span><span class="w"></span>
-</pre></div>
-
-    </section>
-    <br>
     
     </div>
   </div>
@@ -353,7 +279,7 @@
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-10-17T14:19:59.727997             </p>
+ on 2023-10-19T16:28:40.743458             </p>
           </div>
         </div>
         <br>

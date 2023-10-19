@@ -73,7 +73,7 @@
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip"
                  data-bs-placement="bottom" data-html="true"
-                 title=" 0.3% of total for procedures.">46 statements</a>
+                 title=" 0.5% of total for procedures.">46 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -125,12 +125,6 @@
   
   
   
-    <div class="card card-primary">
-      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
-      <div class="list-group">
-        <a class="list-group-item" href="../proc/et_jh_calculate.html#src">et_jh_calculate</a>
-      </div>
-    </div>
 
 
   </div>
@@ -202,7 +196,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-ftmin~4"></span>
+              <span class="anchor" id="variable-ftmin~3"></span>
               real(kind=c_float),
             </td>
 <td>intent(in)</td>
@@ -297,100 +291,6 @@
 
 
     
-    <section>
-    <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre><span></span><span class="k">elemental function </span><span class="n">et_jh_calculate</span><span class="p">(</span><span class="w"> </span><span class="n">iDayOfYear</span><span class="p">,</span><span class="w"> </span><span class="n">iNumDaysInYear</span><span class="p">,</span><span class="w"> </span><span class="n">fLatitude</span><span class="p">,</span><span class="w"> </span><span class="n">fTMin</span><span class="p">,</span><span class="w"> </span><span class="n">fTMax</span><span class="p">,</span><span class="w">    </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                    </span><span class="n">fAs</span><span class="p">,</span><span class="w"> </span><span class="n">fBs</span><span class="p">,</span><span class="w"> </span><span class="n">fSunPct</span><span class="w"> </span><span class="p">)</span><span class="w">                      </span><span class="k">result</span><span class="p">(</span><span class="n">fReferenceET0</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">  </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">          </span><span class="kd">::</span><span class="w"> </span><span class="n">iDayOfYear</span><span class="w"></span>
-<span class="w">  </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">          </span><span class="kd">::</span><span class="w"> </span><span class="n">iNumDaysInYear</span><span class="w"></span>
-<span class="w">  </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">           </span><span class="kd">::</span><span class="w"> </span><span class="n">fLatitude</span><span class="w"></span>
-<span class="w">  </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">           </span><span class="kd">::</span><span class="w"> </span><span class="n">fTMin</span><span class="w"></span>
-<span class="w">  </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">           </span><span class="kd">::</span><span class="w"> </span><span class="n">fTMax</span><span class="w"></span>
-<span class="w">  </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="w"> </span><span class="k">optional</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">fAs</span><span class="w"></span>
-<span class="w">  </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="w"> </span><span class="k">optional</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">fBs</span><span class="w"></span>
-<span class="w">  </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="w"> </span><span class="k">optional</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">fSunPct</span><span class="w"></span>
-<span class="w">  </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">)</span><span class="w">                       </span><span class="kd">::</span><span class="w"> </span><span class="n">fReferenceET0</span><span class="w"></span>
-
-<span class="w">  </span><span class="c">! [ LOCALS ]</span>
-<span class="w">  </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_double</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">dRa</span><span class="w"></span>
-<span class="w">  </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_double</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">dDelta</span><span class="w"></span>
-<span class="w">  </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_double</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">dOmega_s</span><span class="w"></span>
-<span class="w">  </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_double</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">dD_r</span><span class="w"></span>
-<span class="w">  </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_double</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">dRs</span><span class="w"></span>
-<span class="w">  </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">)</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">fTAvg</span><span class="w"></span>
-
-<span class="w">  </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_double</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">dAs_l</span><span class="w"></span>
-<span class="w">  </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_double</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">dBs_l</span><span class="w"></span>
-<span class="w">  </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_double</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">dSunPct_l</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="w"> </span><span class="n">fAs</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">    </span><span class="n">dAs_l</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fAs</span><span class="w"></span>
-<span class="w">  </span><span class="k">else</span>
-<span class="k">    </span><span class="n">dAs_l</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.25_c_double</span><span class="w"></span>
-<span class="w">  </span><span class="k">endif</span>
-
-<span class="k">  if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="w"> </span><span class="n">fBs</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">    </span><span class="n">dBs_l</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fBs</span><span class="w"></span>
-<span class="w">  </span><span class="k">else</span>
-<span class="k">    </span><span class="n">dBs_l</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.5_c_double</span><span class="w"></span>
-<span class="w">  </span><span class="k">endif</span>
-
-<span class="k">  if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="w"> </span><span class="n">fSunPct</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">    </span><span class="n">dSunPct_l</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fSunPct</span><span class="w"></span>
-<span class="w">  </span><span class="k">else</span>
-<span class="k">    </span><span class="n">dSunPct_l</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">estimate_percent_of_possible_sunshine__psun</span><span class="p">(</span><span class="n">fTMax</span><span class="o">=</span><span class="n">F_to_K</span><span class="p">(</span><span class="w"> </span><span class="n">fTMax</span><span class="w"> </span><span class="p">),</span><span class="w"> </span><span class="n">fTMin</span><span class="o">=</span><span class="n">F_to_K</span><span class="p">(</span><span class="w"> </span><span class="n">fTMin</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">  </span><span class="k">endif</span>
-
-
-<span class="k">  </span><span class="n">fTAvg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">fTMin</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">fTMax</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2_c_float</span><span class="w"></span>
-
-<span class="c">!  fD_r = 1.0_c_float + 0.033_c_float * cos( TWOPI * iDayOfYear / iNumDaysInYear )</span>
-
-<span class="w">  </span><span class="n">dD_r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">relative_earth_sun_distance__D_r</span><span class="p">(</span><span class="w"> </span><span class="n">iDayOfYear</span><span class="o">=</span><span class="n">iDayOfYear</span><span class="p">,</span><span class="w"> </span><span class="n">iNumDaysInYear</span><span class="o">=</span><span class="n">iNumDaysInYear</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="c">!  fDelta = 0.4093_c_float * sin( (TWOPI * iDayOfYear / iNumDaysInYear ) - 1.405_c_float )</span>
-
-<span class="w">  </span><span class="n">dDelta</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">solar_declination_simple__delta</span><span class="p">(</span><span class="w"> </span><span class="n">iDayOfYear</span><span class="o">=</span><span class="n">iDayOfYear</span><span class="p">,</span><span class="w"> </span><span class="n">iNumDaysInYear</span><span class="o">=</span><span class="n">iNumDaysInYear</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="c">!  fOmega_s = acos( -tan(fLatitude) * tan(fDelta) )</span>
-
-<span class="w">  </span><span class="n">dOmega_s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sunrise_sunset_angle__omega_s</span><span class="p">(</span><span class="w"> </span><span class="kt">real</span><span class="p">(</span><span class="w"> </span><span class="n">fLatitude</span><span class="p">,</span><span class="w"> </span><span class="kt">c_double</span><span class="p">),</span><span class="w"> </span><span class="n">dDelta</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="c">!  dSo = 2.44722_c_float * 15.392_c_float * dD_r * (     dOmega_s  * sin(dLatitude) * sin(dDelta) + &amp;</span>
-<span class="c">!                                                  sin(dOmega_s) * cos(dLatitude) * cos(dDelta) )</span>
-
-<span class="w">  </span><span class="n">dRa</span><span class="w"> </span><span class="o">=</span><span class="w">  </span><span class="n">extraterrestrial_radiation__Ra</span><span class="p">(</span><span class="n">dLatitude</span><span class="o">=</span><span class="kt">real</span><span class="p">(</span><span class="w"> </span><span class="n">fLatitude</span><span class="p">,</span><span class="w"> </span><span class="kt">c_double</span><span class="p">),</span><span class="w">    </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                                        </span><span class="n">dDelta</span><span class="o">=</span><span class="n">dDelta</span><span class="p">,</span><span class="w">                </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                                        </span><span class="n">dOmega_s</span><span class="o">=</span><span class="n">dOmega_s</span><span class="p">,</span><span class="w">            </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                                        </span><span class="n">dDsubR</span><span class="o">=</span><span class="n">dD_r</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="c">!  dSn = dSo * ( 1.0_c_float - fAlbedo_l ) * ( fAs_l + fBs_l * fSunPct_l / 100.0_c_float )</span>
-
-<span class="w">  </span><span class="n">dRs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">solar_radiation__Rs</span><span class="p">(</span><span class="n">dRa</span><span class="o">=</span><span class="n">dRa</span><span class="p">,</span><span class="w"> </span><span class="n">dAs</span><span class="o">=</span><span class="n">dAs_l</span><span class="p">,</span><span class="w"> </span><span class="n">dBs</span><span class="o">=</span><span class="n">dBs_l</span><span class="p">,</span><span class="w"> </span><span class="n">fPctSun</span><span class="o">=</span><span class="n">dSunPct_l</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">fTAvg</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">rFREEZING</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">    </span><span class="n">fReferenceET0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0_c_float</span><span class="w"></span>
-<span class="w">  </span><span class="k">else</span><span class="w"></span>
-<span class="w">    </span><span class="c">! &#39;equivalent_evaporation&#39; yields the depth of water that could be evaporated for the</span>
-<span class="w">    </span><span class="c">! given solar radiation in mm</span>
-<span class="w">    </span><span class="n">fReferenceET0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="mf">0.014_c_float</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">fTavg</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">0.37_c_float</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">equivalent_evaporation</span><span class="p">(</span><span class="w"> </span><span class="n">dRs</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">MM_PER_IN</span><span class="w"></span>
-<span class="c">!    fReferenceET0 = UNIT_CONV * ( 0.025_c_float * fTAvg + 0.078_c_float ) * fSn</span>
-<span class="w">  </span><span class="k">end if</span><span class="w"></span>
-
-<span class="c">!&gt; @todo Check these equations against original paper.</span>
-
-<span class="c">!! original paper gives ET0 as:</span>
-
-<span class="c">!! Etp = ( 0.014 * Tavg - 0.37 ) * Rs</span>
-<span class="c">!</span>
-<span class="c">! where Rs is the solar radiation in inches per day</span>
-
-<span class="k">end function </span><span class="n">et_jh_calculate</span><span class="w"></span>
-</pre></div>
-
-    </section>
-    <br>
     
     </div>
   </div>
@@ -407,7 +307,7 @@
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-10-17T14:19:59.727997             </p>
+ on 2023-10-19T16:28:40.743458             </p>
           </div>
         </div>
         <br>

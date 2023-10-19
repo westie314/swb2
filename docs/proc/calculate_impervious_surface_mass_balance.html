@@ -73,7 +73,7 @@
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip"
                  data-bs-placement="bottom" data-html="true"
-                 title=" 0.2% of total for procedures.">26 statements</a>
+                 title=" 0.3% of total for procedures.">26 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -125,12 +125,6 @@
   
   
   
-    <div class="card card-primary">
-      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
-      <div class="list-group">
-        <a class="list-group-item" href="../proc/calculate_impervious_surface_mass_balance.html#src">calculate_impervious_surface_mass_balance</a>
-      </div>
-    </div>
 
 
   </div>
@@ -157,7 +151,7 @@
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-surface_storage~3"></span>
+              <span class="anchor" id="variable-surface_storage~2"></span>
               real(kind=c_double),
             </td>
 <td>intent(inout)</td>
@@ -172,7 +166,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-actual_et_impervious~3"></span>
+              <span class="anchor" id="variable-actual_et_impervious~2"></span>
               real(kind=c_double),
             </td>
 <td>intent(inout)</td>
@@ -202,7 +196,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-surface_storage_max~3"></span>
+              <span class="anchor" id="variable-surface_storage_max~2"></span>
               real(kind=c_float),
             </td>
 <td>intent(in)</td>
@@ -217,7 +211,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-storm_drain_capture~3"></span>
+              <span class="anchor" id="variable-storm_drain_capture~2"></span>
               real(kind=c_float),
             </td>
 <td>intent(inout)</td>
@@ -247,7 +241,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-net_rainfall~3"></span>
+              <span class="anchor" id="variable-net_rainfall~2"></span>
               real(kind=c_float),
             </td>
 <td>intent(in)</td>
@@ -262,7 +256,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-snowmelt~3"></span>
+              <span class="anchor" id="variable-snowmelt~2"></span>
               real(kind=c_float),
             </td>
 <td>intent(in)</td>
@@ -277,7 +271,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-runon~3"></span>
+              <span class="anchor" id="variable-runon~2"></span>
               real(kind=c_float),
             </td>
 <td>intent(in)</td>
@@ -292,7 +286,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-runoff~4"></span>
+              <span class="anchor" id="variable-runoff~3"></span>
               real(kind=c_float),
             </td>
 <td>intent(in)</td>
@@ -307,7 +301,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-fog~3"></span>
+              <span class="anchor" id="variable-fog~2"></span>
               real(kind=c_float),
             </td>
 <td>intent(in)</td>
@@ -322,7 +316,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-reference_et0~6"></span>
+              <span class="anchor" id="variable-reference_et0~5"></span>
               real(kind=c_float),
             </td>
 <td>intent(in)</td>
@@ -337,7 +331,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-pervious_fraction~3"></span>
+              <span class="anchor" id="variable-pervious_fraction~2"></span>
               real(kind=c_float),
             </td>
 <td>intent(in)</td>
@@ -365,83 +359,6 @@
 
 
     
-    <section>
-    <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre><span></span><span class="w">   </span><span class="k">elemental subroutine </span><span class="n">calculate_impervious_surface_mass_balance</span><span class="p">(</span><span class="w">      </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                          </span><span class="n">surface_storage</span><span class="p">,</span><span class="w">              </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                          </span><span class="n">actual_et_impervious</span><span class="p">,</span><span class="w">         </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">   	                                      </span><span class="n">paved_to_unpaved</span><span class="p">,</span><span class="w">             </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">   	                                      </span><span class="n">surface_storage_max</span><span class="p">,</span><span class="w">          </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                          </span><span class="n">storm_drain_capture</span><span class="p">,</span><span class="w">          </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                          </span><span class="n">storm_drain_capture_fraction</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">   	                                      </span><span class="n">net_rainfall</span><span class="p">,</span><span class="w">                 </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">   	                                      </span><span class="n">snowmelt</span><span class="p">,</span><span class="w">                     </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                          </span><span class="n">runon</span><span class="p">,</span><span class="w">                        </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                          </span><span class="n">runoff</span><span class="p">,</span><span class="w">                       </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                          </span><span class="n">fog</span><span class="p">,</span><span class="w">                          </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                          </span><span class="n">reference_et0</span><span class="p">,</span><span class="w">                </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                          </span><span class="n">pervious_fraction</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_double</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w">     </span><span class="kd">::</span><span class="w"> </span><span class="n">surface_storage</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_double</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w">     </span><span class="kd">::</span><span class="w"> </span><span class="n">actual_et_impervious</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w">      </span><span class="kd">::</span><span class="w"> </span><span class="n">paved_to_unpaved</span><span class="w">           </span><span class="c">! &#39;wadd&#39; in HWB</span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w">      </span><span class="kd">::</span><span class="w"> </span><span class="n">storm_drain_capture</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">         </span><span class="kd">::</span><span class="w"> </span><span class="n">storm_drain_capture_fraction</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">         </span><span class="kd">::</span><span class="w"> </span><span class="n">surface_storage_max</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">         </span><span class="kd">::</span><span class="w"> </span><span class="n">net_rainfall</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">         </span><span class="kd">::</span><span class="w"> </span><span class="n">snowmelt</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">         </span><span class="kd">::</span><span class="w"> </span><span class="n">runon</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">         </span><span class="kd">::</span><span class="w"> </span><span class="n">runoff</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">         </span><span class="kd">::</span><span class="w"> </span><span class="n">fog</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">         </span><span class="kd">::</span><span class="w"> </span><span class="n">reference_et0</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">         </span><span class="kd">::</span><span class="w"> </span><span class="n">pervious_fraction</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! [ LOCALS ]</span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">surface_storage_excess</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">impervious_fraction</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">surface_storage_l</span><span class="w"></span>
-
-<span class="c">!    if ( storm_drain_capture_fraction &gt;= 0.0_c_float ) then</span>
-
-
-<span class="w">    </span><span class="c">! NOTE: removed this conditional 16 May 2018: it appears that</span>
-<span class="w">    </span><span class="c">!       testing of this sort will underrepresent water in a cell</span>
-<span class="w">    </span><span class="c">!       because although the surface storage may be zero, the</span>
-<span class="w">    </span><span class="c">!       fraction impervious area may be nonzero and therefore will</span>
-<span class="w">    </span><span class="c">!       intercept water that should be shunted to the pervious area of</span>
-<span class="w">    </span><span class="c">!       the cell.</span>
-
-<span class="c">!    if ( surface_storage_max &gt; NEAR_ZERO ) then</span>
-
-<span class="w">    </span><span class="n">impervious_fraction</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.0_c_float</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">pervious_fraction</span><span class="w"></span>
-
-<span class="w">    </span><span class="n">surface_storage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">surface_storage</span><span class="w">                                        </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                      </span><span class="o">+</span><span class="w"> </span><span class="n">net_rainfall</span><span class="w">                                         </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                      </span><span class="o">+</span><span class="w"> </span><span class="n">fog</span><span class="w">                                                  </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                      </span><span class="o">+</span><span class="w"> </span><span class="n">snowmelt</span><span class="w">                                             </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                      </span><span class="o">-</span><span class="w"> </span><span class="n">runoff</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! **amount is reduced proportional to amount of impervious surface present**</span>
-<span class="w">    </span><span class="n">surface_storage_excess</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">max</span><span class="p">(</span><span class="w"> </span><span class="mf">0.0_c_float</span><span class="p">,</span><span class="w">                               </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                           </span><span class="p">(</span><span class="w"> </span><span class="n">surface_storage</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">surface_storage_max</span><span class="w"> </span><span class="p">)</span><span class="w">         </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                            </span><span class="o">*</span><span class="w"> </span><span class="n">impervious_fraction</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="n">surface_storage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">min</span><span class="p">(</span><span class="w"> </span><span class="n">surface_storage</span><span class="p">,</span><span class="w"> </span><span class="n">surface_storage_max</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="n">storm_drain_capture</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">surface_storage_excess</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">storm_drain_capture_fraction</span><span class="w"></span>
-
-<span class="w">    </span><span class="n">paved_to_unpaved</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">max</span><span class="p">(</span><span class="w"> </span><span class="mf">0.0_c_float</span><span class="p">,</span><span class="w">                                         </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                  </span><span class="n">surface_storage_excess</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">storm_drain_capture</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! now allow for evaporation</span>
-<span class="w">    </span><span class="n">actual_et_impervious</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">min</span><span class="p">(</span><span class="w"> </span><span class="n">reference_et0</span><span class="p">,</span><span class="w"> </span><span class="n">surface_storage</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="n">surface_storage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">max</span><span class="p">(</span><span class="w"> </span><span class="n">surface_storage</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">actual_et_impervious</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0_c_double</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">end subroutine </span><span class="n">calculate_impervious_surface_mass_balance</span><span class="w"></span>
-</pre></div>
-
-    </section>
-    <br>
     
     </div>
   </div>
@@ -458,7 +375,7 @@
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-10-17T14:19:59.727997             </p>
+ on 2023-10-19T16:28:40.743458             </p>
           </div>
         </div>
         <br>

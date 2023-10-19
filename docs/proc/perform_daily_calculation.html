@@ -73,7 +73,7 @@
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip"
                  data-bs-placement="bottom" data-html="true"
-                 title=" 0.2% of total for procedures.">43 statements</a>
+                 title=" 0.5% of total for procedures.">43 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -125,12 +125,6 @@
   
   
   
-    <div class="card card-primary">
-      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
-      <div class="list-group">
-        <a class="list-group-item" href="../proc/perform_daily_calculation.html#src">perform_daily_calculation</a>
-      </div>
-    </div>
 
 
   </div>
@@ -160,7 +154,7 @@ otherwise, the calculations are made in the natural packing order of the data st
         <tr>
             <td>
               <span class="anchor" id="variable-cells"></span>
-              class(<a href='../type/model_domain_t~2.html'>MODEL_DOMAIN_T</a>),
+              class(<a href='../type/model_domain_t.html'>MODEL_DOMAIN_T</a>),
             </td>
 <td>intent(inout)</td>
               <td></td>            <td>
@@ -187,214 +181,6 @@ otherwise, the calculations are made in the natural packing order of the data st
 
 
     
-    <section>
-    <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre><span></span><span class="w">  </span><span class="k">subroutine </span><span class="n">perform_daily_calculation</span><span class="p">(</span><span class="n">cells</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">class</span><span class="w"> </span><span class="p">(</span><span class="n">MODEL_DOMAIN_T</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">cells</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! [ LOCALS ]</span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">indx</span><span class="p">,</span><span class="w"> </span><span class="n">jndx</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">landuse_index</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! calls elemental</span>
-<span class="w">    </span><span class="k">call </span><span class="n">cells</span><span class="p">%</span><span class="n">calc_GDD</span><span class="p">()</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! calls elemental</span>
-<span class="w">    </span><span class="k">call </span><span class="n">cells</span><span class="p">%</span><span class="n">update_crop_coefficient</span><span class="p">()</span><span class="w"></span>
-<span class="w">    </span><span class="k">call </span><span class="n">cells</span><span class="p">%</span><span class="n">update_growing_season</span><span class="p">()</span><span class="w"></span>
-<span class="w">    </span><span class="k">call </span><span class="n">cells</span><span class="p">%</span><span class="n">update_rooting_depth</span><span class="p">()</span><span class="w"></span>
-<span class="w">    </span><span class="k">call </span><span class="n">cells</span><span class="p">%</span><span class="n">calc_reference_et</span><span class="p">()</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! update crop evapotranspiration; crop_coefficient_kcb defaults to 1.0</span>
-<span class="w">    </span><span class="n">cells</span><span class="p">%</span><span class="n">crop_etc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cells</span><span class="p">%</span><span class="n">reference_et0</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">cells</span><span class="p">%</span><span class="n">crop_coefficient_kcb</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! interception calculation *does* reflect the canopy fraction</span>
-<span class="w">    </span><span class="k">call </span><span class="n">cells</span><span class="p">%</span><span class="n">calc_interception</span><span class="p">()</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">call </span><span class="n">cells</span><span class="p">%</span><span class="n">calc_snowfall</span><span class="p">()</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! actually calculating *potential* snowmelt here; actual snowmelt determined</span>
-<span class="w">    </span><span class="c">! in &#39;calculate_snow_mass_balance&#39;</span>
-<span class="w">    </span><span class="k">call </span><span class="n">cells</span><span class="p">%</span><span class="n">calc_snowmelt</span><span class="p">()</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">call </span><span class="n">cells</span><span class="p">%</span><span class="n">calc_continuous_frozen_ground_index</span><span class="p">()</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! fog calculation does not explicitly consider canopy fraction</span>
-<span class="w">    </span><span class="k">call </span><span class="n">cells</span><span class="p">%</span><span class="n">calc_fog</span><span class="p">()</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! ! irrigation calculated as though entire cell is to be irrigated</span>
-<span class="w">    </span><span class="c">! call cells%calc_irrigation()</span>
-
-<span class="w">    </span><span class="k">call </span><span class="n">calculate_interception_mass_balance</span><span class="p">(</span><span class="w"> </span><span class="n">interception_storage</span><span class="o">=</span><span class="n">cells</span><span class="p">%</span><span class="n">interception_storage</span><span class="p">,</span><span class="w">     </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                              </span><span class="n">actual_et_interception</span><span class="o">=</span><span class="n">cells</span><span class="p">%</span><span class="n">actual_et_interception</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                              </span><span class="n">interception</span><span class="o">=</span><span class="n">cells</span><span class="p">%</span><span class="n">interception</span><span class="p">,</span><span class="w">                     </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                              </span><span class="n">reference_et0</span><span class="o">=</span><span class="n">cells</span><span class="p">%</span><span class="n">reference_et0</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">call </span><span class="n">calculate_snow_mass_balance</span><span class="p">(</span><span class="w"> </span><span class="n">snow_storage</span><span class="o">=</span><span class="n">cells</span><span class="p">%</span><span class="n">snow_storage</span><span class="p">,</span><span class="w">                 </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                      </span><span class="n">potential_snowmelt</span><span class="o">=</span><span class="n">cells</span><span class="p">%</span><span class="n">potential_snowmelt</span><span class="p">,</span><span class="w">     </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                      </span><span class="n">snowmelt</span><span class="o">=</span><span class="n">cells</span><span class="p">%</span><span class="n">snowmelt</span><span class="p">,</span><span class="w">                         </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                      </span><span class="n">net_snowfall</span><span class="o">=</span><span class="n">cells</span><span class="p">%</span><span class="n">net_snowfall</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">     </span><span class="n">cells</span><span class="p">%</span><span class="n">runon</span><span class="w">          </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0_c_float</span><span class="w"></span>
-<span class="w">     </span><span class="n">cells</span><span class="p">%</span><span class="n">runoff</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0_c_float</span><span class="w"></span>
-<span class="w">     </span><span class="n">cells</span><span class="p">%</span><span class="n">runoff_outside</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0_c_float</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">!&gt; if flow routing is enabled, the calculations will be made in order from upslope to downslope;</span>
-<span class="w">    </span><span class="c">!! otherwise, the calculations are made in the natural packing order of the data structure</span>
-<span class="w">    </span><span class="k">do </span><span class="n">jndx</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nb">ubound</span><span class="p">(</span><span class="w"> </span><span class="n">cells</span><span class="p">%</span><span class="n">sort_order</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">      </span><span class="c">! sort_order is a simple series of index values from 1 to # active cells</span>
-<span class="w">      </span><span class="c">! indx represents the index of the cell if processed in upstream to downstream order</span>
-
-<span class="w">      </span><span class="n">indx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cells</span><span class="p">%</span><span class="n">sort_order</span><span class="p">(</span><span class="w"> </span><span class="n">jndx</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">      </span><span class="n">landuse_index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cells</span><span class="p">%</span><span class="n">landuse_index</span><span class="p">(</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">      </span><span class="k">associate</span><span class="w"> </span><span class="p">(</span><span class="w">                                                                                   </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="n">net_infiltration</span><span class="w">                  </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">cells</span><span class="p">%</span><span class="n">net_infiltration</span><span class="p">(</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="p">),</span><span class="w">                        </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="n">pervious_fraction</span><span class="w">                 </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">cells</span><span class="p">%</span><span class="n">pervious_fraction</span><span class="p">(</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="p">),</span><span class="w">                       </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="n">irrigation</span><span class="w">                        </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">cells</span><span class="p">%</span><span class="n">irrigation</span><span class="p">(</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="p">),</span><span class="w">                              </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="n">direct_net_infiltration</span><span class="w">           </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">cells</span><span class="p">%</span><span class="n">direct_net_infiltration</span><span class="p">(</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="p">),</span><span class="w">                 </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="n">direct_soil_moisture</span><span class="w">              </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">cells</span><span class="p">%</span><span class="n">direct_soil_moisture</span><span class="p">(</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="p">),</span><span class="w">                    </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="n">surface_storage</span><span class="w">                   </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">cells</span><span class="p">%</span><span class="n">surface_storage</span><span class="p">(</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="p">),</span><span class="w">                         </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="n">actual_et_impervious</span><span class="w">              </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">cells</span><span class="p">%</span><span class="n">actual_et_impervious</span><span class="p">(</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="p">),</span><span class="w">                    </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="n">actual_et_soil</span><span class="w">                    </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">cells</span><span class="p">%</span><span class="n">actual_et_soil</span><span class="p">(</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="p">),</span><span class="w">                          </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="n">actual_et</span><span class="w">                         </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">cells</span><span class="p">%</span><span class="n">actual_et</span><span class="p">(</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="p">),</span><span class="w">                               </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="n">surface_storage_excess</span><span class="w">            </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">cells</span><span class="p">%</span><span class="n">surface_storage_excess</span><span class="p">(</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="p">),</span><span class="w">                  </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="n">surface_storage_max</span><span class="w">               </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">cells</span><span class="p">%</span><span class="n">surface_storage_max</span><span class="p">(</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="p">),</span><span class="w">                     </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="n">soil_storage_max</span><span class="w">                  </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">cells</span><span class="p">%</span><span class="n">soil_storage_max</span><span class="p">(</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="p">),</span><span class="w">                        </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="n">soil_storage</span><span class="w">                      </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">cells</span><span class="p">%</span><span class="n">soil_storage</span><span class="p">(</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="p">),</span><span class="w">                            </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="n">storm_drain_capture</span><span class="w">               </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">cells</span><span class="p">%</span><span class="n">storm_drain_capture</span><span class="p">(</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="p">),</span><span class="w">                     </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="n">gross_precipitation</span><span class="w">               </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">cells</span><span class="p">%</span><span class="n">gross_precip</span><span class="p">(</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="p">),</span><span class="w">                            </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="n">rainfall</span><span class="w">                          </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">cells</span><span class="p">%</span><span class="n">rainfall</span><span class="p">(</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="p">),</span><span class="w">                                </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="n">net_rainfall</span><span class="w">                      </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">cells</span><span class="p">%</span><span class="n">net_rainfall</span><span class="p">(</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="p">),</span><span class="w">                            </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="n">snowmelt</span><span class="w">                          </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">cells</span><span class="p">%</span><span class="n">snowmelt</span><span class="p">(</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="p">),</span><span class="w">                                </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="n">snowfall</span><span class="w">                          </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">cells</span><span class="p">%</span><span class="n">snowfall</span><span class="p">(</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="p">),</span><span class="w">                                </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="n">runon</span><span class="w">                             </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">cells</span><span class="p">%</span><span class="n">runon</span><span class="p">(</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="p">),</span><span class="w">                                   </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="n">runoff</span><span class="w">                            </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">cells</span><span class="p">%</span><span class="n">runoff</span><span class="p">(</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="p">),</span><span class="w">                                  </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="n">inflow</span><span class="w">                            </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">cells</span><span class="p">%</span><span class="n">inflow</span><span class="p">(</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="p">),</span><span class="w">                                  </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="n">delta_soil_storage</span><span class="w">                </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">cells</span><span class="p">%</span><span class="n">delta_soil_storage</span><span class="p">(</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="p">),</span><span class="w">                      </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="n">infiltration</span><span class="w">                      </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">cells</span><span class="p">%</span><span class="n">infiltration</span><span class="p">(</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="p">),</span><span class="w">                            </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="n">fog</span><span class="w">                               </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">cells</span><span class="p">%</span><span class="n">fog</span><span class="p">(</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="p">),</span><span class="w">                                     </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="n">interception</span><span class="w">                      </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">cells</span><span class="p">%</span><span class="n">interception</span><span class="p">(</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="p">),</span><span class="w">                            </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="n">reference_et0</span><span class="w">                     </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">cells</span><span class="p">%</span><span class="n">reference_et0</span><span class="p">(</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="p">),</span><span class="w">                           </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="n">actual_et_interception</span><span class="w">            </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">cells</span><span class="p">%</span><span class="n">actual_et_interception</span><span class="p">(</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="p">),</span><span class="w">                  </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="n">canopy_cover_fraction</span><span class="w">             </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">cells</span><span class="p">%</span><span class="n">canopy_cover_fraction</span><span class="p">(</span><span class="n">indx</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">        </span><span class="c">! inflow is calculated over the entire cell (pervious + impervious) area</span>
-<span class="w">        </span><span class="n">inflow</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">max</span><span class="p">(</span><span class="w"> </span><span class="mf">0.0_c_float</span><span class="p">,</span><span class="w"> </span><span class="n">runon</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">net_rainfall</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">fog</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">snowmelt</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">        </span><span class="k">call </span><span class="n">cells</span><span class="p">%</span><span class="n">calc_runoff</span><span class="p">(</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">        </span><span class="c">! calculating irrigation here because the Hawaii Water Budget method</span>
-<span class="w">        </span><span class="c">! needs an updated monthly runoff value to accurately calculate the</span>
-<span class="w">        </span><span class="c">! estimated irrigation demand; previously this value was wrong on the</span>
-<span class="w">        </span><span class="c">! first day of each month, since the previous month&#39;s runoff value was</span>
-<span class="w">        </span><span class="c">! being used to estimate the current month&#39;s irrigation demand</span>
-<span class="w">        </span><span class="k">call </span><span class="n">cells</span><span class="p">%</span><span class="n">calc_irrigation</span><span class="p">(</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">        </span><span class="c">! this is a convoluted call: we are getting an individual capture fraction,</span>
-<span class="w">        </span><span class="c">! but supplying a pointer to the active cells so that the first time through,</span>
-<span class="w">        </span><span class="c">! gridded data (if supplied) are updated</span>
-<span class="w">        </span><span class="k">call </span><span class="n">storm_drain_capture_calculate</span><span class="p">(</span><span class="w"> </span><span class="n">storm_drain_capture</span><span class="p">,</span><span class="w"> </span><span class="n">indx</span><span class="p">,</span><span class="w"> </span><span class="n">cells</span><span class="p">%</span><span class="n">active</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">        </span><span class="c">! prevent calculated runoff from exceeding the day&#39;s inflow;</span>
-<span class="w">        </span><span class="c">! this can happen when using the monthly runoff fraction method</span>
-<span class="w">        </span><span class="c">!runoff = max( min( inflow, runoff ), 0.0_c_float )</span>
-
-<span class="w">        </span><span class="c">! this routine now generates *all* outputs CORRECTED FOR PERVIOUS AREA</span>
-<span class="w">        </span><span class="k">call </span><span class="n">calculate_impervious_surface_mass_balance</span><span class="p">(</span><span class="w">                                         </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">          </span><span class="n">surface_storage</span><span class="o">=</span><span class="n">surface_storage</span><span class="p">,</span><span class="w">                                                      </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">          </span><span class="n">actual_et_impervious</span><span class="o">=</span><span class="n">actual_et_impervious</span><span class="p">,</span><span class="w">                                            </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">          </span><span class="n">paved_to_unpaved</span><span class="o">=</span><span class="n">surface_storage_excess</span><span class="p">,</span><span class="w">                                              </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">          </span><span class="n">surface_storage_max</span><span class="o">=</span><span class="n">surface_storage_max</span><span class="p">,</span><span class="w">                                              </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">          </span><span class="n">storm_drain_capture</span><span class="o">=</span><span class="n">storm_drain_capture</span><span class="p">,</span><span class="w">                                              </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">          </span><span class="n">storm_drain_capture_fraction</span><span class="o">=</span><span class="n">STORM_DRAIN_CAPTURE_FRACTION</span><span class="p">(</span><span class="n">indx</span><span class="p">),</span><span class="w">                      </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">          </span><span class="n">net_rainfall</span><span class="o">=</span><span class="n">net_rainfall</span><span class="p">,</span><span class="w">                                                            </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">          </span><span class="n">snowmelt</span><span class="o">=</span><span class="n">snowmelt</span><span class="p">,</span><span class="w">                                                                    </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">          </span><span class="n">runon</span><span class="o">=</span><span class="n">runon</span><span class="p">,</span><span class="w">                                                                          </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">          </span><span class="n">runoff</span><span class="o">=</span><span class="n">runoff</span><span class="p">,</span><span class="w">                                                                        </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">          </span><span class="n">fog</span><span class="o">=</span><span class="n">fog</span><span class="p">,</span><span class="w">                                                                              </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">          </span><span class="n">reference_et0</span><span class="o">=</span><span class="n">reference_et0</span><span class="p">,</span><span class="w">                                                          </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">          </span><span class="n">pervious_fraction</span><span class="o">=</span><span class="n">pervious_fraction</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">        </span><span class="c">! ** this statement commented out since pervious fraction correction is</span>
-<span class="w">        </span><span class="c">!    now being performed in the &#39;mass_balance__impervious_surface&#39; directly</span>
-<span class="w">        </span><span class="c">! modify the surface storage in inches as if the amount calculated for the impervious area</span>
-<span class="w">        </span><span class="c">! were to be redistributed uniformly over the total area of the cell</span>
-<span class="w">        </span><span class="c">!surface_storage_excess = surface_storage_excess * ( 1.0_c_float - pervious_fraction )</span>
-
-<span class="w">        </span><span class="c">! e.g. septic system discharge enters here...</span>
-<span class="w">        </span><span class="k">call </span><span class="n">cells</span><span class="p">%</span><span class="n">calc_direct_soil_moisture</span><span class="p">(</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">        </span><span class="c">! irrigation not considered to be a contributor to runoff...in addition, infiltration</span>
-<span class="w">        </span><span class="c">! term is calculated with respect to the pervious fraction of the cell</span>
-<span class="w">        </span><span class="n">infiltration</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">max</span><span class="p">(</span><span class="w"> </span><span class="mf">0.0_c_float</span><span class="p">,</span><span class="w">                                       </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                             </span><span class="p">(</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">runon</span><span class="w">                                         </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                            </span><span class="o">+</span><span class="w"> </span><span class="n">net_rainfall</span><span class="w">                                     </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                            </span><span class="o">+</span><span class="w"> </span><span class="n">fog</span><span class="w">                                              </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                            </span><span class="o">+</span><span class="w"> </span><span class="n">snowmelt</span><span class="w">                                         </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                            </span><span class="o">+</span><span class="w"> </span><span class="n">irrigation</span><span class="w">                                       </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                            </span><span class="o">+</span><span class="w"> </span><span class="n">direct_soil_moisture</span><span class="w">                             </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                            </span><span class="o">-</span><span class="w"> </span><span class="n">runoff</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">pervious_fraction</span><span class="w">                     </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                            </span><span class="o">+</span><span class="w"> </span><span class="n">surface_storage_excess</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">pervious_fraction</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">        </span><span class="c">! the following call updates bound variable actual_et_soil</span>
-<span class="w">        </span><span class="k">call </span><span class="n">cells</span><span class="p">%</span><span class="n">calc_actual_et</span><span class="p">(</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">        </span><span class="c">! reduce soil actual et by the amount of interception et, if any</span>
-<span class="w">        </span><span class="c">!actual_et_soil = max( actual_et_soil - actual_et_interception, 0.0_c_float )</span>
-
-<span class="w">        </span><span class="c">! OK, supplying a reduced value of reference ET0 to FAO56_two_stage calc</span>
-
-<span class="w">        </span><span class="c">!actual_et_soil = max( min( actual_et_soil, reference_ET0 - actual_et_interception), 0.0_c_float )</span>
-
-<span class="w">        </span><span class="k">call </span><span class="n">calculate_soil_mass_balance</span><span class="p">(</span><span class="w"> </span><span class="n">net_infiltration</span><span class="o">=</span><span class="n">net_infiltration</span><span class="p">,</span><span class="w">             </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                          </span><span class="n">soil_storage</span><span class="o">=</span><span class="n">soil_storage</span><span class="p">,</span><span class="w">                     </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                          </span><span class="n">soil_storage_max</span><span class="o">=</span><span class="n">soil_storage_max</span><span class="p">,</span><span class="w">             </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                          </span><span class="n">delta_soil_storage</span><span class="o">=</span><span class="n">delta_soil_storage</span><span class="p">,</span><span class="w">         </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                          </span><span class="n">actual_et_soil</span><span class="o">=</span><span class="n">actual_et_soil</span><span class="p">,</span><span class="w">                 </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                          </span><span class="n">reference_et0</span><span class="o">=</span><span class="n">reference_et0</span><span class="p">,</span><span class="w">                   </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                          </span><span class="n">infiltration</span><span class="o">=</span><span class="n">infiltration</span><span class="p">,</span><span class="w">                     </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                          </span><span class="n">runoff</span><span class="o">=</span><span class="n">runoff</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">        </span><span class="c">! actual et for the entire cell is the weighted average of the ET for pervious and impervious</span>
-<span class="w">        </span><span class="c">! fractions of the cell</span>
-<span class="w">        </span><span class="n">actual_et</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">actual_et_soil</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">pervious_fraction</span><span class="w">                                   </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                   </span><span class="o">+</span><span class="w"> </span><span class="n">actual_et_impervious</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="mf">1.0_c_float</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">pervious_fraction</span><span class="w"> </span><span class="p">)</span><span class="w">          </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                          </span><span class="o">+</span><span class="w"> </span><span class="n">actual_et_interception</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">canopy_cover_fraction</span><span class="w"></span>
-
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">runoff</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mf">0.</span><span class="p">)</span><span class="w">                                                                               </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">          </span><span class="k">call </span><span class="n">LOGS</span><span class="p">%</span><span class="k">write</span><span class="p">(</span><span class="w"> </span><span class="s2">&quot;line &quot;</span><span class="o">//</span><span class="n">asCharacter</span><span class="p">(</span><span class="err">__</span><span class="n">LINE__</span><span class="p">)</span><span class="o">//</span><span class="s2">&quot;: Negative runoff, indx= &quot;</span><span class="w">                  </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                           </span><span class="o">//</span><span class="n">asCharacter</span><span class="p">(</span><span class="n">indx</span><span class="p">)</span><span class="o">//</span><span class="s2">&quot; col, row= &quot;</span><span class="o">//</span><span class="n">asCharacter</span><span class="p">(</span><span class="n">cells</span><span class="p">%</span><span class="n">col_num_1D</span><span class="p">(</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="p">))</span><span class="w">    </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                           </span><span class="o">//</span><span class="s2">&quot;, &quot;</span><span class="o">//</span><span class="n">asCharacter</span><span class="p">(</span><span class="w"> </span><span class="n">cells</span><span class="p">%</span><span class="n">row_num_1D</span><span class="p">(</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">        </span><span class="k">call </span><span class="n">cells</span><span class="p">%</span><span class="n">calc_direct_net_infiltration</span><span class="p">(</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">        </span><span class="c">! reporting of net_infiltration and irrigation must be adjusted to account for zero</span>
-<span class="w">        </span><span class="c">! irrigation and net_infiltration associated with the impervious areas</span>
-
-<span class="w">        </span><span class="n">net_infiltration</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">net_infiltration</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">pervious_fraction</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">direct_net_infiltration</span><span class="w"></span>
-<span class="w">        </span><span class="n">irrigation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">irrigation</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">pervious_fraction</span><span class="w"></span>
-
-<span class="w">        </span><span class="k">call </span><span class="n">cells</span><span class="p">%</span><span class="n">calc_maximum_net_infiltration</span><span class="p">(</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">        </span><span class="c">! NOTE: only way for &quot;runon&quot; to be positive is if D8 flow routing</span>
-<span class="w">        </span><span class="c">!       is enabled.</span>
-
-<span class="w">        </span><span class="c">! rejected net_infiltration + runoff will be routed downslope if routing option is turned on</span>
-<span class="w">        </span><span class="k">call </span><span class="n">cells</span><span class="p">%</span><span class="n">calc_routing</span><span class="p">(</span><span class="w"> </span><span class="nb">index</span><span class="o">=</span><span class="n">indx</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">      </span><span class="k">end associate</span>
-
-<span class="k">    enddo</span>
-
-<span class="k">  end subroutine </span><span class="n">perform_daily_calculation</span><span class="w"></span>
-</pre></div>
-
-    </section>
-    <br>
     
     </div>
   </div>
@@ -411,7 +197,7 @@ otherwise, the calculations are made in the natural packing order of the data st
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-10-17T14:19:59.727997             </p>
+ on 2023-10-19T16:28:40.743458             </p>
           </div>
         </div>
         <br>

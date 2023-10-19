@@ -73,7 +73,7 @@
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip"
                  data-bs-placement="bottom" data-html="true"
-                 title=" 0.3% of total for procedures.">48 statements</a>
+                 title=" 0.6% of total for procedures.">48 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -86,7 +86,7 @@
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb justify-content-end mb-0">
                 <li class="breadcrumb-item"><a href='../sourcefile/model_domain.f90.html'>model_domain.F90</a></li>
-                <li class="breadcrumb-item"><a href='../module/model_domain~2.html'>model_domain</a></li>
+                <li class="breadcrumb-item"><a href='../module/model_domain.html'>model_domain</a></li>
             <li class="breadcrumb-item active" aria-current="page">set_default_procedure_pointers_sub</li>
           </ol>
         </nav>
@@ -125,12 +125,6 @@
   
   
   
-    <div class="card card-primary">
-      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
-      <div class="list-group">
-        <a class="list-group-item" href="../proc/set_default_procedure_pointers_sub.html#src">set_default_procedure_pointers_sub</a>
-      </div>
-    </div>
 
 
   </div>
@@ -147,7 +141,7 @@ this routine necessary because Intel compiler does not support initialization
 of defined type procedure pointers within the defined type definition</p>
 
     <h3>Type Bound</h3>
-    <p><a href='../type/model_domain_t~2.html'>MODEL_DOMAIN_T</a></p>
+    <p><a href='../type/model_domain_t.html'>MODEL_DOMAIN_T</a></p>
 
     <h3>Arguments</h3>
         <table class="table table-striped varlist">
@@ -163,7 +157,7 @@ of defined type procedure pointers within the defined type definition</p>
         <tr>
             <td>
               <span class="anchor" id="variable-this~164"></span>
-              class(<a href='../type/model_domain_t~2.html'>MODEL_DOMAIN_T</a>),
+              class(<a href='../type/model_domain_t.html'>MODEL_DOMAIN_T</a>),
             </td>
 <td>intent(inout)</td>
               <td></td>            <td>
@@ -190,74 +184,6 @@ of defined type procedure pointers within the defined type definition</p>
 
 
     
-    <section>
-    <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre><span></span><span class="w">  </span><span class="k">subroutine </span><span class="n">set_default_procedure_pointers_sub</span><span class="p">(</span><span class="n">this</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">class</span><span class="w"> </span><span class="p">(</span><span class="n">MODEL_DOMAIN_T</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w">    </span><span class="kd">::</span><span class="w"> </span><span class="n">this</span><span class="w"></span>
-
-<span class="w">     </span><span class="c">!&gt; initialize procedure pointers such that the default methods are in place</span>
-<span class="w">     </span><span class="c">!! this routine necessary because Intel compiler does not support initialization</span>
-<span class="w">     </span><span class="c">!! of defined type procedure pointers within the defined type definition</span>
-<span class="w">     </span><span class="n">this</span><span class="p">%</span><span class="n">init_interception</span><span class="w">            </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">model_initialize_interception_bucket</span><span class="w"></span>
-<span class="w">     </span><span class="n">this</span><span class="p">%</span><span class="n">init_runoff</span><span class="w">                  </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">model_initialize_runoff_curve_number</span><span class="w"></span>
-<span class="w">     </span><span class="n">this</span><span class="p">%</span><span class="n">init_reference_et</span><span class="w">            </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">model_initialize_et_hargreaves</span><span class="w"></span>
-<span class="w">     </span><span class="n">this</span><span class="p">%</span><span class="n">init_actual_et</span><span class="w">               </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">model_initialize_actual_et_thornthwaite_mather_eqns</span><span class="w"></span>
-<span class="w">     </span><span class="n">this</span><span class="p">%</span><span class="n">init_routing</span><span class="w">                 </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">model_initialize_routing_D8</span><span class="w"></span>
-<span class="w">     </span><span class="n">this</span><span class="p">%</span><span class="n">init_soil_storage_max</span><span class="w">        </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">model_initialize_soil_storage_max_internally_calculated</span><span class="w"></span>
-<span class="w">     </span><span class="n">this</span><span class="p">%</span><span class="n">init_snowfall</span><span class="w">                </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">model_initialize_snowfall_original</span><span class="w"></span>
-<span class="w">     </span><span class="n">this</span><span class="p">%</span><span class="n">init_snowmelt</span><span class="w">                </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">model_initialize_snowmelt_original</span><span class="w"></span>
-<span class="w">     </span><span class="n">this</span><span class="p">%</span><span class="n">init_precipitation_data</span><span class="w">      </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">model_initialize_precip_normal</span><span class="w"></span>
-<span class="w">     </span><span class="n">this</span><span class="p">%</span><span class="n">init_fog</span><span class="w">                     </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">model_initialize_fog_none</span><span class="w"></span>
-<span class="w">     </span><span class="n">this</span><span class="p">%</span><span class="n">init_irrigation</span><span class="w">              </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">model_initialize_irrigation_none</span><span class="w"></span>
-<span class="w">     </span><span class="n">this</span><span class="p">%</span><span class="n">init_direct_net_infiltration</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">model_initialize_direct_net_infiltration_gridded</span><span class="w"></span>
-<span class="w">     </span><span class="n">this</span><span class="p">%</span><span class="n">init_direct_soil_moisture</span><span class="w">    </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">model_initialize_direct_soil_moisture_none</span><span class="w"></span>
-<span class="w">     </span><span class="n">this</span><span class="p">%</span><span class="n">update_landuse_codes</span><span class="w">         </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">model_update_landuse_codes_static</span><span class="w"></span>
-<span class="w">     </span><span class="n">this</span><span class="p">%</span><span class="n">init_GDD</span><span class="w">                     </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">model_initialize_GDD</span><span class="w"></span>
-<span class="w">     </span><span class="n">this</span><span class="p">%</span><span class="n">init_growing_season</span><span class="w">          </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">model_initialize_growing_season</span><span class="w"></span>
-<span class="w">     </span><span class="n">this</span><span class="p">%</span><span class="n">init_AWC</span><span class="w">                     </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">model_initialize_available_water_content_gridded</span><span class="w"></span>
-<span class="w">     </span><span class="n">this</span><span class="p">%</span><span class="n">init_crop_coefficient</span><span class="w">        </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">model_initialize_crop_coefficient_none</span><span class="w"></span>
-<span class="w">     </span><span class="n">this</span><span class="p">%</span><span class="n">calc_interception</span><span class="w">            </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">model_calculate_interception_bucket</span><span class="w"></span>
-<span class="w">     </span><span class="n">this</span><span class="p">%</span><span class="n">update_crop_coefficient</span><span class="w">      </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">model_update_crop_coefficient_none</span><span class="w"></span>
-<span class="w">     </span><span class="n">this</span><span class="p">%</span><span class="n">update_irrigation_mask</span><span class="w">       </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">model_update_irrigation_mask</span><span class="w"></span>
-
-<span class="w">     </span><span class="n">this</span><span class="p">%</span><span class="n">update_rooting_depth</span><span class="w">         </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">model_update_rooting_depth_none</span><span class="w"></span>
-
-<span class="w">     </span><span class="n">this</span><span class="p">%</span><span class="n">init_continuous_frozen_ground_index</span><span class="w">  </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">model_initialize_continuous_frozen_ground_index</span><span class="w"></span>
-<span class="w">     </span><span class="n">this</span><span class="p">%</span><span class="n">calc_continuous_frozen_ground_index</span><span class="w">  </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">model_calculate_continuous_frozen_ground_index</span><span class="w"></span>
-
-<span class="w">     </span><span class="n">this</span><span class="p">%</span><span class="n">init_maximum_net_infiltration</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">model_initialize_maximum_net_infiltration_gridded</span><span class="w"></span>
-<span class="w">     </span><span class="n">this</span><span class="p">%</span><span class="n">calc_maximum_net_infiltration</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">model_calculate_maximum_net_infiltration_gridded</span><span class="w"></span>
-
-<span class="w">     </span><span class="n">this</span><span class="p">%</span><span class="n">calc_runoff</span><span class="w">             </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">model_calculate_runoff_curve_number</span><span class="w"></span>
-
-<span class="w">     </span><span class="n">this</span><span class="p">%</span><span class="n">calc_reference_et</span><span class="w">       </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">model_calculate_et_hargreaves</span><span class="w"></span>
-<span class="w">     </span><span class="n">this</span><span class="p">%</span><span class="n">calc_routing</span><span class="w">            </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">model_calculate_routing_D8</span><span class="w"></span>
-
-<span class="w">     </span><span class="n">this</span><span class="p">%</span><span class="n">calc_actual_et</span><span class="w">          </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">model_calculate_actual_et_thornthwaite_mather_eqns</span><span class="w"></span>
-<span class="w">     </span><span class="n">this</span><span class="p">%</span><span class="n">calc_snowfall</span><span class="w">           </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">model_calculate_snowfall_original</span><span class="w"></span>
-<span class="w">     </span><span class="n">this</span><span class="p">%</span><span class="n">calc_snowmelt</span><span class="w">           </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">model_calculate_snowmelt_original</span><span class="w"></span>
-<span class="w">     </span><span class="n">this</span><span class="p">%</span><span class="n">calc_fog</span><span class="w">                </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">model_calculate_fog_none</span><span class="w"></span>
-<span class="w">     </span><span class="n">this</span><span class="p">%</span><span class="n">calc_irrigation</span><span class="w">         </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">model_calculate_irrigation_none</span><span class="w"></span>
-<span class="w">     </span><span class="n">this</span><span class="p">%</span><span class="n">calc_GDD</span><span class="w">                </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">model_calculate_GDD</span><span class="w"></span>
-<span class="w">     </span><span class="n">this</span><span class="p">%</span><span class="n">update_growing_season</span><span class="w">   </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">model_update_growing_season</span><span class="w"></span>
-<span class="w">     </span><span class="n">this</span><span class="p">%</span><span class="n">calc_direct_net_infiltration</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">model_calculate_direct_net_infiltration_none</span><span class="w"></span>
-<span class="w">     </span><span class="n">this</span><span class="p">%</span><span class="n">calc_direct_soil_moisture</span><span class="w">    </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">model_calculate_direct_soil_moisture_none</span><span class="w"></span>
-
-<span class="w">     </span><span class="n">this</span><span class="p">%</span><span class="n">output_irrigation</span><span class="w">       </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">model_output_irrigation_none</span><span class="w"></span>
-<span class="w">     </span><span class="n">this</span><span class="p">%</span><span class="n">dump_variables</span><span class="w">          </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">model_dump_variables_none</span><span class="w"></span>
-
-<span class="w">     </span><span class="n">this</span><span class="p">%</span><span class="n">read_awc_data</span><span class="w">           </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">model_read_available_water_content_gridded</span><span class="w"></span>
-<span class="w">     </span><span class="n">this</span><span class="p">%</span><span class="n">get_precipitation_data</span><span class="w">  </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">model_get_precip_normal</span><span class="w"></span>
-<span class="w">     </span><span class="n">this</span><span class="p">%</span><span class="n">get_minimum_air_temperature_data</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">model_get_minimum_air_temperature_normal</span><span class="w"></span>
-<span class="w">     </span><span class="n">this</span><span class="p">%</span><span class="n">get_maximum_air_temperature_data</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">model_get_maximum_air_temperature_normal</span><span class="w"></span>
-<span class="w">     </span><span class="n">this</span><span class="p">%</span><span class="n">calculate_mean_air_temperature</span><span class="w">   </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">model_calculate_mean_air_temperature</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">end subroutine </span><span class="n">set_default_procedure_pointers_sub</span><span class="w"></span>
-</pre></div>
-
-    </section>
-    <br>
     
     </div>
   </div>
@@ -274,7 +200,7 @@ of defined type procedure pointers within the defined type definition</p>
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-10-17T14:19:59.727997             </p>
+ on 2023-10-19T16:28:40.743458             </p>
           </div>
         </div>
         <br>

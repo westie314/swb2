@@ -73,7 +73,7 @@
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip"
                  data-bs-placement="bottom" data-html="true"
-                 title=" 0.6% of total for procedures.">104 statements</a>
+                 title=" 1.2% of total for procedures.">104 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -86,7 +86,7 @@
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb justify-content-end mb-0">
                 <li class="breadcrumb-item"><a href='../sourcefile/netcdf4_support.f90.html'>netcdf4_support.F90</a></li>
-                <li class="breadcrumb-item"><a href='../module/netcdf4_support~2.html'>netcdf4_support</a></li>
+                <li class="breadcrumb-item"><a href='../module/netcdf4_support.html'>netcdf4_support</a></li>
             <li class="breadcrumb-item active" aria-current="page">netcdf_open_and_prepare_as_output</li>
           </ol>
         </nav>
@@ -125,12 +125,6 @@
   
   
   
-    <div class="card card-primary">
-      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
-      <div class="list-group">
-        <a class="list-group-item" href="../proc/netcdf_open_and_prepare_as_output.html#src">netcdf_open_and_prepare_as_output</a>
-      </div>
-    </div>
 
 
   </div>
@@ -166,8 +160,8 @@
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-ncfile~9"></span>
-              type(<a href='../type/t_netcdf4_file~2.html'>T_NETCDF4_FILE</a>),
+              <span class="anchor" id="variable-ncfile~8"></span>
+              type(<a href='../type/t_netcdf4_file.html'>T_NETCDF4_FILE</a>),
             </td>
 <td>intent(inout),</td>
               <td></td>            <td>
@@ -181,7 +175,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-svariablename~3"></span>
+              <span class="anchor" id="variable-svariablename~2"></span>
               character(len=*),
             </td>
 <td>intent(in)</td>
@@ -211,7 +205,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-inx~7"></span>
+              <span class="anchor" id="variable-inx~5"></span>
               integer(kind=c_int),
             </td>
 <td>intent(in)</td>
@@ -226,7 +220,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-iny~7"></span>
+              <span class="anchor" id="variable-iny~5"></span>
               integer(kind=c_int),
             </td>
 <td>intent(in)</td>
@@ -301,7 +295,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-proj4_string~5"></span>
+              <span class="anchor" id="variable-proj4_string~3"></span>
               character(len=*),
             </td>
 <td>intent(in)</td>
@@ -464,190 +458,6 @@
 
 
     
-    <section>
-    <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre><span></span><span class="k">subroutine </span><span class="n">netcdf_open_and_prepare_as_output</span><span class="p">(</span><span class="w"> </span><span class="n">NCFILE</span><span class="p">,</span><span class="w"> </span><span class="n">sVariableName</span><span class="p">,</span><span class="w"> </span><span class="n">sVariableUnits</span><span class="p">,</span><span class="w">    </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">   </span><span class="n">iNX</span><span class="p">,</span><span class="w"> </span><span class="n">iNY</span><span class="p">,</span><span class="w"> </span><span class="n">fX</span><span class="p">,</span><span class="w"> </span><span class="n">fY</span><span class="p">,</span><span class="w"> </span><span class="n">StartDate</span><span class="p">,</span><span class="w"> </span><span class="n">EndDate</span><span class="p">,</span><span class="w"> </span><span class="n">PROJ4_string</span><span class="p">,</span><span class="w"> </span><span class="n">history_list</span><span class="p">,</span><span class="w"> </span><span class="n">executable_name</span><span class="p">,</span><span class="w">   </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">   </span><span class="n">dpLat</span><span class="p">,</span><span class="w"> </span><span class="n">dpLon</span><span class="p">,</span><span class="w"> </span><span class="n">fValidMin</span><span class="p">,</span><span class="w"> </span><span class="n">fValidMax</span><span class="p">,</span><span class="w"> </span><span class="n">write_time_bounds</span><span class="p">,</span><span class="w"> </span><span class="n">filename_prefix</span><span class="p">,</span><span class="w">              </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">   </span><span class="n">filename_modifier</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">type</span><span class="w"> </span><span class="p">(</span><span class="n">T_NETCDF4_FILE</span><span class="w"> </span><span class="p">),</span><span class="w"> </span><span class="k">pointer</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w">       </span><span class="kd">::</span><span class="w"> </span><span class="n">NCFILE</span><span class="w"></span>
-<span class="w">  </span><span class="kt">character</span><span class="w"> </span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">                        </span><span class="kd">::</span><span class="w"> </span><span class="n">sVariableName</span><span class="w"></span>
-<span class="w">  </span><span class="kt">character</span><span class="w"> </span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">                        </span><span class="kd">::</span><span class="w"> </span><span class="n">sVariableUnits</span><span class="w"></span>
-<span class="w">  </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">                          </span><span class="kd">::</span><span class="w"> </span><span class="n">iNY</span><span class="w"></span>
-<span class="w">  </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_double</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">                          </span><span class="kd">::</span><span class="w"> </span><span class="n">fX</span><span class="p">(:)</span><span class="w"></span>
-<span class="w">  </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">                          </span><span class="kd">::</span><span class="w"> </span><span class="n">iNX</span><span class="w"></span>
-<span class="w">  </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_double</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">                          </span><span class="kd">::</span><span class="w"> </span><span class="n">fY</span><span class="p">(:)</span><span class="w"></span>
-<span class="w">  </span><span class="k">type</span><span class="w"> </span><span class="p">(</span><span class="n">DATETIME_T</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">                        </span><span class="kd">::</span><span class="w"> </span><span class="n">StartDate</span><span class="w"></span>
-<span class="w">  </span><span class="k">type</span><span class="w"> </span><span class="p">(</span><span class="n">DATETIME_T</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">                        </span><span class="kd">::</span><span class="w"> </span><span class="n">EndDate</span><span class="w"></span>
-<span class="w">  </span><span class="kt">character</span><span class="w"> </span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">                        </span><span class="kd">::</span><span class="w"> </span><span class="n">PROJ4_string</span><span class="w"></span>
-<span class="w">  </span><span class="k">type</span><span class="w"> </span><span class="p">(</span><span class="n">FSTRING_LIST_T</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="w"> </span><span class="k">pointer</span><span class="p">,</span><span class="w"> </span><span class="k">optional</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">history_list</span><span class="w"></span>
-<span class="w">  </span><span class="kt">character</span><span class="w"> </span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="w"> </span><span class="k">optional</span><span class="w">              </span><span class="kd">::</span><span class="w"> </span><span class="n">executable_name</span><span class="w"></span>
-<span class="w">  </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_double</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="w"> </span><span class="k">optional</span><span class="w">                </span><span class="kd">::</span><span class="w"> </span><span class="n">dpLat</span><span class="p">(:,:)</span><span class="w"></span>
-<span class="w">  </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_double</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="w"> </span><span class="k">optional</span><span class="w">                </span><span class="kd">::</span><span class="w"> </span><span class="n">dpLon</span><span class="p">(:,:)</span><span class="w"></span>
-<span class="w">  </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="w"> </span><span class="k">optional</span><span class="w">                 </span><span class="kd">::</span><span class="w"> </span><span class="n">fValidMin</span><span class="w"></span>
-<span class="w">  </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="w"> </span><span class="k">optional</span><span class="w">                 </span><span class="kd">::</span><span class="w"> </span><span class="n">fValidMax</span><span class="w"></span>
-<span class="w">  </span><span class="kt">logical</span><span class="w"> </span><span class="p">(</span><span class="kt">c_bool</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="w"> </span><span class="k">optional</span><span class="w">               </span><span class="kd">::</span><span class="w"> </span><span class="n">write_time_bounds</span><span class="w"></span>
-<span class="w">  </span><span class="kt">character</span><span class="w"> </span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="w"> </span><span class="k">optional</span><span class="w">              </span><span class="kd">::</span><span class="w"> </span><span class="n">filename_prefix</span><span class="w"></span>
-<span class="w">  </span><span class="kt">character</span><span class="w"> </span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="w"> </span><span class="k">optional</span><span class="w">              </span><span class="kd">::</span><span class="w"> </span><span class="n">filename_modifier</span><span class="w"></span>
-
-<span class="c">!   ! [ LOCALS ]</span>
-<span class="w">  </span><span class="k">type</span><span class="w"> </span><span class="p">(</span><span class="n">T_NETCDF_VARIABLE</span><span class="p">),</span><span class="w"> </span><span class="k">pointer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">pNC_VAR</span><span class="w"></span>
-<span class="w">  </span><span class="k">type</span><span class="w"> </span><span class="p">(</span><span class="n">T_NETCDF_DIMENSION</span><span class="p">),</span><span class="w"> </span><span class="k">pointer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">pNC_DIM</span><span class="w"></span>
-<span class="w">  </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">iIndex</span><span class="w"></span>
-<span class="w">  </span><span class="kt">character</span><span class="w"> </span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span><span class="w">                                </span><span class="kd">::</span><span class="w"> </span><span class="n">sOriginText</span><span class="w"></span>
-<span class="w">  </span><span class="kt">character</span><span class="w"> </span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="w"> </span><span class="k">allocatable</span><span class="w">                    </span><span class="kd">::</span><span class="w"> </span><span class="n">sFilename</span><span class="w"></span>
-<span class="w">  </span><span class="k">type</span><span class="w"> </span><span class="p">(</span><span class="n">FSTRING_LIST_T</span><span class="p">),</span><span class="w"> </span><span class="k">pointer</span><span class="w">                    </span><span class="kd">::</span><span class="w"> </span><span class="n">history_list_l</span><span class="w"></span>
-<span class="w">  </span><span class="kt">logical</span><span class="w"> </span><span class="p">(</span><span class="kt">c_bool</span><span class="p">)</span><span class="w">                                  </span><span class="kd">::</span><span class="w"> </span><span class="n">write_time_bounds_l</span><span class="w"></span>
-<span class="w">  </span><span class="kt">character</span><span class="w"> </span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="w"> </span><span class="k">allocatable</span><span class="w">                    </span><span class="kd">::</span><span class="w"> </span><span class="n">executable_name_l</span><span class="w"></span>
-<span class="w">  </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">)</span><span class="w">                                    </span><span class="kd">::</span><span class="w"> </span><span class="n">valid_minimum</span><span class="w"></span>
-<span class="w">  </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">)</span><span class="w">                                    </span><span class="kd">::</span><span class="w"> </span><span class="n">valid_maximum</span><span class="w"></span>
-<span class="w">  </span><span class="kt">logical</span><span class="w"> </span><span class="p">(</span><span class="kt">c_bool</span><span class="p">)</span><span class="w">                                  </span><span class="kd">::</span><span class="w"> </span><span class="n">include_latlon</span><span class="w"></span>
-<span class="w">  </span><span class="k">type</span><span class="w"> </span><span class="p">(</span><span class="n">DATETIME_T</span><span class="p">)</span><span class="w">                                 </span><span class="kd">::</span><span class="w"> </span><span class="n">DT</span><span class="w"></span>
-<span class="w">  </span><span class="kt">character</span><span class="w"> </span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="w"> </span><span class="k">allocatable</span><span class="w">                    </span><span class="kd">::</span><span class="w"> </span><span class="n">date_time_text</span><span class="w"></span>
-<span class="w">  </span><span class="kt">character</span><span class="w"> </span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="w"> </span><span class="k">allocatable</span><span class="w">                    </span><span class="kd">::</span><span class="w"> </span><span class="n">filename_prefix_l</span><span class="w"></span>
-<span class="w">  </span><span class="kt">character</span><span class="w"> </span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="w"> </span><span class="k">allocatable</span><span class="w">                    </span><span class="kd">::</span><span class="w"> </span><span class="n">filename_modifier_l</span><span class="w"></span>
-<span class="w">  </span><span class="k">call </span><span class="n">DT</span><span class="p">%</span><span class="n">systime</span><span class="p">()</span><span class="w"></span>
-<span class="w">  </span><span class="n">date_time_text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DT</span><span class="p">%</span><span class="n">prettydatetime</span><span class="p">()</span><span class="w"></span>
-
-
-<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="w"> </span><span class="n">fValidMin</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">    </span><span class="n">valid_minimum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fValidMin</span><span class="w"></span>
-<span class="w">  </span><span class="k">else</span>
-<span class="k">    </span><span class="n">valid_minimum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mf">1.0E+3</span><span class="w"></span>
-<span class="w">  </span><span class="k">endif</span>
-
-<span class="k">  if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="w"> </span><span class="n">fValidMax</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">    </span><span class="n">valid_maximum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fValidMax</span><span class="w"></span>
-<span class="w">  </span><span class="k">else</span>
-<span class="k">    </span><span class="n">valid_maximum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.0E+10</span><span class="w"></span>
-<span class="w">  </span><span class="k">endif</span>
-
-<span class="k">  if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="nb">present</span><span class="p">(</span><span class="w"> </span><span class="n">executable_name</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">    </span><span class="n">executable_name_l</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">trim</span><span class="p">(</span><span class="w"> </span><span class="n">executable_name</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">  </span><span class="k">else</span>
-<span class="k">    </span><span class="n">executable_name_l</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;SWB&quot;</span><span class="w"></span>
-<span class="w">  </span><span class="k">endif</span>
-
-<span class="k">  if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="nb">present</span><span class="p">(</span><span class="w"> </span><span class="n">filename_modifier</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">    </span><span class="n">filename_modifier_l</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;_&quot;</span><span class="o">//</span><span class="nb">trim</span><span class="p">(</span><span class="w"> </span><span class="n">filename_modifier</span><span class="w"> </span><span class="p">)</span><span class="o">//</span><span class="s2">&quot;_&quot;</span><span class="w"></span>
-<span class="w">  </span><span class="k">else</span>
-<span class="k">    </span><span class="n">filename_modifier_l</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;_&quot;</span><span class="w"></span>
-<span class="w">  </span><span class="k">endif</span>
-
-<span class="k">  if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="nb">present</span><span class="p">(</span><span class="w"> </span><span class="n">filename_prefix</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">    if</span><span class="w"> </span><span class="p">(</span><span class="nb">len_trim</span><span class="p">(</span><span class="n">filename_prefix</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">      </span><span class="n">filename_prefix_l</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">trim</span><span class="p">(</span><span class="w"> </span><span class="n">filename_prefix</span><span class="w"> </span><span class="p">)</span><span class="o">//</span><span class="s2">&quot;_&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="k">else </span>
-<span class="k">      </span><span class="n">filename_prefix_l</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="k">endif</span>
-<span class="k">  else</span>
-<span class="k">    </span><span class="n">filename_prefix_l</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="w"></span>
-<span class="w">  </span><span class="k">endif</span>
-
-<span class="k">  if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="nb">present</span><span class="p">(</span><span class="w"> </span><span class="n">history_list</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">    </span><span class="n">history_list_l</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">history_list</span><span class="w"></span>
-<span class="w">  </span><span class="k">else</span>
-<span class="k">    allocate</span><span class="p">(</span><span class="w"> </span><span class="n">history_list_l</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">call </span><span class="n">history_list_l</span><span class="p">%</span><span class="n">append</span><span class="p">(</span><span class="n">date_time_text</span><span class="o">//</span><span class="s2">&quot;: Soil-Water-Balance run started.&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="w">  </span><span class="k">endif</span>
-
-<span class="k">  if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="nb">present</span><span class="p">(</span><span class="w"> </span><span class="n">write_time_bounds</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">    </span><span class="n">write_time_bounds_l</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">write_time_bounds</span><span class="w"></span>
-<span class="w">  </span><span class="k">else</span>
-<span class="k">    </span><span class="n">write_time_bounds_l</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FALSE</span><span class="w"></span>
-<span class="w">  </span><span class="k">endif</span>
-
-<span class="k">  </span><span class="n">include_latlon</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">logical</span><span class="p">(</span><span class="w"> </span><span class="nb">present</span><span class="p">(</span><span class="w"> </span><span class="n">dpLat</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">.</span><span class="nb">and</span><span class="p">.</span><span class="w"> </span><span class="nb">present</span><span class="p">(</span><span class="w"> </span><span class="n">dpLon</span><span class="w"> </span><span class="p">),</span><span class="w"> </span><span class="kt">c_bool</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">write</span><span class="p">(</span><span class="n">sOriginText</span><span class="p">,</span><span class="w"> </span><span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;(i4.4,&#39;-&#39;,i2.2,&#39;-&#39;,i2.2)&quot;</span><span class="p">)</span><span class="w"> </span><span class="n">StartDate</span><span class="p">%</span><span class="n">iYear</span><span class="p">,</span><span class="w"> </span><span class="n">StartDate</span><span class="p">%</span><span class="n">iMonth</span><span class="p">,</span><span class="w"> </span><span class="n">StartDate</span><span class="p">%</span><span class="n">iDay</span><span class="w"></span>
-
-<span class="w">  </span><span class="c">! if a filename_prefix argument has been supplied, override the variable specified in</span>
-<span class="w">  </span><span class="c">! the &#39;output&#39; module</span>
-<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">len_trim</span><span class="p">(</span><span class="n">filename_prefix_l</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-
-<span class="k">  </span><span class="n">sFilename</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">trim</span><span class="p">(</span><span class="n">OUTPUT_DIRECTORY_NAME</span><span class="p">)</span><span class="o">//</span><span class="nb">trim</span><span class="p">(</span><span class="n">filename_prefix_l</span><span class="p">)</span><span class="w">              </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">    </span><span class="o">//</span><span class="nb">trim</span><span class="p">(</span><span class="n">sVariableName</span><span class="p">)</span><span class="o">//</span><span class="s2">&quot;_&quot;</span><span class="o">//</span><span class="n">filename_modifier_l</span><span class="w">                             </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">    </span><span class="o">//</span><span class="n">StartDate</span><span class="p">%</span><span class="n">prettydate</span><span class="p">()</span><span class="o">//</span><span class="s2">&quot;_to_&quot;</span><span class="o">//</span><span class="n">EndDate</span><span class="p">%</span><span class="n">prettydate</span><span class="p">()</span><span class="o">//</span><span class="s2">&quot;__&quot;</span><span class="w">                </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">    </span><span class="o">//</span><span class="nb">trim</span><span class="p">(</span><span class="n">asCharacter</span><span class="p">(</span><span class="n">iNY</span><span class="p">))</span><span class="o">//</span><span class="s2">&quot;_by_&quot;</span><span class="o">//</span><span class="nb">trim</span><span class="p">(</span><span class="n">asCharacter</span><span class="p">(</span><span class="n">iNX</span><span class="p">))</span><span class="o">//</span><span class="s2">&quot;.nc&quot;</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">else</span>
-
-<span class="k">    </span><span class="n">sFilename</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">trim</span><span class="p">(</span><span class="n">OUTPUT_DIRECTORY_NAME</span><span class="p">)</span><span class="o">//</span><span class="nb">trim</span><span class="p">(</span><span class="n">OUTPUT_PREFIX_NAME</span><span class="p">)</span><span class="w">           </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">    </span><span class="o">//</span><span class="nb">trim</span><span class="p">(</span><span class="n">sVariableName</span><span class="p">)</span><span class="o">//</span><span class="s2">&quot;_&quot;</span><span class="o">//</span><span class="n">filename_modifier_l</span><span class="w">                             </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">    </span><span class="o">//</span><span class="n">StartDate</span><span class="p">%</span><span class="n">prettydate</span><span class="p">()</span><span class="o">//</span><span class="s2">&quot;_to_&quot;</span><span class="o">//</span><span class="n">EndDate</span><span class="p">%</span><span class="n">prettydate</span><span class="p">()</span><span class="o">//</span><span class="s2">&quot;__&quot;</span><span class="w">                </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">    </span><span class="o">//</span><span class="nb">trim</span><span class="p">(</span><span class="n">asCharacter</span><span class="p">(</span><span class="n">iNY</span><span class="p">))</span><span class="o">//</span><span class="s2">&quot;_by_&quot;</span><span class="o">//</span><span class="nb">trim</span><span class="p">(</span><span class="n">asCharacter</span><span class="p">(</span><span class="n">iNX</span><span class="p">))</span><span class="o">//</span><span class="s2">&quot;.nc&quot;</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">endif</span>
-
-<span class="k">  call </span><span class="n">LOGS</span><span class="p">%</span><span class="k">write</span><span class="p">(</span><span class="s2">&quot;Attempting to open netCDF file for writing with filename &quot;</span><span class="o">//</span><span class="n">dquote</span><span class="p">(</span><span class="n">sFilename</span><span class="p">))</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">call </span><span class="n">nf_create</span><span class="p">(</span><span class="n">NCFILE</span><span class="o">=</span><span class="n">NCFILE</span><span class="p">,</span><span class="w"> </span><span class="n">sFilename</span><span class="o">=</span><span class="nb">trim</span><span class="p">(</span><span class="n">sFilename</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">  </span><span class="c">!&gt; set dimension values in the NCFILE struct</span>
-<span class="w">  </span><span class="k">call </span><span class="n">nf_set_standard_dimensions</span><span class="p">(</span><span class="n">NCFILE</span><span class="o">=</span><span class="n">NCFILE</span><span class="p">,</span><span class="w"> </span><span class="n">iNX</span><span class="o">=</span><span class="n">iNX</span><span class="p">,</span><span class="w"> </span><span class="n">iNY</span><span class="o">=</span><span class="n">iNY</span><span class="p">,</span><span class="w">            </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                  </span><span class="n">write_time_bounds</span><span class="o">=</span><span class="n">write_time_bounds_l</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">  </span><span class="c">!&gt; @todo implement more flexible method of assigning units</span>
-<span class="c">!   NCFILE%sVarUnits(NC_X)    = sXY_units</span>
-<span class="c">!   NCFILE%sVarUnits(NC_Y)    = sXY_units</span>
-<span class="w">  </span><span class="n">NCFILE</span><span class="p">%</span><span class="n">sVarUnits</span><span class="p">(</span><span class="n">NC_Z</span><span class="p">)</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="n">sVariableUnits</span><span class="w"></span>
-
-<span class="w">  </span><span class="c">!&gt; transfer dimension values to netCDF file</span>
-<span class="w">  </span><span class="k">call </span><span class="n">nf_define_dimensions</span><span class="p">(</span><span class="w"> </span><span class="n">NCFILE</span><span class="o">=</span><span class="n">NCFILE</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">  </span><span class="c">!&gt; set variable values in the NCFILE struct</span>
-<span class="w">  </span><span class="k">call </span><span class="n">nf_set_standard_variables</span><span class="p">(</span><span class="n">NCFILE</span><span class="o">=</span><span class="n">NCFILE</span><span class="p">,</span><span class="w"> </span><span class="n">sVarName_z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sVariableName</span><span class="p">,</span><span class="w">   </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">    </span><span class="n">lLatLon</span><span class="o">=</span><span class="n">include_latlon</span><span class="p">,</span><span class="w"> </span><span class="n">write_time_bounds</span><span class="o">=</span><span class="n">write_time_bounds_l</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">  </span><span class="c">!&gt; transfer variable values to netCDF file</span>
-<span class="w">  </span><span class="k">call </span><span class="n">nf_define_variables</span><span class="p">(</span><span class="n">NCFILE</span><span class="o">=</span><span class="n">NCFILE</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">call </span><span class="n">nf_get_variable_id_and_type</span><span class="p">(</span><span class="w"> </span><span class="n">NCFILE</span><span class="o">=</span><span class="n">NCFILE</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">call </span><span class="n">nf_set_standard_attributes</span><span class="p">(</span><span class="n">NCFILE</span><span class="o">=</span><span class="n">NCFILE</span><span class="p">,</span><span class="w"> </span><span class="n">sOriginText</span><span class="o">=</span><span class="n">sOriginText</span><span class="p">,</span><span class="w">     </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">      </span><span class="n">PROJ4_string</span><span class="o">=</span><span class="n">PROJ4_string</span><span class="p">,</span><span class="w"> </span><span class="n">lLatLon</span><span class="o">=</span><span class="n">include_latlon</span><span class="p">,</span><span class="w"> </span><span class="n">fValidMin</span><span class="o">=</span><span class="n">valid_minimum</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">      </span><span class="n">fValidMax</span><span class="o">=</span><span class="n">valid_maximum</span><span class="p">,</span><span class="w"> </span><span class="n">write_time_bounds</span><span class="o">=</span><span class="n">write_time_bounds_l</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">call </span><span class="n">nf_set_global_attributes</span><span class="p">(</span><span class="n">NCFILE</span><span class="o">=</span><span class="n">NCFILE</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">     </span><span class="n">sDataType</span><span class="o">=</span><span class="nb">trim</span><span class="p">(</span><span class="n">NCFILE</span><span class="p">%</span><span class="n">sVarName</span><span class="p">(</span><span class="n">NC_Z</span><span class="p">)),</span><span class="w"> </span><span class="n">history_list</span><span class="o">=</span><span class="n">history_list_l</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">     </span><span class="n">executable_name</span><span class="o">=</span><span class="n">executable_name_l</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">call </span><span class="n">nf_put_attributes</span><span class="p">(</span><span class="n">NCFILE</span><span class="o">=</span><span class="n">NCFILE</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">  </span><span class="c">!&gt; enable a low level of data compression for the variable of interest</span>
-<span class="w">   </span><span class="k">call </span><span class="n">nf_define_deflate</span><span class="p">(</span><span class="n">NCFILE</span><span class="o">=</span><span class="n">NCFILE</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">      </span><span class="n">iVarID</span><span class="o">=</span><span class="n">NCFILE</span><span class="p">%</span><span class="n">iVarID</span><span class="p">(</span><span class="n">NC_Z</span><span class="p">),</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">      </span><span class="n">iShuffle</span><span class="o">=</span><span class="n">NC_SHUFFLE_YES</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">      </span><span class="n">iDeflate</span><span class="o">=</span><span class="n">NC_DEFLATE_YES</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">      </span><span class="n">iDeflate_level</span><span class="o">=</span><span class="mi">2</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">call </span><span class="n">nf_enddef</span><span class="p">(</span><span class="n">NCFILE</span><span class="o">=</span><span class="n">NCFILE</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">  </span><span class="c">! we are only supplying a vector of X and Y on the assumption that the base projection</span>
-<span class="w">  </span><span class="c">! results in a uniform grid (in other words, we have the same X value for all coluns of a given row)</span>
-<span class="w">  </span><span class="k">call </span><span class="n">nf_put_x_and_y</span><span class="p">(</span><span class="n">NCFILE</span><span class="o">=</span><span class="n">NCFILE</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">       </span><span class="n">dpX</span><span class="o">=</span><span class="n">fX</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">       </span><span class="n">dpY</span><span class="o">=</span><span class="n">fY</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="c">!  allocate( NCFILE%rX_Coords( size( fX) ), stat=iStat )</span>
-<span class="c">!  allocate( NCFILE%rY_Coords( size( fY) ), stat=iStat )</span>
-<span class="w">  </span><span class="n">NCFILE</span><span class="p">%</span><span class="n">rX_Coords</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fX</span><span class="w"></span>
-<span class="w">  </span><span class="n">NCFILE</span><span class="p">%</span><span class="n">rY_Coords</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fY</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="w"> </span><span class="n">dpLat</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">.</span><span class="nb">and</span><span class="p">.</span><span class="w"> </span><span class="nb">present</span><span class="p">(</span><span class="w"> </span><span class="n">dpLon</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-
-<span class="k">    call </span><span class="n">nf_put_lat_and_lon</span><span class="p">(</span><span class="n">NCFILE</span><span class="o">=</span><span class="n">NCFILE</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">       </span><span class="n">dpLat</span><span class="o">=</span><span class="n">dpLat</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">       </span><span class="n">dpLon</span><span class="o">=</span><span class="n">dpLon</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">endif</span>
-
-<span class="k">end subroutine </span><span class="n">netcdf_open_and_prepare_as_output</span><span class="w"></span>
-</pre></div>
-
-    </section>
-    <br>
     
     </div>
   </div>
@@ -664,7 +474,7 @@
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-10-17T14:19:59.727997             </p>
+ on 2023-10-19T16:28:40.743458             </p>
           </div>
         </div>
         <br>

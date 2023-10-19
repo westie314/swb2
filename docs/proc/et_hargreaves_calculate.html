@@ -73,7 +73,7 @@
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip"
                  data-bs-placement="bottom" data-html="true"
-                 title=" 0.1% of total for procedures.">16 statements</a>
+                 title=" 0.2% of total for procedures.">16 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -125,12 +125,6 @@
   
   
   
-    <div class="card card-primary">
-      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
-      <div class="list-group">
-        <a class="list-group-item" href="../proc/et_hargreaves_calculate.html#src">et_hargreaves_calculate</a>
-      </div>
-    </div>
 
 
   </div>
@@ -204,7 +198,7 @@ Stores cell-by-cell PET values in the model grid.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-ftmin~3"></span>
+              <span class="anchor" id="variable-ftmin~2"></span>
               real(kind=c_float),
             </td>
 <td>intent(in)</td>
@@ -254,42 +248,6 @@ Stores cell-by-cell PET values in the model grid.</p>
 
 
     
-    <section>
-    <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre><span></span><span class="k">elemental function </span><span class="n">et_hargreaves_calculate</span><span class="p">(</span><span class="w"> </span><span class="n">iDayOfYear</span><span class="p">,</span><span class="w"> </span><span class="n">iNumDaysInYear</span><span class="p">,</span><span class="w"> </span><span class="n">fLatitude</span><span class="p">,</span><span class="w"> </span><span class="n">fTMin</span><span class="p">,</span><span class="w"> </span><span class="n">fTMax</span><span class="w"> </span><span class="p">)</span><span class="w">  </span><span class="k">result</span><span class="p">(</span><span class="n">fReferenceET0</span><span class="p">)</span><span class="w"></span>
-<span class="w">  </span><span class="c">!! Computes the potential ET for each cell, based on TMIN and TMAX.</span>
-<span class="w">  </span><span class="c">!! Stores cell-by-cell PET values in the model grid.</span>
-
-<span class="w">  </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">iDayOfYear</span><span class="w"></span>
-<span class="w">  </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">iNumDaysInYear</span><span class="w"></span>
-<span class="w">  </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">fLatitude</span><span class="w"></span>
-<span class="w">  </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">fTMin</span><span class="w"></span>
-<span class="w">  </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">fTMax</span><span class="w"></span>
-<span class="w">  </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">)</span><span class="w">             </span><span class="kd">::</span><span class="w"> </span><span class="n">fReferenceET0</span><span class="w"></span>
-
-<span class="w">  </span><span class="c">! [ LOCALS ]</span>
-<span class="w">  </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_double</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">fDelta</span><span class="p">,</span><span class="w"> </span><span class="n">fOmega_s</span><span class="p">,</span><span class="w"> </span><span class="n">fD_r</span><span class="p">,</span><span class="w"> </span><span class="n">fRa</span><span class="w"></span>
-<span class="w">  </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_double</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">dLatitude_radians</span><span class="w"></span>
-
-<span class="w">  </span><span class="n">dLatitude_radians</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fLatitude</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">DEGREES_TO_RADIANS</span><span class="w"></span>
-
-<span class="w">  </span><span class="n">fD_r</span><span class="w"> </span><span class="o">=</span><span class="n">relative_earth_sun_distance__D_r</span><span class="p">(</span><span class="n">iDayOfYear</span><span class="p">,</span><span class="n">iNumDaysInYear</span><span class="p">)</span><span class="w"></span>
-<span class="w">  </span><span class="n">fDelta</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">solar_declination_simple__delta</span><span class="p">(</span><span class="n">iDayOfYear</span><span class="p">,</span><span class="w"> </span><span class="n">iNumDaysInYear</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">  </span><span class="n">fOmega_s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sunrise_sunset_angle__omega_s</span><span class="p">(</span><span class="n">dLatitude_radians</span><span class="p">,</span><span class="w"> </span><span class="n">fDelta</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">	</span><span class="c">! NOTE that the following equation returns extraterrestrial radiation in</span>
-<span class="w">	</span><span class="c">! MJ / m**2 / day.  The Hargreaves equation requires extraterrestrial</span>
-<span class="w">	</span><span class="c">! radiation to be expressed in units of mm / day.</span>
-<span class="w">	</span><span class="n">fRa</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">extraterrestrial_radiation__Ra</span><span class="p">(</span><span class="n">dLatitude_radians</span><span class="p">,</span><span class="w"> </span><span class="n">fDelta</span><span class="p">,</span><span class="w"> </span><span class="n">fOmega_s</span><span class="p">,</span><span class="w"> </span><span class="n">fD_r</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">  </span><span class="n">fReferenceET0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ET0_hargreaves</span><span class="p">(</span><span class="w"> </span><span class="n">equivalent_evaporation</span><span class="p">(</span><span class="n">fRa</span><span class="p">),</span><span class="w"> </span><span class="n">fTMin</span><span class="p">,</span><span class="w"> </span><span class="n">fTMax</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span>
-<span class="k">end function </span><span class="n">et_hargreaves_calculate</span><span class="w"></span>
-</pre></div>
-
-    </section>
-    <br>
     
     </div>
   </div>
@@ -306,7 +264,7 @@ Stores cell-by-cell PET values in the model grid.</p>
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-10-17T14:19:59.727997             </p>
+ on 2023-10-19T16:28:40.743458             </p>
           </div>
         </div>
         <br>

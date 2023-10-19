@@ -73,7 +73,7 @@
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip"
                  data-bs-placement="bottom" data-html="true"
-                 title="<p> 2.6% of total for derived types.</p>Including implementation: 221 statements,  2.0% of total for derived types.">48 statements</a>
+                 title="<p> 5.3% of total for derived types.</p>Including implementation: 222 statements,  3.9% of total for derived types.">48 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -175,12 +175,6 @@
 
   
   
-    <div class="card card-primary">
-      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
-      <div class="list-group">
-        <a class="list-group-item" href="../type/ascii_file_t.html#src">ASCII_FILE_T</a>
-      </div>
-    </div>
 
 
   </div>
@@ -1438,77 +1432,6 @@
           </div>
       </section>
 
-    <section>
-    <h3><span class="anchor" id="src"></span>Source Code</h3>
-    <div class="highlight"><pre><span></span><span class="w">  </span><span class="k">type</span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">ASCII_FILE_T</span><span class="w"></span>
-
-<span class="w">    </span><span class="kt">character</span><span class="w"> </span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="w"> </span><span class="k">allocatable</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">sFilename</span><span class="w"></span>
-<span class="w">    </span><span class="kt">character</span><span class="w"> </span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="w"> </span><span class="k">allocatable</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">sDelimiters</span><span class="w"></span>
-<span class="w">    </span><span class="kt">character</span><span class="w"> </span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="w"> </span><span class="k">allocatable</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">sCommentChars</span><span class="w"></span>
-<span class="w">    </span><span class="k">type</span><span class="w"> </span><span class="p">(</span><span class="n">FSTRING_LIST_T</span><span class="p">)</span><span class="w">           </span><span class="kd">::</span><span class="w"> </span><span class="n">slColNames</span><span class="w"></span>
-<span class="w">    </span><span class="kt">logical</span><span class="w"> </span><span class="p">(</span><span class="kt">c_bool</span><span class="p">)</span><span class="w">                </span><span class="kd">::</span><span class="w"> </span><span class="n">remove_extra_delimiters</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FALSE</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">                 </span><span class="kd">::</span><span class="w"> </span><span class="n">iCurrentLinenum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">                 </span><span class="kd">::</span><span class="w"> </span><span class="n">iNumberOfLines</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">                 </span><span class="kd">::</span><span class="w"> </span><span class="n">iNumberOfRecords</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">                 </span><span class="kd">::</span><span class="w"> </span><span class="n">iNumberOfHeaderLines</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
-<span class="w">    </span><span class="kt">logical</span><span class="w"> </span><span class="p">(</span><span class="kt">c_bool</span><span class="p">)</span><span class="w">                </span><span class="kd">::</span><span class="w"> </span><span class="n">lIsOpen</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FALSE</span><span class="w"></span>
-<span class="w">    </span><span class="kt">logical</span><span class="w"> </span><span class="p">(</span><span class="kt">c_bool</span><span class="p">)</span><span class="w">                </span><span class="kd">::</span><span class="w"> </span><span class="n">lReadOnly</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TRUE</span><span class="w"></span>
-<span class="w">    </span><span class="kt">logical</span><span class="w"> </span><span class="p">(</span><span class="kt">c_bool</span><span class="p">)</span><span class="w">                </span><span class="kd">::</span><span class="w"> </span><span class="n">lEOF</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FALSE</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">                 </span><span class="kd">::</span><span class="w"> </span><span class="n">iUnitNum</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">                 </span><span class="kd">::</span><span class="w"> </span><span class="n">iStat</span><span class="w"></span>
-<span class="w">    </span><span class="kt">character</span><span class="w"> </span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="n">MAX_STR_LEN</span><span class="p">)</span><span class="w">     </span><span class="kd">::</span><span class="w"> </span><span class="n">sBuf</span><span class="w"></span>
-<span class="w">    </span><span class="kt">character</span><span class="w"> </span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="w"> </span><span class="k">allocatable</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">stMissingValue</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">contains</span>
-
-<span class="k">    procedure</span><span class="p">,</span><span class="w"> </span><span class="k">private</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">open_file_read_access_sub</span><span class="w"></span>
-<span class="w">    </span><span class="k">procedure</span><span class="p">,</span><span class="w"> </span><span class="k">private</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">open_file_write_access_sub</span><span class="w"></span>
-<span class="w">    </span><span class="k">generic</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="k">open</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">open_file_read_access_sub</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                       </span><span class="n">open_file_write_access_sub</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">procedure</span><span class="p">,</span><span class="w"> </span><span class="k">private</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">close_file_sub</span><span class="w"></span>
-<span class="w">    </span><span class="k">generic</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="k">close</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">close_file_sub</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">procedure</span><span class="p">,</span><span class="w"> </span><span class="k">private</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">is_file_open_fn</span><span class="w"></span>
-<span class="w">    </span><span class="k">generic</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">isOpen</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">is_file_open_fn</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">procedure</span><span class="p">,</span><span class="w"> </span><span class="k">private</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">have_we_reached_the_EOF_fn</span><span class="w"></span>
-<span class="w">    </span><span class="k">generic</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">isEOF</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">have_we_reached_the_EOF_fn</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">procedure</span><span class="p">,</span><span class="w"> </span><span class="k">private</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">does_file_exist_fn</span><span class="w"></span>
-<span class="w">    </span><span class="k">generic</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">exists</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">does_file_exist_fn</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">procedure</span><span class="p">,</span><span class="w"> </span><span class="k">private</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">is_current_line_a_comment_fn</span><span class="w"></span>
-<span class="w">    </span><span class="k">generic</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">isComment</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">is_current_line_a_comment_fn</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">procedure</span><span class="p">,</span><span class="w"> </span><span class="k">private</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">count_number_of_lines_sub</span><span class="w"></span>
-<span class="w">    </span><span class="k">generic</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">countLines</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">count_number_of_lines_sub</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">procedure</span><span class="p">,</span><span class="w"> </span><span class="k">private</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">return_num_lines_fn</span><span class="w"></span>
-<span class="w">    </span><span class="k">generic</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">numLines</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">return_num_lines_fn</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">procedure</span><span class="p">,</span><span class="w"> </span><span class="k">private</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">return_num_records_fn</span><span class="w"></span>
-<span class="w">    </span><span class="k">generic</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">numRecords</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">return_num_records_fn</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">procedure</span><span class="p">,</span><span class="w"> </span><span class="k">private</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">return_current_linenum_fn</span><span class="w"></span>
-<span class="w">    </span><span class="k">generic</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">currentLineNum</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">return_current_linenum_fn</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">procedure</span><span class="p">,</span><span class="w"> </span><span class="k">private</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">return_fortran_unit_number_fn</span><span class="w"></span>
-<span class="w">    </span><span class="k">generic</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">unit</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">return_fortran_unit_number_fn</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">procedure</span><span class="p">,</span><span class="w"> </span><span class="k">private</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">read_header_fn</span><span class="w"></span>
-<span class="w">    </span><span class="k">generic</span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="w">    </span><span class="kd">::</span><span class="w"> </span><span class="n">readHeader</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">read_header_fn</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">procedure</span><span class="p">,</span><span class="w"> </span><span class="k">private</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">read_line_of_data_fn</span><span class="w"></span>
-<span class="w">    </span><span class="k">generic</span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="w">    </span><span class="kd">::</span><span class="w"> </span><span class="n">readLine</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">read_line_of_data_fn</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">procedure</span><span class="p">,</span><span class="w"> </span><span class="k">private</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">write_line_of_data_sub</span><span class="w"></span>
-<span class="w">    </span><span class="k">generic</span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="w">    </span><span class="kd">::</span><span class="w"> </span><span class="n">writeLine</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">write_line_of_data_sub</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">end type </span><span class="n">ASCII_FILE_T</span><span class="w"></span>
-</pre></div>
-
-    </section>
     
     </div>
   </div>
@@ -1525,7 +1448,7 @@
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-10-17T14:19:59.727997             </p>
+ on 2023-10-19T16:28:40.743458             </p>
           </div>
         </div>
         <br>

@@ -73,7 +73,7 @@
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip"
                  data-bs-placement="bottom" data-html="true"
-                 title=" 0.1% of total for procedures.">18 statements</a>
+                 title=" 0.2% of total for procedures.">18 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -86,7 +86,7 @@
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb justify-content-end mb-0">
                 <li class="breadcrumb-item"><a href='../sourcefile/output.f90.html'>output.F90</a></li>
-                <li class="breadcrumb-item"><a href='../module/output~2.html'>output</a></li>
+                <li class="breadcrumb-item"><a href='../module/output.html'>output</a></li>
             <li class="breadcrumb-item active" aria-current="page">write_multi_sim_output</li>
           </ol>
         </nav>
@@ -125,12 +125,6 @@
   
   
   
-    <div class="card card-primary">
-      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
-      <div class="list-group">
-        <a class="list-group-item" href="../proc/write_multi_sim_output.html#src">write_multi_sim_output</a>
-      </div>
-    </div>
 
 
   </div>
@@ -158,7 +152,7 @@
         <tr>
             <td>
               <span class="anchor" id="variable-cells~9"></span>
-              class(<a href='../type/model_domain_t~2.html'>MODEL_DOMAIN_T</a>),
+              class(<a href='../type/model_domain_t.html'>MODEL_DOMAIN_T</a>),
             </td>
 <td>intent(inout)</td>
               <td></td>            <td>
@@ -200,93 +194,6 @@
 
 
     
-    <section>
-    <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre><span></span><span class="w">  </span><span class="k">subroutine </span><span class="n">write_multi_sim_output</span><span class="p">(</span><span class="n">cells</span><span class="p">,</span><span class="w"> </span><span class="n">simulation_number</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">class</span><span class="w"> </span><span class="p">(</span><span class="n">MODEL_DOMAIN_T</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">cells</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">       </span><span class="kd">::</span><span class="w"> </span><span class="n">simulation_number</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! [ LOCALS ]</span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">           </span><span class="kd">::</span><span class="w"> </span><span class="n">iIndex</span><span class="w"></span>
-<span class="w">    </span><span class="k">type</span><span class="w"> </span><span class="p">(</span><span class="n">T_NETCDF4_FILE</span><span class="p">),</span><span class="w"> </span><span class="k">pointer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">ncfile_ptr</span><span class="w"></span>
-
-
-
-<span class="w">    </span><span class="c">! first put out the current time variable for all open NetCDF files</span>
-<span class="w">    </span><span class="k">do </span><span class="n">iIndex</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nb">ubound</span><span class="p">(</span><span class="w"> </span><span class="n">NC_MULTI_SIM_OUT</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">      </span><span class="c">! do not write output unless multisim flag has been set</span>
-<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="p">.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="n">OUTSPECS</span><span class="p">(</span><span class="n">iIndex</span><span class="p">)%</span><span class="n">multisim_outputs</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">cycle</span>
-
-<span class="k">      if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">OUTSPECS</span><span class="p">(</span><span class="n">iIndex</span><span class="p">)%</span><span class="n">is_active</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-
-
-<span class="k">        call </span><span class="n">netcdf_put_variable_vector</span><span class="p">(</span><span class="n">NCFILE</span><span class="o">=</span><span class="w">                                        </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">           </span><span class="n">NC_MULTI_SIM_OUT</span><span class="p">(</span><span class="n">iIndex</span><span class="p">,</span><span class="n">simulation_number</span><span class="p">)%</span><span class="n">ncfile</span><span class="p">,</span><span class="w">                          </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">           </span><span class="n">iVarID</span><span class="o">=</span><span class="n">NC_MULTI_SIM_OUT</span><span class="p">(</span><span class="n">iIndex</span><span class="p">,</span><span class="w"> </span><span class="n">simulation_number</span><span class="p">)%</span><span class="n">ncfile</span><span class="p">%</span><span class="n">iVarID</span><span class="p">(</span><span class="n">NC_TIME</span><span class="p">),</span><span class="w">  </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">           </span><span class="n">iStart</span><span class="o">=</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">SIM_DT</span><span class="p">%</span><span class="n">iNumDaysFromOrigin</span><span class="p">,</span><span class="w"> </span><span class="kt">c_size_t</span><span class="p">)],</span><span class="w">                     </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">           </span><span class="n">iCount</span><span class="o">=</span><span class="p">[</span><span class="mi">1_c_size_t</span><span class="p">],</span><span class="w">                                                        </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">           </span><span class="n">iStride</span><span class="o">=</span><span class="p">[</span><span class="mi">1_c_size_t</span><span class="p">],</span><span class="w">                                                    </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">           </span><span class="n">rValues</span><span class="o">=</span><span class="p">[</span><span class="kt">real</span><span class="p">(</span><span class="n">SIM_DT</span><span class="p">%</span><span class="n">iNumDaysFromOrigin</span><span class="p">,</span><span class="w"> </span><span class="kt">c_float</span><span class="p">)])</span><span class="w"></span>
-
-<span class="w">      </span><span class="k">endif</span>
-
-<span class="k">    enddo</span>
-
-<span class="k">    if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">OUTSPECS</span><span class="p">(</span><span class="w"> </span><span class="n">NCDF_SNOW_STORAGE</span><span class="w"> </span><span class="p">)%</span><span class="n">is_active</span><span class="w">                    </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">       </span><span class="p">.</span><span class="nb">and</span><span class="p">.</span><span class="w"> </span><span class="n">OUTSPECS</span><span class="p">(</span><span class="n">NCDF_SNOW_STORAGE</span><span class="p">)%</span><span class="n">multisim_outputs</span><span class="w"> </span><span class="p">)</span><span class="w">         </span><span class="p">&amp;</span><span class="w"></span>
-
-<span class="w">      </span><span class="k">call </span><span class="n">output_2D_float_array</span><span class="p">(</span><span class="w">                                                    </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="n">ncfile_ptr</span><span class="o">=</span><span class="n">NC_MULTI_SIM_OUT</span><span class="p">(</span><span class="w"> </span><span class="n">NCDF_SNOW_STORAGE</span><span class="p">,</span><span class="w"> </span><span class="n">simulation_number</span><span class="w"> </span><span class="p">)%</span><span class="n">ncfile</span><span class="p">,</span><span class="w">  </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="n">values</span><span class="o">=</span><span class="n">cells</span><span class="p">%</span><span class="n">snow_storage</span><span class="p">,</span><span class="w">                                                   </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="n">cells</span><span class="o">=</span><span class="n">cells</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">OUTSPECS</span><span class="p">(</span><span class="w"> </span><span class="n">NCDF_SOIL_STORAGE</span><span class="w"> </span><span class="p">)%</span><span class="n">is_active</span><span class="w">                    </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">       </span><span class="p">.</span><span class="nb">and</span><span class="p">.</span><span class="w"> </span><span class="n">OUTSPECS</span><span class="p">(</span><span class="n">NCDF_SOIL_STORAGE</span><span class="p">)%</span><span class="n">multisim_outputs</span><span class="w"> </span><span class="p">)</span><span class="w">         </span><span class="p">&amp;</span><span class="w"></span>
-
-<span class="w">      </span><span class="k">call </span><span class="n">output_2D_float_array</span><span class="p">(</span><span class="w">                                                    </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="n">ncfile_ptr</span><span class="o">=</span><span class="n">NC_MULTI_SIM_OUT</span><span class="p">(</span><span class="w"> </span><span class="n">NCDF_SOIL_STORAGE</span><span class="p">,</span><span class="w"> </span><span class="n">simulation_number</span><span class="w"> </span><span class="p">)%</span><span class="n">ncfile</span><span class="p">,</span><span class="w">  </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="n">values</span><span class="o">=</span><span class="kt">real</span><span class="p">(</span><span class="n">cells</span><span class="p">%</span><span class="n">soil_storage</span><span class="p">,</span><span class="w"> </span><span class="kt">c_float</span><span class="p">),</span><span class="w">                               </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="n">cells</span><span class="o">=</span><span class="n">cells</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">OUTSPECS</span><span class="p">(</span><span class="w"> </span><span class="n">NCDF_NET_INFILTRATION</span><span class="w"> </span><span class="p">)%</span><span class="n">is_active</span><span class="w">                    </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">       </span><span class="p">.</span><span class="nb">and</span><span class="p">.</span><span class="w"> </span><span class="n">OUTSPECS</span><span class="p">(</span><span class="n">NCDF_NET_INFILTRATION</span><span class="p">)%</span><span class="n">multisim_outputs</span><span class="w"> </span><span class="p">)</span><span class="w">         </span><span class="p">&amp;</span><span class="w"></span>
-
-<span class="w">      </span><span class="k">call </span><span class="n">output_2D_float_array</span><span class="p">(</span><span class="w">                                                        </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="n">ncfile_ptr</span><span class="o">=</span><span class="n">NC_MULTI_SIM_OUT</span><span class="p">(</span><span class="w"> </span><span class="n">NCDF_NET_INFILTRATION</span><span class="p">,</span><span class="w"> </span><span class="n">simulation_number</span><span class="w"> </span><span class="p">)%</span><span class="n">ncfile</span><span class="p">,</span><span class="w">  </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="n">values</span><span class="o">=</span><span class="n">cells</span><span class="p">%</span><span class="n">net_infiltration</span><span class="p">,</span><span class="w">                                                   </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="n">cells</span><span class="o">=</span><span class="n">cells</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">OUTSPECS</span><span class="p">(</span><span class="w"> </span><span class="n">NCDF_ACTUAL_ET</span><span class="w"> </span><span class="p">)%</span><span class="n">is_active</span><span class="w">                    </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">       </span><span class="p">.</span><span class="nb">and</span><span class="p">.</span><span class="w"> </span><span class="n">OUTSPECS</span><span class="p">(</span><span class="n">NCDF_ACTUAL_ET</span><span class="p">)%</span><span class="n">multisim_outputs</span><span class="w"> </span><span class="p">)</span><span class="w">         </span><span class="p">&amp;</span><span class="w"></span>
-
-<span class="w">      </span><span class="k">call </span><span class="n">output_2D_float_array</span><span class="p">(</span><span class="w">                                                   </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="n">ncfile_ptr</span><span class="o">=</span><span class="n">NC_MULTI_SIM_OUT</span><span class="p">(</span><span class="w"> </span><span class="n">NCDF_ACTUAL_ET</span><span class="p">,</span><span class="w"> </span><span class="n">simulation_number</span><span class="w"> </span><span class="p">)%</span><span class="n">ncfile</span><span class="p">,</span><span class="w">    </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="n">values</span><span class="o">=</span><span class="kt">real</span><span class="p">(</span><span class="n">cells</span><span class="p">%</span><span class="n">actual_et</span><span class="p">,</span><span class="w"> </span><span class="kt">c_float</span><span class="p">),</span><span class="w">                                 </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="n">cells</span><span class="o">=</span><span class="n">cells</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">OUTSPECS</span><span class="p">(</span><span class="w"> </span><span class="n">NCDF_INTERCEPTION_STORAGE</span><span class="w"> </span><span class="p">)%</span><span class="n">is_active</span><span class="w">                    </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">       </span><span class="p">.</span><span class="nb">and</span><span class="p">.</span><span class="w"> </span><span class="n">OUTSPECS</span><span class="p">(</span><span class="n">NCDF_INTERCEPTION_STORAGE</span><span class="p">)%</span><span class="n">multisim_outputs</span><span class="w"> </span><span class="p">)</span><span class="w">         </span><span class="p">&amp;</span><span class="w"></span>
-
-<span class="w">      </span><span class="k">call </span><span class="n">output_2D_float_array</span><span class="p">(</span><span class="w">                                                            </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="n">ncfile_ptr</span><span class="o">=</span><span class="n">NC_MULTI_SIM_OUT</span><span class="p">(</span><span class="w"> </span><span class="n">NCDF_INTERCEPTION_STORAGE</span><span class="p">,</span><span class="w"> </span><span class="n">simulation_number</span><span class="w"> </span><span class="p">)%</span><span class="n">ncfile</span><span class="p">,</span><span class="w">  </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="n">values</span><span class="o">=</span><span class="kt">real</span><span class="p">(</span><span class="n">cells</span><span class="p">%</span><span class="n">interception_storage</span><span class="p">,</span><span class="w"> </span><span class="kt">c_float</span><span class="p">),</span><span class="w">                               </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="n">cells</span><span class="o">=</span><span class="n">cells</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">OUTSPECS</span><span class="p">(</span><span class="w"> </span><span class="n">NCDF_SURFACE_STORAGE</span><span class="w"> </span><span class="p">)%</span><span class="n">is_active</span><span class="w">                    </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">       </span><span class="p">.</span><span class="nb">and</span><span class="p">.</span><span class="w"> </span><span class="n">OUTSPECS</span><span class="p">(</span><span class="n">NCDF_SURFACE_STORAGE</span><span class="p">)%</span><span class="n">multisim_outputs</span><span class="w"> </span><span class="p">)</span><span class="w">         </span><span class="p">&amp;</span><span class="w"></span>
-
-<span class="w">      </span><span class="k">call </span><span class="n">output_2D_float_array</span><span class="p">(</span><span class="w">                                                         </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="n">ncfile_ptr</span><span class="o">=</span><span class="n">NC_MULTI_SIM_OUT</span><span class="p">(</span><span class="w"> </span><span class="n">NCDF_SURFACE_STORAGE</span><span class="p">,</span><span class="w"> </span><span class="n">simulation_number</span><span class="w"> </span><span class="p">)%</span><span class="n">ncfile</span><span class="p">,</span><span class="w">    </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="n">values</span><span class="o">=</span><span class="kt">real</span><span class="p">(</span><span class="n">cells</span><span class="p">%</span><span class="n">surface_storage</span><span class="p">,</span><span class="w"> </span><span class="kt">c_float</span><span class="p">),</span><span class="w">                                 </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="n">cells</span><span class="o">=</span><span class="n">cells</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">end subroutine </span><span class="n">write_multi_sim_output</span><span class="w"></span>
-</pre></div>
-
-    </section>
-    <br>
     
     </div>
   </div>
@@ -303,7 +210,7 @@
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-10-17T14:19:59.727997             </p>
+ on 2023-10-19T16:28:40.743458             </p>
           </div>
         </div>
         <br>

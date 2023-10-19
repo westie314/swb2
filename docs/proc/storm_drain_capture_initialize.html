@@ -73,7 +73,7 @@
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip"
                  data-bs-placement="bottom" data-html="true"
-                 title=" 0.2% of total for procedures.">41 statements</a>
+                 title=" 0.5% of total for procedures.">42 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -86,7 +86,7 @@
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb justify-content-end mb-0">
                 <li class="breadcrumb-item"><a href='../sourcefile/storm_drain_capture.f90.html'>storm_drain_capture.F90</a></li>
-                <li class="breadcrumb-item"><a href='../module/storm_drain_capture~2.html'>storm_drain_capture</a></li>
+                <li class="breadcrumb-item"><a href='../module/storm_drain_capture.html'>storm_drain_capture</a></li>
             <li class="breadcrumb-item active" aria-current="page">storm_drain_capture_initialize</li>
           </ol>
         </nav>
@@ -125,12 +125,6 @@
   
   
   
-    <div class="card card-primary">
-      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
-      <div class="list-group">
-        <a class="list-group-item" href="../proc/storm_drain_capture_initialize.html#src">storm_drain_capture_initialize</a>
-      </div>
-    </div>
 
 
   </div>
@@ -175,7 +169,7 @@ Determine how many storm_drain_capture codes are present</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-landuse_index~22"></span>
+              <span class="anchor" id="variable-landuse_index~21"></span>
               integer(kind=c_int),
             </td>
 <td>intent(in)</td>
@@ -203,95 +197,6 @@ Determine how many storm_drain_capture codes are present</p>
 
 
     
-    <section>
-    <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre><span></span><span class="w">  </span><span class="k">subroutine </span><span class="n">storm_drain_capture_initialize</span><span class="p">(</span><span class="w"> </span><span class="n">is_cell_active</span><span class="p">,</span><span class="w"> </span><span class="n">landuse_index</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="kt">logical</span><span class="w"> </span><span class="p">(</span><span class="kt">c_bool</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">     </span><span class="kd">::</span><span class="w"> </span><span class="n">is_cell_active</span><span class="p">(:,:)</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">      </span><span class="kd">::</span><span class="w"> </span><span class="n">landuse_index</span><span class="p">(:)</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! [ LOCALS ]</span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">              </span><span class="kd">::</span><span class="w"> </span><span class="n">number_of_landuse_codes</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">lu_codes</span><span class="p">(:)</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">              </span><span class="kd">::</span><span class="w"> </span><span class="n">indx</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">              </span><span class="kd">::</span><span class="w"> </span><span class="n">num_records</span><span class="w"></span>
-<span class="w">    </span><span class="kt">logical</span><span class="w">                           </span><span class="kd">::</span><span class="w"> </span><span class="n">are_lengths_unequal</span><span class="w"></span>
-<span class="w">    </span><span class="k">type</span><span class="w"> </span><span class="p">(</span><span class="n">FSTRING_LIST_T</span><span class="p">)</span><span class="w">              </span><span class="kd">::</span><span class="w"> </span><span class="n">string_list</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">              </span><span class="kd">::</span><span class="w"> </span><span class="n">status</span><span class="w"></span>
-<span class="w">    </span><span class="kt">character</span><span class="w"> </span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">256</span><span class="p">)</span><span class="w">               </span><span class="kd">::</span><span class="w"> </span><span class="n">sBuf</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">call </span><span class="n">string_list</span><span class="p">%</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;LU_Code&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">call </span><span class="n">string_list</span><span class="p">%</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Landuse_Code&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">call </span><span class="n">string_list</span><span class="p">%</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Landuse_Lookup_Code&quot;</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">!&gt; Determine how many UNIQUE landuse codes are present</span>
-<span class="w">    </span><span class="k">call </span><span class="n">PARAMS</span><span class="p">%</span><span class="n">get_parameters</span><span class="p">(</span><span class="w"> </span><span class="n">slKeys</span><span class="o">=</span><span class="n">string_list</span><span class="p">,</span><span class="w"> </span><span class="n">iValues</span><span class="o">=</span><span class="n">lu_codes</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="n">number_of_landuse_codes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">count</span><span class="p">(</span><span class="w"> </span><span class="n">lu_codes</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">call </span><span class="n">string_list</span><span class="p">%</span><span class="n">clear</span><span class="p">()</span><span class="w"></span>
-<span class="w">    </span><span class="k">call </span><span class="n">string_list</span><span class="p">%</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Storm_drain_capture&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">call </span><span class="n">string_list</span><span class="p">%</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Storm_drain_capture_fraction&quot;</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">allocate</span><span class="p">(</span><span class="w"> </span><span class="n">STORM_DRAIN_CAPTURE_FRACTION</span><span class="p">(</span><span class="w"> </span><span class="nb">count</span><span class="p">(</span><span class="w"> </span><span class="n">is_cell_active</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">),</span><span class="w"> </span><span class="nb">stat</span><span class="o">=</span><span class="n">status</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">call </span><span class="n">assert</span><span class="p">(</span><span class="w"> </span><span class="n">status</span><span class="o">==</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Problem allocating STORM_DRAIN_CAPTURE_FRACTION&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">      </span><span class="err">__</span><span class="n">FILE__</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">LINE__</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! set default value for STORM_DRAIN_CAPTURE_FRACTION</span>
-<span class="w">    </span><span class="n">STORM_DRAIN_CAPTURE_FRACTION</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0_c_float</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">!&gt; Determine how many storm_drain_capture codes are present</span>
-<span class="w">    </span><span class="k">call </span><span class="n">PARAMS</span><span class="p">%</span><span class="n">get_parameters</span><span class="p">(</span><span class="w"> </span><span class="n">slKeys</span><span class="o">=</span><span class="n">string_list</span><span class="p">,</span><span class="w"> </span><span class="n">fValues</span><span class="o">=</span><span class="n">STORM_DRAIN_CAPTURE_FRACTION_TABLE</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">call </span><span class="n">string_list</span><span class="p">%</span><span class="n">clear</span><span class="p">()</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! attempt to locate storm drain capture information in gridded format</span>
-<span class="w">    </span><span class="n">pSTORM_DRAIN_CAPTURE_FRACTION</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">DAT</span><span class="p">%</span><span class="n">find</span><span class="p">(</span><span class="w"> </span><span class="s2">&quot;STORM_DRAIN_CAPTURE_FRACTION&quot;</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">   </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="nb">associated</span><span class="p">(</span><span class="w"> </span><span class="n">pSTORM_DRAIN_CAPTURE_FRACTION</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span><span class="w"></span>
-
-<span class="w">     </span><span class="c">! nothing to do...</span>
-
-<span class="w">   </span><span class="n">elseif</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">STORM_DRAIN_CAPTURE_FRACTION_TABLE</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">fTINYVAL</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span><span class="w"></span>
-
-<span class="w">     </span><span class="c">!&gt; check: number of STORM_DRAIN_CAPTURE_FRACTION_TABLE values == number of landuse codes?</span>
-<span class="w">     </span><span class="n">num_records</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">ubound</span><span class="p">(</span><span class="n">STORM_DRAIN_CAPTURE_FRACTION_TABLE</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
-<span class="w">     </span><span class="n">are_lengths_unequal</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">num_records</span><span class="w"> </span><span class="o">/=</span><span class="w"> </span><span class="n">number_of_landuse_codes</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">     </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">are_lengths_unequal</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-
-<span class="k">       </span><span class="n">sBuf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;The number of values specifying storm drain capture&quot;</span><span class="w">                         </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">         </span><span class="o">//</span><span class="s2">&quot; fraction (&quot;</span><span class="w">                                                                    </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">         </span><span class="o">//</span><span class="n">asCharacter</span><span class="p">(</span><span class="w"> </span><span class="n">num_records</span><span class="w"> </span><span class="p">)</span><span class="o">//</span><span class="s2">&quot;) does not match the number of landuse values (&quot;</span><span class="w">    </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">         </span><span class="o">//</span><span class="n">asCharacter</span><span class="p">(</span><span class="w"> </span><span class="n">number_of_landuse_codes</span><span class="w"> </span><span class="p">)</span><span class="o">//</span><span class="s2">&quot;). Setting default storm drain&quot;</span><span class="w">         </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">         </span><span class="o">//</span><span class="s2">&quot; capture to 0.0 (ZERO).&quot;</span><span class="w"></span>
-
-<span class="w">       </span><span class="k">call </span><span class="n">warn</span><span class="p">(</span><span class="w"> </span><span class="n">sMessage</span><span class="o">=</span><span class="nb">trim</span><span class="p">(</span><span class="n">sBuf</span><span class="p">),</span><span class="w">                                                      </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                 </span><span class="n">sModule</span><span class="o">=</span><span class="err">__</span><span class="n">FILE__</span><span class="p">,</span><span class="w">                                                      </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                 </span><span class="n">iLine</span><span class="o">=</span><span class="err">__</span><span class="n">LINE__</span><span class="p">,</span><span class="w">                                                           </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                 </span><span class="n">lFatal</span><span class="o">=</span><span class="p">.</span><span class="n">false</span><span class="p">.</span><span class="err">_</span><span class="n">c_bool</span><span class="p">,</span><span class="w">                                                    </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                 </span><span class="n">iLogLevel</span><span class="o">=</span><span class="n">LOG_ALL</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">       </span><span class="n">STORM_DRAIN_CAPTURE_FRACTION</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0_c_float</span><span class="w"></span>
-
-<span class="w">     </span><span class="k">else</span>
-
-<span class="k">       do </span><span class="n">indx</span><span class="o">=</span><span class="nb">lbound</span><span class="p">(</span><span class="w"> </span><span class="n">landuse_index</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">),</span><span class="w"> </span><span class="nb">ubound</span><span class="p">(</span><span class="w"> </span><span class="n">landuse_index</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">         </span><span class="n">STORM_DRAIN_CAPTURE_FRACTION</span><span class="p">(</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">STORM_DRAIN_CAPTURE_FRACTION_TABLE</span><span class="p">(</span><span class="w"> </span><span class="n">landuse_index</span><span class="p">(</span><span class="w"> </span><span class="n">indx</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">       </span><span class="k">enddo</span>
-
-<span class="k">      endif</span>
-
-<span class="k">      deallocate</span><span class="p">(</span><span class="w"> </span><span class="n">STORM_DRAIN_CAPTURE_FRACTION_TABLE</span><span class="p">,</span><span class="w"> </span><span class="nb">stat</span><span class="o">=</span><span class="n">status</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">      </span><span class="k">call </span><span class="n">assert</span><span class="p">(</span><span class="w"> </span><span class="n">status</span><span class="o">==</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Problem allocating STORM_DRAIN_CAPTURE_FRACTION_TABLE&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="err">__</span><span class="n">FILE__</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">LINE__</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">endif</span>
-
-<span class="k">  end subroutine </span><span class="n">storm_drain_capture_initialize</span><span class="w"></span>
-</pre></div>
-
-    </section>
-    <br>
     
     </div>
   </div>
@@ -308,7 +213,7 @@ Determine how many storm_drain_capture codes are present</p>
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-10-17T14:19:59.727997             </p>
+ on 2023-10-19T16:28:40.743458             </p>
           </div>
         </div>
         <br>

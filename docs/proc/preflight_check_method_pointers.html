@@ -73,7 +73,7 @@
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip"
                  data-bs-placement="bottom" data-html="true"
-                 title=" 0.1% of total for procedures.">25 statements</a>
+                 title=" 0.3% of total for procedures.">25 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -86,7 +86,7 @@
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb justify-content-end mb-0">
                 <li class="breadcrumb-item"><a href='../sourcefile/model_domain.f90.html'>model_domain.F90</a></li>
-                <li class="breadcrumb-item"><a href='../module/model_domain~2.html'>model_domain</a></li>
+                <li class="breadcrumb-item"><a href='../module/model_domain.html'>model_domain</a></li>
             <li class="breadcrumb-item active" aria-current="page">preflight_check_method_pointers</li>
           </ol>
         </nav>
@@ -125,12 +125,6 @@
   
   
   
-    <div class="card card-primary">
-      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
-      <div class="list-group">
-        <a class="list-group-item" href="../proc/preflight_check_method_pointers.html#src">preflight_check_method_pointers</a>
-      </div>
-    </div>
 
 
   </div>
@@ -144,7 +138,7 @@
 
 
     <h3>Type Bound</h3>
-    <p><a href='../type/model_domain_t~2.html'>MODEL_DOMAIN_T</a></p>
+    <p><a href='../type/model_domain_t.html'>MODEL_DOMAIN_T</a></p>
 
     <h3>Arguments</h3>
         <table class="table table-striped varlist">
@@ -160,7 +154,7 @@
         <tr>
             <td>
               <span class="anchor" id="variable-this~167"></span>
-              class(<a href='../type/model_domain_t~2.html'>MODEL_DOMAIN_T</a>),
+              class(<a href='../type/model_domain_t.html'>MODEL_DOMAIN_T</a>),
             </td>
 <td>intent(inout)</td>
               <td></td>            <td>
@@ -187,74 +181,6 @@
 
 
     
-    <section>
-    <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre><span></span><span class="w">  </span><span class="k">subroutine </span><span class="n">preflight_check_method_pointers</span><span class="p">(</span><span class="n">this</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">class</span><span class="w"> </span><span class="p">(</span><span class="n">MODEL_DOMAIN_T</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w">   </span><span class="kd">::</span><span class="w"> </span><span class="n">this</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="nb">associated</span><span class="p">(</span><span class="w"> </span><span class="n">this</span><span class="p">%</span><span class="n">init_interception</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">      </span><span class="k">call </span><span class="n">die</span><span class="p">(</span><span class="s2">&quot;INTERNAL PROGRAMMING ERROR--Null procedure pointer.&quot;</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">FILE__</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">LINE__</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="nb">associated</span><span class="p">(</span><span class="w"> </span><span class="n">this</span><span class="p">%</span><span class="n">calc_interception</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">      </span><span class="k">call </span><span class="n">die</span><span class="p">(</span><span class="s2">&quot;INTERNAL PROGRAMMING ERROR--Null procedure pointer.&quot;</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">FILE__</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">LINE__</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="nb">associated</span><span class="p">(</span><span class="w"> </span><span class="n">this</span><span class="p">%</span><span class="n">init_irrigation</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">      </span><span class="k">call </span><span class="n">die</span><span class="p">(</span><span class="s2">&quot;INTERNAL PROGRAMMING ERROR--Null procedure pointer.&quot;</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">FILE__</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">LINE__</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="nb">associated</span><span class="p">(</span><span class="w"> </span><span class="n">this</span><span class="p">%</span><span class="n">calc_irrigation</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">      </span><span class="k">call </span><span class="n">die</span><span class="p">(</span><span class="s2">&quot;INTERNAL PROGRAMMING ERROR--Null procedure pointer.&quot;</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">FILE__</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">LINE__</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="nb">associated</span><span class="p">(</span><span class="w"> </span><span class="n">this</span><span class="p">%</span><span class="n">init_runoff</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">      </span><span class="k">call </span><span class="n">die</span><span class="p">(</span><span class="s2">&quot;INTERNAL PROGRAMMING ERROR--Null procedure pointer.&quot;</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">FILE__</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">LINE__</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="nb">associated</span><span class="p">(</span><span class="w"> </span><span class="n">this</span><span class="p">%</span><span class="n">calc_runoff</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">      </span><span class="k">call </span><span class="n">die</span><span class="p">(</span><span class="s2">&quot;INTERNAL PROGRAMMING ERROR--Null procedure pointer.&quot;</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">FILE__</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">LINE__</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="nb">associated</span><span class="p">(</span><span class="w"> </span><span class="n">this</span><span class="p">%</span><span class="n">init_reference_et</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">      </span><span class="k">call </span><span class="n">die</span><span class="p">(</span><span class="s2">&quot;INTERNAL PROGRAMMING ERROR--Null procedure pointer.&quot;</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">FILE__</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">LINE__</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="nb">associated</span><span class="p">(</span><span class="w"> </span><span class="n">this</span><span class="p">%</span><span class="n">calc_reference_et</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">      </span><span class="k">call </span><span class="n">die</span><span class="p">(</span><span class="s2">&quot;INTERNAL PROGRAMMING ERROR--Null procedure pointer.&quot;</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">FILE__</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">LINE__</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="nb">associated</span><span class="p">(</span><span class="w"> </span><span class="n">this</span><span class="p">%</span><span class="n">init_snowmelt</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">      </span><span class="k">call </span><span class="n">die</span><span class="p">(</span><span class="s2">&quot;INTERNAL PROGRAMMING ERROR--Null procedure pointer.&quot;</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">FILE__</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">LINE__</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="nb">associated</span><span class="p">(</span><span class="w"> </span><span class="n">this</span><span class="p">%</span><span class="n">calc_snowmelt</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">      </span><span class="k">call </span><span class="n">die</span><span class="p">(</span><span class="s2">&quot;INTERNAL PROGRAMMING ERROR--Null procedure pointer.&quot;</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">FILE__</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">LINE__</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="nb">associated</span><span class="p">(</span><span class="w"> </span><span class="n">this</span><span class="p">%</span><span class="n">init_snowfall</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">      </span><span class="k">call </span><span class="n">die</span><span class="p">(</span><span class="s2">&quot;INTERNAL PROGRAMMING ERROR--Null procedure pointer.&quot;</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">FILE__</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">LINE__</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="nb">associated</span><span class="p">(</span><span class="w"> </span><span class="n">this</span><span class="p">%</span><span class="n">calc_snowfall</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">      </span><span class="k">call </span><span class="n">die</span><span class="p">(</span><span class="s2">&quot;INTERNAL PROGRAMMING ERROR--Null procedure pointer.&quot;</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">FILE__</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">LINE__</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="nb">associated</span><span class="p">(</span><span class="w"> </span><span class="n">this</span><span class="p">%</span><span class="n">init_GDD</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">      </span><span class="k">call </span><span class="n">die</span><span class="p">(</span><span class="s2">&quot;INTERNAL PROGRAMMING ERROR--Null procedure pointer.&quot;</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">FILE__</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">LINE__</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="nb">associated</span><span class="p">(</span><span class="w"> </span><span class="n">this</span><span class="p">%</span><span class="n">calc_GDD</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">      </span><span class="k">call </span><span class="n">die</span><span class="p">(</span><span class="s2">&quot;INTERNAL PROGRAMMING ERROR--Null procedure pointer.&quot;</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">FILE__</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">LINE__</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="nb">associated</span><span class="p">(</span><span class="w"> </span><span class="n">this</span><span class="p">%</span><span class="n">init_routing</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">      </span><span class="k">call </span><span class="n">die</span><span class="p">(</span><span class="s2">&quot;INTERNAL PROGRAMMING ERROR--Null procedure pointer.&quot;</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">FILE__</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">LINE__</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="nb">associated</span><span class="p">(</span><span class="w"> </span><span class="n">this</span><span class="p">%</span><span class="n">calc_routing</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">      </span><span class="k">call </span><span class="n">die</span><span class="p">(</span><span class="s2">&quot;INTERNAL PROGRAMMING ERROR--Null procedure pointer.&quot;</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">FILE__</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">LINE__</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="nb">associated</span><span class="p">(</span><span class="w"> </span><span class="n">this</span><span class="p">%</span><span class="n">init_direct_net_infiltration</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">      </span><span class="k">call </span><span class="n">die</span><span class="p">(</span><span class="s2">&quot;INTERNAL PROGRAMMING ERROR--Null procedure pointer.&quot;</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">FILE__</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">LINE__</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="nb">associated</span><span class="p">(</span><span class="w"> </span><span class="n">this</span><span class="p">%</span><span class="n">calc_direct_net_infiltration</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">      </span><span class="k">call </span><span class="n">die</span><span class="p">(</span><span class="s2">&quot;INTERNAL PROGRAMMING ERROR--Null procedure pointer.&quot;</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">FILE__</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">LINE__</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="nb">associated</span><span class="p">(</span><span class="w"> </span><span class="n">this</span><span class="p">%</span><span class="n">init_soil_storage_max</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">      </span><span class="k">call </span><span class="n">die</span><span class="p">(</span><span class="s2">&quot;INTERNAL PROGRAMMING ERROR--Null procedure pointer.&quot;</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">FILE__</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">LINE__</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="nb">associated</span><span class="p">(</span><span class="w"> </span><span class="n">this</span><span class="p">%</span><span class="n">get_precipitation_data</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">      </span><span class="k">call </span><span class="n">die</span><span class="p">(</span><span class="s2">&quot;INTERNAL PROGRAMMING ERROR--Null procedure pointer.&quot;</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">FILE__</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">LINE__</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="nb">associated</span><span class="p">(</span><span class="w"> </span><span class="n">this</span><span class="p">%</span><span class="n">get_minimum_air_temperature_data</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">      </span><span class="k">call </span><span class="n">die</span><span class="p">(</span><span class="s2">&quot;INTERNAL PROGRAMMING ERROR--Null procedure pointer.&quot;</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">FILE__</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">LINE__</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="nb">associated</span><span class="p">(</span><span class="w"> </span><span class="n">this</span><span class="p">%</span><span class="n">get_maximum_air_temperature_data</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">      </span><span class="k">call </span><span class="n">die</span><span class="p">(</span><span class="s2">&quot;INTERNAL PROGRAMMING ERROR--Null procedure pointer.&quot;</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">FILE__</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">LINE__</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">end subroutine </span><span class="n">preflight_check_method_pointers</span><span class="w"></span>
-</pre></div>
-
-    </section>
-    <br>
     
     </div>
   </div>
@@ -271,7 +197,7 @@
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-10-17T14:19:59.727997             </p>
+ on 2023-10-19T16:28:40.743458             </p>
           </div>
         </div>
         <br>

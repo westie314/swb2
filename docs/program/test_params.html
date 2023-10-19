@@ -72,7 +72,7 @@
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip"
                  data-bs-placement="bottom" data-html="true"
-                 title=" 1.9% of total for programs.">19 statements</a>
+                 title=" 3.7% of total for programs.">19 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -111,9 +111,9 @@
       </a>
       <div id="vars-0" class="collapse">
         <div class="list-group list-group-flush">
-            <a class="list-group-item" href="../program/test_params.html#variable-params~3">PARAMS</a>
-            <a class="list-group-item" href="../program/test_params.html#variable-fvalues~11">fValues</a>
-            <a class="list-group-item" href="../program/test_params.html#variable-slstring~5">slString</a>
+            <a class="list-group-item" href="../program/test_params.html#variable-params~2">PARAMS</a>
+            <a class="list-group-item" href="../program/test_params.html#variable-fvalues~6">fValues</a>
+            <a class="list-group-item" href="../program/test_params.html#variable-slstring~3">slString</a>
         </div>
       </div>
     </div>
@@ -136,12 +136,6 @@
   
   
   
-    <div class="card card-primary">
-      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
-      <div class="list-group">
-        <a class="list-group-item" href="../program/test_params.html#src">test_params</a>
-      </div>
-    </div>
 
 
   </div>
@@ -155,10 +149,10 @@
         <ul class="list-group list-group-flush">
             <li class="list-group-item">
               <ul class="list-inline">
-                  <li class="list-inline-item"><a href='../module/parameters.html'>parameters</a></li>
                   <li class="list-inline-item"><a href='../module/fstring_list.html'>fstring_list</a></li>
-                  <li class="list-inline-item"><a href='http://fortranwiki.org/fortran/show/iso_c_binding'>iso_c_binding</a></li>
                   <li class="list-inline-item"><a href='../module/exceptions.html'>exceptions</a></li>
+                  <li class="list-inline-item"><a href='http://fortranwiki.org/fortran/show/iso_c_binding'>iso_c_binding</a></li>
+                  <li class="list-inline-item"><a href='../module/parameters.html'>parameters</a></li>
               </ul>
             </li>
         </ul>
@@ -182,7 +176,7 @@
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-params~3"></span>
+              <span class="anchor" id="variable-params~2"></span>
               type(<a href='../type/parameters_t.html'>PARAMETERS_T</a>)
             </td>
             <td>
@@ -198,7 +192,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-fvalues~11"></span>
+              <span class="anchor" id="variable-fvalues~6"></span>
               real(kind=c_float),
             </td>
             <td>
@@ -214,7 +208,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-slstring~5"></span>
+              <span class="anchor" id="variable-slstring~3"></span>
               type(<a href='../type/fstring_list_t.html'>FSTRING_LIST_T</a>)
             </td>
             <td>
@@ -242,51 +236,6 @@
 
     
 
-    <section>
-    <h2 id="src">Source Code</h2>
-    <div class="highlight"><pre><span></span><span class="k">program </span><span class="n">test_params</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">use </span><span class="nb">iso_c_binding</span><span class="p">,</span><span class="w"> </span><span class="k">only</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="kt">c_int</span><span class="p">,</span><span class="w"> </span><span class="kt">c_float</span><span class="p">,</span><span class="w"> </span><span class="kt">c_double</span><span class="p">,</span><span class="w"> </span><span class="kt">c_bool</span><span class="w"></span>
-<span class="c">!  use constants_and_conversions, only :WHITESPACE</span>
-<span class="w">  </span><span class="k">use </span><span class="n">exceptions</span><span class="w"></span>
-<span class="c">!  use fstring</span>
-<span class="w">  </span><span class="k">use </span><span class="n">fstring_list</span><span class="w"></span>
-<span class="c">!  use dictionary</span>
-<span class="w">  </span><span class="k">use </span><span class="n">parameters</span><span class="w"></span>
-<span class="w">  </span><span class="k">implicit none</span>
-
-<span class="k">  type</span><span class="w"> </span><span class="p">(</span><span class="n">PARAMETERS_T</span><span class="p">)</span><span class="w">             </span><span class="kd">::</span><span class="w"> </span><span class="n">PARAMS</span><span class="w"></span>
-<span class="w">  </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="w">     </span><span class="kd">::</span><span class="w"> </span><span class="n">fValues</span><span class="p">(:)</span><span class="w"></span>
-<span class="w">  </span><span class="k">type</span><span class="w"> </span><span class="p">(</span><span class="n">FSTRING_LIST_T</span><span class="p">)</span><span class="w">                 </span><span class="kd">::</span><span class="w"> </span><span class="n">slString</span><span class="w"></span>
-
-
-<span class="w">  </span><span class="k">call </span><span class="n">PARAMS</span><span class="p">%</span><span class="n">add_file</span><span class="p">(</span><span class="s2">&quot;LU_lookup_NLCD.txt&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="w">  </span><span class="c">!call PARAMS%add_file(&quot;rain_adj_factors_maui.prn&quot;, sDelimiters = &quot;WHITESPACE&quot;)</span>
-<span class="w">  </span><span class="k">call </span><span class="n">PARAMS</span><span class="p">%</span><span class="n">add_file</span><span class="p">(</span><span class="s2">&quot;IRRIGATION_lookup_TWO_FACTOR.txt&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="w">  </span><span class="k">call </span><span class="n">PARAMS</span><span class="p">%</span><span class="n">munge_file</span><span class="p">()</span><span class="w"></span>
-
-<span class="w">  </span><span class="c">!call PARAM_DICT%get_values(sKey=&quot;raincoef_3&quot;, fValues=fValues)</span>
-
-<span class="w">  </span><span class="c">!print *, &quot;count: &quot;, ubound(fValues, 1)</span>
-<span class="w">  </span><span class="c">!print *, &quot;min  : &quot;, minval(fValues)</span>
-<span class="w">  </span><span class="c">!print *, &quot;max  : &quot;, maxval(fValues)</span>
-<span class="w">  </span><span class="c">!print *, &quot;mean : &quot;, sum(fValues)/ ubound(fValues, 1)</span>
-
-<span class="w">  </span><span class="n">slString</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PARAM_DICT</span><span class="p">%</span><span class="n">grep_keys</span><span class="p">(</span><span class="s2">&quot;REW&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="w">  </span><span class="k">call </span><span class="n">slString</span><span class="p">%</span><span class="k">print</span><span class="p">()</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">call </span><span class="n">slString</span><span class="p">%</span><span class="k">deallocate</span><span class="p">()</span><span class="w"></span>
-
-<span class="w">  </span><span class="n">slString</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PARAM_DICT</span><span class="p">%</span><span class="n">grep_keys</span><span class="p">(</span><span class="s2">&quot;L_&quot;</span><span class="p">)</span><span class="w">  </span>
-<span class="w">  </span><span class="k">call </span><span class="n">slString</span><span class="p">%</span><span class="k">print</span><span class="p">()</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">call </span><span class="n">check_warnings</span><span class="p">()</span><span class="w"></span>
-
-
-<span class="k">end program </span><span class="n">test_params</span><span class="w"></span>
-</pre></div>
-
-    </section>
     
     </div>
   </div>
@@ -303,7 +252,7 @@
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-10-17T14:19:59.727997             </p>
+ on 2023-10-19T16:28:40.743458             </p>
           </div>
         </div>
         <br>

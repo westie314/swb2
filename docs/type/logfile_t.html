@@ -73,7 +73,7 @@
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip"
                  data-bs-placement="bottom" data-html="true"
-                 title="<p> 1.4% of total for derived types.</p>Including implementation: 172 statements,  1.5% of total for derived types.">26 statements</a>
+                 title="<p> 2.9% of total for derived types.</p>Including implementation: 173 statements,  3.1% of total for derived types.">26 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -86,7 +86,7 @@
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb justify-content-end mb-0">
                 <li class="breadcrumb-item"><a href='../sourcefile/logfiles.f90.html'>logfiles.F90</a></li>
-                <li class="breadcrumb-item"><a href='../module/logfiles~2.html'>logfiles</a></li>
+                <li class="breadcrumb-item"><a href='../module/logfiles.html'>logfiles</a></li>
             <li class="breadcrumb-item active" aria-current="page">LOGFILE_T</li>
           </ol>
         </nav>
@@ -160,12 +160,6 @@
 
   
   
-    <div class="card card-primary">
-      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
-      <div class="list-group">
-        <a class="list-group-item" href="../type/logfile_t.html#src">LOGFILE_T</a>
-      </div>
-    </div>
 
 
   </div>
@@ -939,47 +933,6 @@
           </div>
       </section>
 
-    <section>
-    <h3><span class="anchor" id="src"></span>Source Code</h3>
-    <div class="highlight"><pre><span></span><span class="w">  </span><span class="k">type </span><span class="n">LOGFILE_T</span><span class="w"></span>
-<span class="w">    </span><span class="kt">character</span><span class="w"> </span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="w"> </span><span class="k">allocatable</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">sPathname</span><span class="w"></span>
-<span class="w">    </span><span class="kt">character</span><span class="w"> </span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="w"> </span><span class="k">allocatable</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">sFilePrefix</span><span class="w"></span>
-<span class="w">    </span><span class="kt">character</span><span class="w"> </span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">256</span><span class="p">)</span><span class="w">             </span><span class="kd">::</span><span class="w"> </span><span class="n">sFilename</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="kt">logical</span><span class="w"> </span><span class="p">(</span><span class="kt">c_bool</span><span class="p">)</span><span class="w">                </span><span class="kd">::</span><span class="w"> </span><span class="n">lIsOpen</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.</span><span class="err">_</span><span class="n">c_bool</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">                 </span><span class="kd">::</span><span class="w"> </span><span class="n">iUnitNum</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mi">999</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">                 </span><span class="kd">::</span><span class="w"> </span><span class="n">iStat</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">                 </span><span class="kd">::</span><span class="w"> </span><span class="n">iLogLevel</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="n">LOG_GENERAL</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">contains</span>
-
-<span class="k">    procedure</span><span class="p">,</span><span class="w"> </span><span class="k">private</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">initialize_logfiles_sub</span><span class="w"></span>
-<span class="w">    </span><span class="k">generic</span><span class="w">            </span><span class="kd">::</span><span class="w"> </span><span class="n">initialize</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">initialize_logfiles_sub</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">procedure</span><span class="p">,</span><span class="w"> </span><span class="k">private</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">write_to_logfiles_sub</span><span class="w"></span>
-<span class="w">    </span><span class="k">generic</span><span class="w">            </span><span class="kd">::</span><span class="w"> </span><span class="k">write</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">write_to_logfiles_sub</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">procedure</span><span class="p">,</span><span class="w"> </span><span class="k">private</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">set_log_level_sub</span><span class="w"></span>
-<span class="w">    </span><span class="k">generic</span><span class="w">            </span><span class="kd">::</span><span class="w"> </span><span class="n">set_loglevel</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">set_log_level_sub</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">procedure</span><span class="p">,</span><span class="w"> </span><span class="k">private</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">set_screen_echo_sub</span><span class="w"></span>
-<span class="w">    </span><span class="k">generic</span><span class="w">            </span><span class="kd">::</span><span class="w"> </span><span class="n">set_echo</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">set_screen_echo_sub</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">procedure</span><span class="p">,</span><span class="w"> </span><span class="k">private</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">open_files_write_access_sub</span><span class="w"></span>
-<span class="w">    </span><span class="k">generic</span><span class="w">            </span><span class="kd">::</span><span class="w"> </span><span class="k">open</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">open_files_write_access_sub</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">procedure</span><span class="p">,</span><span class="w"> </span><span class="k">private</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">close_files_sub</span><span class="w"></span>
-<span class="w">    </span><span class="k">generic</span><span class="w">            </span><span class="kd">::</span><span class="w"> </span><span class="k">close</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">close_files_sub</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">procedure</span><span class="p">,</span><span class="w"> </span><span class="k">private</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">make_prefix_sub</span><span class="w"></span>
-<span class="w">    </span><span class="k">generic</span><span class="w">            </span><span class="kd">::</span><span class="w"> </span><span class="n">make_prefix</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">make_prefix_sub</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">procedure</span><span class="p">,</span><span class="w"> </span><span class="k">private</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">set_output_directory_name_sub</span><span class="w"></span>
-<span class="w">    </span><span class="k">generic</span><span class="w">            </span><span class="kd">::</span><span class="w"> </span><span class="n">set_output_directory</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">set_output_directory_name_sub</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">end type </span><span class="n">LOGFILE_T</span><span class="w"></span>
-</pre></div>
-
-    </section>
     
     </div>
   </div>
@@ -996,7 +949,7 @@
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-10-17T14:19:59.727997             </p>
+ on 2023-10-19T16:28:40.743458             </p>
           </div>
         </div>
         <br>

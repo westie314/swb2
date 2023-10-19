@@ -73,7 +73,7 @@
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip"
                  data-bs-placement="bottom" data-html="true"
-                 title=" 0.2% of total for procedures.">41 statements</a>
+                 title=" 0.5% of total for procedures.">41 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -125,12 +125,6 @@
   
   
   
-    <div class="card card-primary">
-      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
-      <div class="list-group">
-        <a class="list-group-item" href="../proc/grid_conform.html#src">grid_Conform</a>
-      </div>
-    </div>
 
 
   </div>
@@ -226,73 +220,6 @@ is set to abs(rTolerance * ( rX1-rX1 ) )</p>
 
 
     
-    <section>
-    <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre><span></span><span class="k">function </span><span class="n">grid_Conform</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">pGrd1</span><span class="p">,</span><span class="w"> </span><span class="n">pGrd2</span><span class="p">,</span><span class="w"> </span><span class="n">rTolerance</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">result</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">lConform</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">  </span><span class="c">!! Returns .true. if the T_GRID objects conform (in terms of cell sizes and extents)</span>
-<span class="w">  </span><span class="c">!! The optional argument rTolerance is the precision for checking the (floating-point)</span>
-<span class="w">  </span><span class="c">!! extent coordinates (this defaults to rDEFAULT_TOLERANCE, below). The tolerance</span>
-<span class="w">  </span><span class="c">!! is set to abs(rTolerance * ( rX1-rX1 ) )</span>
-<span class="w">  </span><span class="c">! ARGUMENTS</span>
-<span class="w">  </span><span class="k">type</span><span class="w"> </span><span class="p">(</span><span class="n">GENERAL_GRID_T</span><span class="p">),</span><span class="w"> </span><span class="k">pointer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">pGrd1</span><span class="p">,</span><span class="n">pGrd2</span><span class="w"></span>
-<span class="w">  </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="w"> </span><span class="k">optional</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">rTolerance</span><span class="w"></span>
-<span class="w">  </span><span class="c">! RETURN VALUE</span>
-<span class="w">  </span><span class="kt">logical</span><span class="w"> </span><span class="p">(</span><span class="kt">c_bool</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">lConform</span><span class="w"></span>
-<span class="w">  </span><span class="c">! LOCALS</span>
-<span class="w">  </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">rTol</span><span class="w"></span>
-<span class="w">  </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">),</span><span class="w"> </span><span class="k">parameter</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">rDEFAULT_TOLERANCE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.5_c_float</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="nb">present</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">rTolerance</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">      </span><span class="n">rTol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rTolerance</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">pGrd1</span><span class="p">%</span><span class="n">rX1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">pGrd1</span><span class="p">%</span><span class="n">rX0</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">  </span><span class="k">else</span>
-<span class="k">      </span><span class="n">rTol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rDEFAULT_TOLERANCE</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">pGrd1</span><span class="p">%</span><span class="n">rX1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">pGrd1</span><span class="p">%</span><span class="n">rX0</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">  </span><span class="k">end if</span>
-
-<span class="k">  </span><span class="n">lConform</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TRUE</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">pGrd1</span><span class="p">%</span><span class="n">iNX</span><span class="w"> </span><span class="o">/=</span><span class="w"> </span><span class="n">pGrd2</span><span class="p">%</span><span class="n">iNX</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">    </span><span class="n">lConform</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FALSE</span><span class="w"></span>
-<span class="w">    </span><span class="k">call </span><span class="n">LOGS</span><span class="p">%</span><span class="k">write</span><span class="p">(</span><span class="s2">&quot;Unequal number of columns between grids&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">iLogLevel</span><span class="o">=</span><span class="n">LOG_ALL</span><span class="p">)</span><span class="w"></span>
-<span class="w">  </span><span class="k">endif</span>
-
-<span class="k">  if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">pGrd1</span><span class="p">%</span><span class="n">iNY</span><span class="w"> </span><span class="o">/=</span><span class="w"> </span><span class="n">pGrd2</span><span class="p">%</span><span class="n">iNY</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">    </span><span class="n">lConform</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FALSE</span><span class="w"></span>
-<span class="w">    </span><span class="k">call </span><span class="n">LOGS</span><span class="p">%</span><span class="k">write</span><span class="p">(</span><span class="s2">&quot;Unequal number of rows between grids&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">iLogLevel</span><span class="o">=</span><span class="n">LOG_ALL</span><span class="p">)</span><span class="w"></span>
-<span class="w">  </span><span class="k">endif</span>
-
-<span class="k">  if</span><span class="p">(</span><span class="w"> </span><span class="nb">abs</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">pGrd1</span><span class="p">%</span><span class="n">rX0</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">pGrd2</span><span class="p">%</span><span class="n">rX0</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">rTol</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">     call </span><span class="n">LOGS</span><span class="p">%</span><span class="k">write</span><span class="p">(</span><span class="s2">&quot;Lower left-hand side X coordinates do not match:&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">iLogLevel</span><span class="o">=</span><span class="n">LOG_ALL</span><span class="p">)</span><span class="w"></span>
-<span class="w">     </span><span class="k">call </span><span class="n">LOGS</span><span class="p">%</span><span class="k">write</span><span class="p">(</span><span class="s2">&quot;Grid 1 value: &quot;</span><span class="o">//</span><span class="n">asCharacter</span><span class="p">(</span><span class="n">pGrd1</span><span class="p">%</span><span class="n">rX0</span><span class="p">)</span><span class="w">  </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">          </span><span class="o">//</span><span class="s2">&quot;; grid 2 value: &quot;</span><span class="o">//</span><span class="n">asCharacter</span><span class="p">(</span><span class="n">pGrd2</span><span class="p">%</span><span class="n">rX0</span><span class="p">),</span><span class="w"> </span><span class="n">iLogLevel</span><span class="o">=</span><span class="n">LOG_ALL</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="n">lConform</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FALSE</span><span class="w"></span>
-<span class="w">  </span><span class="k">endif</span>
-
-<span class="k">  if</span><span class="p">(</span><span class="w"> </span><span class="nb">abs</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">pGrd1</span><span class="p">%</span><span class="n">rY0</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">pGrd2</span><span class="p">%</span><span class="n">rY0</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">rTol</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">    call </span><span class="n">LOGS</span><span class="p">%</span><span class="k">write</span><span class="p">(</span><span class="s2">&quot;Lower left-hand side Y coordinates do not match:&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">iLogLevel</span><span class="o">=</span><span class="n">LOG_ALL</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">call </span><span class="n">LOGS</span><span class="p">%</span><span class="k">write</span><span class="p">(</span><span class="s2">&quot;Grid 1 value: &quot;</span><span class="o">//</span><span class="n">asCharacter</span><span class="p">(</span><span class="n">pGrd1</span><span class="p">%</span><span class="n">rY0</span><span class="p">)</span><span class="w">  </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">          </span><span class="o">//</span><span class="s2">&quot;; grid 2 value: &quot;</span><span class="o">//</span><span class="n">asCharacter</span><span class="p">(</span><span class="n">pGrd2</span><span class="p">%</span><span class="n">rY0</span><span class="p">),</span><span class="w"> </span><span class="n">iLogLevel</span><span class="o">=</span><span class="n">LOG_ALL</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="n">lConform</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FALSE</span><span class="w"></span>
-<span class="w">  </span><span class="k">endif</span>
-
-<span class="k">  if</span><span class="p">(</span><span class="w"> </span><span class="nb">abs</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">pGrd1</span><span class="p">%</span><span class="n">rX1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">pGrd2</span><span class="p">%</span><span class="n">rX1</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">rTol</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">     call </span><span class="n">LOGS</span><span class="p">%</span><span class="k">write</span><span class="p">(</span><span class="s2">&quot;Upper right-hand side X coordinates do not match:&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">iLogLevel</span><span class="o">=</span><span class="n">LOG_ALL</span><span class="p">)</span><span class="w"></span>
-<span class="w">     </span><span class="k">call </span><span class="n">LOGS</span><span class="p">%</span><span class="k">write</span><span class="p">(</span><span class="s2">&quot;Grid 1 value: &quot;</span><span class="o">//</span><span class="n">asCharacter</span><span class="p">(</span><span class="n">pGrd1</span><span class="p">%</span><span class="n">rX1</span><span class="p">)</span><span class="w">  </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">          </span><span class="o">//</span><span class="s2">&quot;; grid 2 value: &quot;</span><span class="o">//</span><span class="n">asCharacter</span><span class="p">(</span><span class="n">pGrd2</span><span class="p">%</span><span class="n">rX1</span><span class="p">),</span><span class="w"> </span><span class="n">iLogLevel</span><span class="o">=</span><span class="n">LOG_ALL</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="n">lConform</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FALSE</span><span class="w"></span>
-<span class="w">  </span><span class="k">endif</span>
-
-<span class="k">  if</span><span class="p">(</span><span class="w"> </span><span class="nb">abs</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">pGrd1</span><span class="p">%</span><span class="n">rY1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">pGrd2</span><span class="p">%</span><span class="n">rY1</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">rTol</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">    call </span><span class="n">LOGS</span><span class="p">%</span><span class="k">write</span><span class="p">(</span><span class="s2">&quot;Upper right-hand side Y coordinates do not match:&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">iLogLevel</span><span class="o">=</span><span class="n">LOG_ALL</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">call </span><span class="n">LOGS</span><span class="p">%</span><span class="k">write</span><span class="p">(</span><span class="s2">&quot;Grid 1 value: &quot;</span><span class="o">//</span><span class="n">asCharacter</span><span class="p">(</span><span class="n">pGrd1</span><span class="p">%</span><span class="n">rY1</span><span class="p">)</span><span class="w">  </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">          </span><span class="o">//</span><span class="s2">&quot;; grid 2 value: &quot;</span><span class="o">//</span><span class="n">asCharacter</span><span class="p">(</span><span class="n">pGrd2</span><span class="p">%</span><span class="n">rY1</span><span class="p">),</span><span class="w"> </span><span class="n">iLogLevel</span><span class="o">=</span><span class="n">LOG_ALL</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="n">lConform</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FALSE</span><span class="w"></span>
-<span class="w">  </span><span class="k">endif</span>
-
-<span class="k">end function </span><span class="n">grid_Conform</span><span class="w"></span>
-</pre></div>
-
-    </section>
-    <br>
     
     </div>
   </div>
@@ -309,7 +236,7 @@ is set to abs(rTolerance * ( rX1-rX1 ) )</p>
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-10-17T14:19:59.727997             </p>
+ on 2023-10-19T16:28:40.743458             </p>
           </div>
         </div>
         <br>

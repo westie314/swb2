@@ -73,7 +73,7 @@
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip"
                  data-bs-placement="bottom" data-html="true"
-                 title=" 0.1% of total for procedures.">19 statements</a>
+                 title=" 0.2% of total for procedures.">20 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -86,7 +86,7 @@
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb justify-content-end mb-0">
                 <li class="breadcrumb-item"><a href='../sourcefile/model_domain.f90.html'>model_domain.F90</a></li>
-                <li class="breadcrumb-item"><a href='../module/model_domain~2.html'>model_domain</a></li>
+                <li class="breadcrumb-item"><a href='../module/model_domain.html'>model_domain</a></li>
             <li class="breadcrumb-item active" aria-current="page">read_landuse_codes</li>
           </ol>
         </nav>
@@ -125,13 +125,8 @@
   
   
   
-    <div class="card card-primary">
-      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
-      <div class="list-group">
-        <a class="list-group-item" href="../proc/read_landuse_codes.html#src">read_landuse_codes</a>
-      </div>
-    </div>
 
+    <em>None</em>
 
   </div>
 
@@ -159,51 +154,6 @@
 
 
     
-    <section>
-    <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre><span></span><span class="w">  </span><span class="k">subroutine </span><span class="n">read_landuse_codes</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! [ LOCALS ]</span>
-<span class="w">    </span><span class="k">type</span><span class="w"> </span><span class="p">(</span><span class="n">DATA_CATALOG_ENTRY_T</span><span class="p">),</span><span class="w"> </span><span class="k">pointer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">pLULC</span><span class="w"></span>
-<span class="w">    </span><span class="kt">character</span><span class="w"> </span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span><span class="w">                   </span><span class="kd">::</span><span class="w"> </span><span class="n">date_str</span><span class="w"></span>
-
-<span class="w">    </span><span class="n">pLULC</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">DAT</span><span class="p">%</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;LAND_USE&quot;</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="nb">associated</span><span class="p">(</span><span class="n">pLULC</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-
-<span class="k">      if</span><span class="w"> </span><span class="p">(</span><span class="n">pLULC</span><span class="p">%</span><span class="n">iSourceDataForm</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">DYNAMIC_GRID</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-
-<span class="k">        </span><span class="n">MODEL</span><span class="p">%</span><span class="n">update_landuse_codes</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">model_update_landuse_codes_dynamic</span><span class="w"></span>
-
-<span class="w">        </span><span class="k">call </span><span class="n">pLULC</span><span class="p">%</span><span class="n">getvalues</span><span class="p">(</span><span class="w"> </span><span class="n">SIM_DT</span><span class="p">%</span><span class="n">curr</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">pLULC</span><span class="p">%</span><span class="n">lGridHasChanged</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">          </span><span class="n">date_str</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SIM_DT</span><span class="p">%</span><span class="n">curr</span><span class="p">%</span><span class="n">prettydate</span><span class="p">()</span><span class="w"></span>
-<span class="w">          </span><span class="k">call </span><span class="n">grid_WriteArcGrid</span><span class="p">(</span><span class="s2">&quot;Landuse_land_cover__as_read_into_SWB__&quot;</span><span class="w">     </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                </span><span class="o">//</span><span class="nb">trim</span><span class="p">(</span><span class="n">date_str</span><span class="p">)</span><span class="o">//</span><span class="s2">&quot;.asc&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">pLULC</span><span class="p">%</span><span class="n">pGrdBase</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">        </span><span class="k">endif</span>
-
-<span class="k">      else</span>
-
-<span class="k">        call </span><span class="n">pLULC</span><span class="p">%</span><span class="n">getvalues</span><span class="p">()</span><span class="w"></span>
-<span class="w">        </span><span class="k">call </span><span class="n">grid_WriteArcGrid</span><span class="p">(</span><span class="s2">&quot;Landuse_land_cover__as_read_into_SWB.asc&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">pLULC</span><span class="p">%</span><span class="n">pGrdBase</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">      </span><span class="k">endif</span>
-
-<span class="k">    else</span>
-
-<span class="k">      call </span><span class="n">warn</span><span class="p">(</span><span class="n">sMessage</span><span class="o">=</span><span class="s2">&quot;LAND_USE dataset is flawed or missing.&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">lFatal</span><span class="o">=</span><span class="n">TRUE</span><span class="p">,</span><span class="w">         </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="n">iLogLevel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LOG_ALL</span><span class="p">,</span><span class="w"> </span><span class="n">sHints</span><span class="o">=</span><span class="s2">&quot;Check to see that a valid path and filename have&quot;</span><span class="w">   </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="o">//</span><span class="s2">&quot; been ~included in the control file for the LAND_USE dataset.&quot;</span><span class="p">,</span><span class="w">               </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="n">lEcho</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TRUE</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">endif</span>
-
-<span class="k">  end subroutine </span><span class="n">read_landuse_codes</span><span class="w"></span>
-</pre></div>
-
-    </section>
-    <br>
     
     </div>
   </div>
@@ -220,7 +170,7 @@
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-10-17T14:19:59.727997             </p>
+ on 2023-10-19T16:28:40.743458             </p>
           </div>
         </div>
         <br>

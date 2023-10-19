@@ -73,7 +73,7 @@
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip"
                  data-bs-placement="bottom" data-html="true"
-                 title=" 0.1% of total for procedures.">23 statements</a>
+                 title=" 0.3% of total for procedures.">23 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -125,12 +125,6 @@
   
   
   
-    <div class="card card-primary">
-      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
-      <div class="list-group">
-        <a class="list-group-item" href="../proc/runoff_curve_number_calculate.html#src">runoff_curve_number_calculate</a>
-      </div>
-    </div>
 
 
   </div>
@@ -176,7 +170,7 @@ standard 0.2 * SMax of the original.
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-runoff~6"></span>
+              <span class="anchor" id="variable-runoff~5"></span>
               real(kind=c_float),
             </td>
 <td>intent(inout)</td>
@@ -191,7 +185,7 @@ standard 0.2 * SMax of the original.
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-curve_num_adj~3"></span>
+              <span class="anchor" id="variable-curve_num_adj~2"></span>
               real(kind=c_float),
             </td>
 <td>intent(inout)</td>
@@ -221,7 +215,7 @@ standard 0.2 * SMax of the original.
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-landuse_index~21"></span>
+              <span class="anchor" id="variable-landuse_index~20"></span>
               integer(kind=c_int),
             </td>
 <td>intent(in)</td>
@@ -236,7 +230,7 @@ standard 0.2 * SMax of the original.
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-soil_group~6"></span>
+              <span class="anchor" id="variable-soil_group~5"></span>
               integer(kind=c_int),
             </td>
 <td>intent(in)</td>
@@ -251,7 +245,7 @@ standard 0.2 * SMax of the original.
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-it_is_growing_season~9"></span>
+              <span class="anchor" id="variable-it_is_growing_season~8"></span>
               logical(kind=c_bool),
             </td>
 <td>intent(in)</td>
@@ -266,7 +260,7 @@ standard 0.2 * SMax of the original.
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-inflow~3"></span>
+              <span class="anchor" id="variable-inflow~2"></span>
               real(kind=c_float),
             </td>
 <td>intent(in)</td>
@@ -281,7 +275,7 @@ standard 0.2 * SMax of the original.
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-soil_storage_max~8"></span>
+              <span class="anchor" id="variable-soil_storage_max~7"></span>
               real(kind=c_float),
             </td>
 <td>intent(in)</td>
@@ -296,7 +290,7 @@ standard 0.2 * SMax of the original.
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-continuous_frozen_ground_index~3"></span>
+              <span class="anchor" id="variable-continuous_frozen_ground_index~2"></span>
               real(kind=c_float),
             </td>
 <td>intent(in)</td>
@@ -311,7 +305,7 @@ standard 0.2 * SMax of the original.
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-cfgi_lower_limit~3"></span>
+              <span class="anchor" id="variable-cfgi_lower_limit~2"></span>
               real(kind=c_float),
             </td>
 <td>intent(in)</td>
@@ -326,7 +320,7 @@ standard 0.2 * SMax of the original.
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-cfgi_upper_limit~3"></span>
+              <span class="anchor" id="variable-cfgi_upper_limit~2"></span>
               real(kind=c_float),
             </td>
 <td>intent(in)</td>
@@ -354,67 +348,6 @@ standard 0.2 * SMax of the original.
 
 
     
-    <section>
-    <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre><span></span><span class="w">  </span><span class="k">elemental subroutine </span><span class="n">runoff_curve_number_calculate</span><span class="p">(</span><span class="n">runoff</span><span class="p">,</span><span class="w">                              </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                                     </span><span class="n">curve_num_adj</span><span class="p">,</span><span class="w">                       </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                                     </span><span class="n">cell_index</span><span class="p">,</span><span class="w">                          </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                                     </span><span class="n">landuse_index</span><span class="p">,</span><span class="w">                       </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                                     </span><span class="n">soil_group</span><span class="p">,</span><span class="w">                          </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                                     </span><span class="n">it_is_growing_season</span><span class="p">,</span><span class="w">                </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                                     </span><span class="n">inflow</span><span class="p">,</span><span class="w">                              </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                                     </span><span class="n">soil_storage_max</span><span class="p">,</span><span class="w">                    </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                                     </span><span class="n">continuous_frozen_ground_index</span><span class="p">,</span><span class="w">      </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                                     </span><span class="n">cfgi_lower_limit</span><span class="p">,</span><span class="w">                    </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                                     </span><span class="n">cfgi_upper_limit</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">runoff</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">curve_num_adj</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">    </span><span class="kd">::</span><span class="w"> </span><span class="n">cell_index</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">    </span><span class="kd">::</span><span class="w"> </span><span class="n">landuse_index</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">    </span><span class="kd">::</span><span class="w"> </span><span class="n">soil_group</span><span class="w"></span>
-<span class="w">    </span><span class="kt">logical</span><span class="w"> </span><span class="p">(</span><span class="kt">c_bool</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">   </span><span class="kd">::</span><span class="w"> </span><span class="n">it_is_growing_season</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">     </span><span class="kd">::</span><span class="w"> </span><span class="n">inflow</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">     </span><span class="kd">::</span><span class="w"> </span><span class="n">soil_storage_max</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">     </span><span class="kd">::</span><span class="w"> </span><span class="n">continuous_frozen_ground_index</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">     </span><span class="kd">::</span><span class="w"> </span><span class="n">cfgi_lower_limit</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">     </span><span class="kd">::</span><span class="w"> </span><span class="n">cfgi_upper_limit</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! [ LOCALS ]</span>
-<span class="c">!    real (c_float) :: CN_05</span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">Smax</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">CN_adj</span><span class="w"></span>
-
-<span class="w">    </span><span class="n">curve_num_adj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">update_curve_number_fn</span><span class="p">(</span><span class="w"> </span><span class="n">landuse_index</span><span class="p">,</span><span class="w"> </span><span class="n">soil_group</span><span class="p">,</span><span class="w">                        </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                            </span><span class="n">cell_index</span><span class="p">,</span><span class="w">                                       </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                            </span><span class="n">it_is_growing_season</span><span class="p">,</span><span class="w">                             </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                            </span><span class="n">soil_storage_max</span><span class="p">,</span><span class="w">                                 </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                            </span><span class="n">continuous_frozen_ground_index</span><span class="p">,</span><span class="w">                   </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                            </span><span class="n">cfgi_lower_limit</span><span class="p">,</span><span class="w">                                 </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                            </span><span class="n">cfgi_upper_limit</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="n">Smax</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="mi">100</span><span class="mf">0.0_c_float</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">curve_num_adj</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="mf">0.0_c_float</span><span class="w"></span>
-
-<span class="c">!     ! Equation 9, Hawkins and others, 2002</span>
-<span class="c">!     CN_05 = 100_c_float / &amp;</span>
-<span class="c">!             ((1.879_c_float * ((100.0_c_float / CN_adj ) - 1.0_c_float )**1.15_c_float) + 1.0_c_float)</span>
-
-<span class="w">    </span><span class="c">! Equation 8, Hawkins and others, 2002</span>
-<span class="w">    </span><span class="c">! adjust Smax for alternate initial abstraction amount</span>
-<span class="w">    </span><span class="n">Smax</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.33_c_float</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">Smax</span><span class="o">**</span><span class="mf">1.15_c_float</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! now consider runoff if Ia ~ 0.05S</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">inflow</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mf">0.05_c_float</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">Smax</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">      </span><span class="n">runoff</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">inflow</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">0.05_c_float</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">Smax</span><span class="w"> </span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="w">  </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">inflow</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">0.95_c_float</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">Smax</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">else</span>
-<span class="k">      </span><span class="n">runoff</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0_c_float</span><span class="w"></span>
-<span class="w">    </span><span class="k">end if</span>
-
-<span class="k">  end subroutine </span><span class="n">runoff_curve_number_calculate</span><span class="w"></span>
-</pre></div>
-
-    </section>
-    <br>
     
     </div>
   </div>
@@ -431,7 +364,7 @@ standard 0.2 * SMax of the original.
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-10-17T14:19:59.727997             </p>
+ on 2023-10-19T16:28:40.743458             </p>
           </div>
         </div>
         <br>

@@ -73,7 +73,7 @@
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip"
                  data-bs-placement="bottom" data-html="true"
-                 title=" 0.2% of total for procedures.">32 statements</a>
+                 title=" 0.4% of total for procedures.">32 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -86,7 +86,7 @@
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb justify-content-end mb-0">
                 <li class="breadcrumb-item"><a href='../sourcefile/model_initialize.f90.html'>model_initialize.F90</a></li>
-                <li class="breadcrumb-item"><a href='../module/model_initialize~2.html'>model_initialize</a></li>
+                <li class="breadcrumb-item"><a href='../module/model_initialize.html'>model_initialize</a></li>
             <li class="breadcrumb-item active" aria-current="page">initialize_all</li>
           </ol>
         </nav>
@@ -125,12 +125,6 @@
   
   
   
-    <div class="card card-primary">
-      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
-      <div class="list-group">
-        <a class="list-group-item" href="../proc/initialize_all.html#src">initialize_all</a>
-      </div>
-    </div>
 
 
   </div>
@@ -245,110 +239,6 @@
 
 
     
-    <section>
-    <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre><span></span><span class="w">  </span><span class="k">subroutine </span><span class="n">initialize_all</span><span class="p">(</span><span class="w"> </span><span class="n">output_prefix</span><span class="p">,</span><span class="w"> </span><span class="n">output_dirname</span><span class="p">,</span><span class="w"> </span><span class="n">data_dirname</span><span class="p">,</span><span class="w">          </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                             </span><span class="n">lookup_table_dirname</span><span class="p">,</span><span class="w"> </span><span class="n">weather_data_dirname</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="c">!    use polygon_summarize, only : initialize_polygon_summarize</span>
-
-<span class="w">    </span><span class="kt">character</span><span class="w"> </span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">output_prefix</span><span class="p">,</span><span class="w"> </span><span class="n">output_dirname</span><span class="p">,</span><span class="w"> </span><span class="n">data_dirname</span><span class="p">,</span><span class="w">  </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                     </span><span class="n">lookup_table_dirname</span><span class="p">,</span><span class="w"> </span><span class="n">weather_data_dirname</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! [ LOCALS ]</span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">iIndex</span><span class="w"></span>
-<span class="w">    </span><span class="kt">logical</span><span class="w"> </span><span class="p">(</span><span class="kt">c_bool</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">using_tabular_precip_and_temperature</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">call </span><span class="n">MODEL</span><span class="p">%</span><span class="n">set_default_method_pointers</span><span class="p">()</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! set output directory names for NetCDF and Surfer/Arc ASCII grid output</span>
-<span class="w">    </span><span class="k">call </span><span class="n">grid_set_output_directory_name</span><span class="p">(</span><span class="w"> </span><span class="n">output_dirname</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">call </span><span class="n">set_data_directory</span><span class="p">(</span><span class="w"> </span><span class="n">data_dirname</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">call </span><span class="n">set_lookup_table_directory</span><span class="p">(</span><span class="w"> </span><span class="n">lookup_table_dirname</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">call </span><span class="n">set_weather_data_directory</span><span class="p">(</span><span class="w"> </span><span class="n">weather_data_dirname</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">call </span><span class="n">set_output_directory</span><span class="p">(</span><span class="w"> </span><span class="n">output_dirname</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">call </span><span class="n">MODEL</span><span class="p">%</span><span class="n">set_output_directory</span><span class="p">(</span><span class="w"> </span><span class="n">output_dirname</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">call </span><span class="n">set_output_prefix</span><span class="p">(</span><span class="w"> </span><span class="n">output_prefix</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! define SWB project boundary and geographic projection</span>
-<span class="w">    </span><span class="k">call </span><span class="n">initialize_grid_options</span><span class="p">()</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! define the start and end date for the simulation</span>
-<span class="w">    </span><span class="k">call </span><span class="n">initialize_start_and_end_dates</span><span class="p">()</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! specify all tables that have been defined in the control file as ***_LOOKUP_TABLE</span>
-<span class="w">    </span><span class="k">call </span><span class="n">initialize_lookup_tables</span><span class="p">()</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! scan input file entries for keywords associated with known gridded datasets</span>
-<span class="w">    </span><span class="c">! (e.g. PRECIPITATION, TMIN, TMAX, FOG_ZONE, etc.)</span>
-
-<span class="w">    </span><span class="c">! if the grid is mentioned in the control file, call the bound &quot;initialize&quot; method that</span>
-<span class="w">    </span><span class="c">! will wire in the type of data file. all associated methods will also be acted upon if</span>
-<span class="w">    </span><span class="c">! present in the control file (e.g. TMAX_ADD_OFFSET, TMAX_NETCDF_X_VAR, etc.)</span>
-<span class="w">    </span><span class="k">do </span><span class="n">iIndex</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nb">ubound</span><span class="p">(</span><span class="n">KNOWN_GRIDS</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">      </span><span class="k">call </span><span class="n">initialize_generic_grid</span><span class="p">(</span><span class="w"> </span><span class="n">sKey</span><span class="o">=</span><span class="n">KNOWN_GRIDS</span><span class="p">(</span><span class="n">iIndex</span><span class="p">)%</span><span class="n">sName</span><span class="p">,</span><span class="w">            </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                    </span><span class="n">sPathname</span><span class="o">=</span><span class="n">KNOWN_GRIDS</span><span class="p">(</span><span class="n">iIndex</span><span class="p">)%</span><span class="n">sPathname</span><span class="p">,</span><span class="w">   </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                    </span><span class="n">lOptional</span><span class="o">=</span><span class="n">KNOWN_GRIDS</span><span class="p">(</span><span class="n">iIndex</span><span class="p">)%</span><span class="n">lOptional</span><span class="p">,</span><span class="w">   </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                    </span><span class="n">iDataType</span><span class="o">=</span><span class="n">KNOWN_GRIDS</span><span class="p">(</span><span class="n">iIndex</span><span class="p">)%</span><span class="n">iDataType</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">enddo</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! at this point the list of files that need to be incorporated into the parameter</span>
-<span class="w">    </span><span class="c">! database should be complete; munge each file in turn and add the parameter values to</span>
-<span class="w">    </span><span class="c">! the parameter dictionary</span>
-<span class="w">    </span>
-<span class="w">    </span><span class="c">! this should be OK to run again; duplicate entries should now be ignored</span>
-<span class="w">    </span><span class="k">call </span><span class="n">PARAMS</span><span class="p">%</span><span class="n">munge_file</span><span class="p">()</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! scan the control file input for method specifications</span>
-<span class="w">    </span><span class="c">! (e.g. EVAPOTRANSPIRATION_METHOD HARGREAVES-SAMANI )</span>
-<span class="w">    </span><span class="k">do </span><span class="n">iIndex</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nb">ubound</span><span class="p">(</span><span class="n">KNOWN_METHODS</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">      </span><span class="k">call </span><span class="n">initialize_generic_method</span><span class="p">(</span><span class="w"> </span><span class="n">sKey</span><span class="o">=</span><span class="n">KNOWN_METHODS</span><span class="p">(</span><span class="w"> </span><span class="n">iIndex</span><span class="w"> </span><span class="p">)%</span><span class="n">sName</span><span class="p">,</span><span class="w">              </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                      </span><span class="n">lOptional</span><span class="o">=</span><span class="n">KNOWN_METHODS</span><span class="p">(</span><span class="w"> </span><span class="n">iIndex</span><span class="w"> </span><span class="p">)%</span><span class="n">lOptional</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">enddo</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! check to see that there are no NULL method pointers</span>
-<span class="w">    </span><span class="k">call </span><span class="n">MODEL</span><span class="p">%</span><span class="n">preflight_check_method_pointers</span><span class="p">()</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! bring in soils (HSG, AWC), landuse, and flow direction data from native grids</span>
-<span class="w">    </span><span class="c">! and pack that data into vectors for active grid cells only</span>
-<span class="w">    </span><span class="k">call </span><span class="n">initialize_soils_landuse_awc_flowdir_values</span><span class="p">()</span><span class="w"></span>
-
-
-<span class="w">    </span><span class="k">call </span><span class="n">initialize_ancillary_values</span><span class="p">()</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! call each of the initialization routines associated with the chosen methods</span>
-<span class="w">    </span><span class="k">call </span><span class="n">MODEL</span><span class="p">%</span><span class="n">initialize_methods</span><span class="p">()</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! find general program options and process</span>
-<span class="w">    </span><span class="k">call </span><span class="n">initialize_program_options</span><span class="p">(</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! allow user to enable or disable specific output files</span>
-<span class="w">    </span><span class="k">call </span><span class="n">initialize_output_options</span><span class="p">()</span><span class="w"></span>
-<span class="w">    </span><span class="c">!</span>
-<span class="w">    </span><span class="c">! ! open and prepare NetCDF files for output</span>
-<span class="w">    </span><span class="c">! call initialize_output( MODEL )</span>
-
-<span class="c">!    call initialize_polygon_summarize()</span>
-
-<span class="w">    </span><span class="c">! if any fatal warnings have been issued to this point, this</span>
-<span class="w">    </span><span class="c">! is the end of the simulation!</span>
-<span class="w">    </span><span class="k">call </span><span class="n">check_for_fatal_warnings</span><span class="p">()</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! dump details about all gridded datasets currently in the data_catalog</span>
-<span class="w">    </span><span class="k">call </span><span class="n">DAT</span><span class="p">%</span><span class="k">print</span><span class="p">()</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! dump details about all dictionary keys and values to the debug logfile</span>
-<span class="w">    </span><span class="k">call </span><span class="n">CF_DICT</span><span class="p">%</span><span class="n">print_all</span><span class="p">(</span><span class="w"> </span><span class="n">iLogLevel</span><span class="o">=</span><span class="n">LOG_DEBUG</span><span class="p">,</span><span class="w"> </span><span class="n">lEcho</span><span class="o">=</span><span class="n">FALSE</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">end subroutine </span><span class="n">initialize_all</span><span class="w"></span>
-</pre></div>
-
-    </section>
-    <br>
     
     </div>
   </div>
@@ -365,7 +255,7 @@
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-10-17T14:19:59.727997             </p>
+ on 2023-10-19T16:28:40.743458             </p>
           </div>
         </div>
         <br>

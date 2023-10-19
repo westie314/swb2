@@ -73,7 +73,7 @@
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip"
                  data-bs-placement="bottom" data-html="true"
-                 title="<p> 1.1% of total for derived types.</p>Including implementation: 289 statements,  2.6% of total for derived types.">20 statements</a>
+                 title="<p> 2.2% of total for derived types.</p>Including implementation: 298 statements,  5.3% of total for derived types.">20 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -162,12 +162,6 @@
 
   
   
-    <div class="card card-primary">
-      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
-      <div class="list-group">
-        <a class="list-group-item" href="../type/parameters_t.html#src">PARAMETERS_T</a>
-      </div>
-    </div>
 
 
   </div>
@@ -2077,53 +2071,6 @@
           </div>
       </section>
 
-    <section>
-    <h3><span class="anchor" id="src"></span>Source Code</h3>
-    <div class="highlight"><pre><span></span><span class="w">  </span><span class="k">type</span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">PARAMETERS_T</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">type</span><span class="w"> </span><span class="p">(</span><span class="n">FSTRING_LIST_T</span><span class="p">)</span><span class="w">               </span><span class="kd">::</span><span class="w"> </span><span class="n">filenames</span><span class="w"></span>
-<span class="w">    </span><span class="k">type</span><span class="w"> </span><span class="p">(</span><span class="n">FSTRING_LIST_T</span><span class="p">)</span><span class="w">               </span><span class="kd">::</span><span class="w"> </span><span class="n">delimiters</span><span class="w"></span>
-<span class="w">    </span><span class="k">type</span><span class="w"> </span><span class="p">(</span><span class="n">FSTRING_LIST_T</span><span class="p">)</span><span class="w">               </span><span class="kd">::</span><span class="w"> </span><span class="n">comment_chars</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">                     </span><span class="kd">::</span><span class="w"> </span><span class="nb">count</span><span class="w">           </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">contains</span>
-
-<span class="k">    procedure</span><span class="w">            </span><span class="kd">::</span><span class="w"> </span><span class="n">add_filename_to_list_sub</span><span class="w"></span>
-<span class="w">    </span><span class="k">generic</span><span class="w">              </span><span class="kd">::</span><span class="w"> </span><span class="n">add_file</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">add_filename_to_list_sub</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">procedure</span><span class="w">            </span><span class="kd">::</span><span class="w"> </span><span class="n">add_to_param_list_sub</span><span class="w"></span>
-<span class="w">    </span><span class="k">generic</span><span class="w">              </span><span class="kd">::</span><span class="w"> </span><span class="n">add_parameters</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">add_to_param_list_sub</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">procedure</span><span class="w">            </span><span class="kd">::</span><span class="w"> </span><span class="n">munge_files_and_add_to_param_list_sub</span><span class="w"></span>
-<span class="w">    </span><span class="k">generic</span><span class="w">              </span><span class="kd">::</span><span class="w"> </span><span class="n">munge_file</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">munge_files_and_add_to_param_list_sub</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">procedure</span><span class="w">            </span><span class="kd">::</span><span class="w"> </span><span class="n">get_parameter_values_int</span><span class="w"></span>
-<span class="w">    </span><span class="k">procedure</span><span class="w">            </span><span class="kd">::</span><span class="w"> </span><span class="n">get_parameter_values_float</span><span class="w"></span>
-<span class="w">    </span><span class="k">procedure</span><span class="w">            </span><span class="kd">::</span><span class="w"> </span><span class="n">get_parameter_values_logical</span><span class="w"></span>
-<span class="w">    </span><span class="k">procedure</span><span class="w">            </span><span class="kd">::</span><span class="w"> </span><span class="n">get_parameter_table_float</span><span class="w"></span>
-<span class="w">    </span><span class="k">procedure</span><span class="w">            </span><span class="kd">::</span><span class="w"> </span><span class="n">get_parameter_values_string_list</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">generic</span><span class="w">              </span><span class="kd">::</span><span class="w"> </span><span class="n">get_parameters</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">get_parameter_values_int</span><span class="p">,</span><span class="w">         </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                              </span><span class="n">get_parameter_values_float</span><span class="p">,</span><span class="w">       </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                              </span><span class="n">get_parameter_table_float</span><span class="p">,</span><span class="w">        </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                              </span><span class="n">get_parameter_values_logical</span><span class="p">,</span><span class="w">     </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                              </span><span class="n">get_parameter_values_string_list</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">procedure</span><span class="w">            </span><span class="kd">::</span><span class="w"> </span><span class="n">grep_name</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">grep_parameter_name</span><span class="w"></span>
-
-
-<span class="w">    </span><span class="c">! other functionality:</span>
-<span class="w">    </span><span class="c">!  * retrieve parameter list:</span>
-<span class="w">    </span><span class="c">!      1) input = single string</span>
-<span class="w">    </span><span class="c">!      2) input = string list</span>
-<span class="w">    </span><span class="c">!  * basic error checking re: number of params in list</span>
-
-
-
-<span class="w">  </span><span class="k">end type </span><span class="n">PARAMETERS_T</span><span class="w"></span>
-</pre></div>
-
-    </section>
     
     </div>
   </div>
@@ -2140,7 +2087,7 @@
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-10-17T14:19:59.727997             </p>
+ on 2023-10-19T16:28:40.743458             </p>
           </div>
         </div>
         <br>

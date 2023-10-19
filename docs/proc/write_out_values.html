@@ -73,7 +73,7 @@
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip"
                  data-bs-placement="bottom" data-html="true"
-                 title=" 0.2% of total for procedures.">33 statements</a>
+                 title=" 0.4% of total for procedures.">33 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -125,12 +125,6 @@
   
   
   
-    <div class="card card-primary">
-      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
-      <div class="list-group">
-        <a class="list-group-item" href="../proc/write_out_values.html#src">write_out_values</a>
-      </div>
-    </div>
 
 
   </div>
@@ -200,67 +194,6 @@
 
 
     
-    <section>
-    <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre><span></span><span class="w">  </span><span class="k">subroutine </span><span class="n">write_out_values</span><span class="p">(</span><span class="w"> </span><span class="n">cell_selection</span><span class="p">,</span><span class="w"> </span><span class="n">poly_id</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="kt">logical</span><span class="w"> </span><span class="p">(</span><span class="kt">c_bool</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">            </span><span class="kd">::</span><span class="w"> </span><span class="n">cell_selection</span><span class="p">(:)</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="w"> </span><span class="k">optional</span><span class="w">   </span><span class="kd">::</span><span class="w"> </span><span class="n">poly_id</span><span class="w"></span>
-
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">lc</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">poly_id_l</span><span class="w"></span>
-<span class="w">    </span><span class="kt">character</span><span class="w"> </span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span><span class="w">   </span><span class="kd">::</span><span class="w"> </span><span class="n">date</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">)</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">sms_max</span><span class="p">,</span><span class="w"> </span><span class="n">rain</span><span class="p">,</span><span class="w"> </span><span class="n">fog</span><span class="p">,</span><span class="w"> </span><span class="n">irr</span><span class="p">,</span><span class="w"> </span><span class="n">runoff</span><span class="p">,</span><span class="w"> </span><span class="n">can_evap</span><span class="p">,</span><span class="w"> </span><span class="n">ref_et0</span><span class="p">,</span><span class="w">       </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                            </span><span class="n">crop_et0</span><span class="p">,</span><span class="w"> </span><span class="n">actual_et</span><span class="p">,</span><span class="w"> </span><span class="n">recharge</span><span class="p">,</span><span class="w"> </span><span class="n">sms_end</span><span class="p">,</span><span class="w"> </span><span class="n">snowmelt</span><span class="p">,</span><span class="w">         </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                            </span><span class="n">surface_storage_excess</span><span class="p">,</span><span class="w"> </span><span class="n">impervious_frac</span><span class="p">,</span><span class="w"> </span><span class="n">surface_storage</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                            </span><span class="n">actual_et_soil</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="nb">present</span><span class="p">(</span><span class="n">poly_id</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-
-<span class="k">      </span><span class="n">poly_id_l</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">poly_id</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">else</span>
-
-<span class="k">      </span><span class="n">poly_id_l</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mi">999</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">endif</span>
-
-<span class="k">    </span><span class="n">date</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SIM_DT</span><span class="p">%</span><span class="n">curr</span><span class="p">%</span><span class="n">prettydate</span><span class="p">()</span><span class="w"></span>
-
-<span class="w">    </span><span class="n">lc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">most_common_value</span><span class="p">(</span><span class="w"> </span><span class="n">cells</span><span class="p">%</span><span class="n">landuse_code</span><span class="p">,</span><span class="w"> </span><span class="n">cell_selection</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="n">sms_max</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mean</span><span class="p">(</span><span class="w"> </span><span class="n">cells</span><span class="p">%</span><span class="n">soil_storage_max</span><span class="p">,</span><span class="w"> </span><span class="n">cell_selection</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="n">rain</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mean</span><span class="p">(</span><span class="w"> </span><span class="n">cells</span><span class="p">%</span><span class="n">rainfall</span><span class="p">,</span><span class="w"> </span><span class="n">cell_selection</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="n">fog</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mean</span><span class="p">(</span><span class="w"> </span><span class="n">cells</span><span class="p">%</span><span class="n">fog</span><span class="p">,</span><span class="w"> </span><span class="n">cell_selection</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="n">irr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mean</span><span class="p">(</span><span class="w"> </span><span class="n">cells</span><span class="p">%</span><span class="n">irrigation</span><span class="p">,</span><span class="w"> </span><span class="n">cell_selection</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="n">runoff</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mean</span><span class="p">(</span><span class="w"> </span><span class="n">cells</span><span class="p">%</span><span class="n">runoff</span><span class="p">,</span><span class="w"> </span><span class="n">cell_selection</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="n">can_evap</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mean</span><span class="p">(</span><span class="w"> </span><span class="n">cells</span><span class="p">%</span><span class="n">interception</span><span class="p">,</span><span class="w"> </span><span class="n">cell_selection</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="n">ref_et0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mean</span><span class="p">(</span><span class="w"> </span><span class="n">cells</span><span class="p">%</span><span class="n">reference_et0</span><span class="p">,</span><span class="w"> </span><span class="n">cell_selection</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="n">crop_et0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mean</span><span class="p">(</span><span class="w"> </span><span class="n">cells</span><span class="p">%</span><span class="n">reference_et0</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">cells</span><span class="p">%</span><span class="n">crop_coefficient_kcb</span><span class="p">,</span><span class="w"> </span><span class="n">cell_selection</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="n">actual_et_soil</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mean</span><span class="p">(</span><span class="w"> </span><span class="kt">real</span><span class="p">(</span><span class="w"> </span><span class="n">cells</span><span class="p">%</span><span class="n">actual_et_soil</span><span class="p">,</span><span class="w"> </span><span class="kt">c_float</span><span class="p">),</span><span class="w"> </span><span class="n">cell_selection</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="n">actual_et</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mean</span><span class="p">(</span><span class="w"> </span><span class="kt">real</span><span class="p">(</span><span class="w"> </span><span class="n">cells</span><span class="p">%</span><span class="n">actual_et</span><span class="p">,</span><span class="w"> </span><span class="kt">c_float</span><span class="p">),</span><span class="w"> </span><span class="n">cell_selection</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="n">recharge</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mean</span><span class="p">(</span><span class="w"> </span><span class="n">cells</span><span class="p">%</span><span class="n">net_infiltration</span><span class="p">,</span><span class="w"> </span><span class="n">cell_selection</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="n">sms_end</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mean</span><span class="p">(</span><span class="w"> </span><span class="n">cells</span><span class="p">%</span><span class="n">soil_storage</span><span class="p">,</span><span class="w"> </span><span class="n">cell_selection</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="n">surface_storage_excess</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mean</span><span class="p">(</span><span class="w"> </span><span class="n">cells</span><span class="p">%</span><span class="n">surface_storage_excess</span><span class="p">,</span><span class="w"> </span><span class="n">cell_selection</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="n">surface_storage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mean</span><span class="p">(</span><span class="w"> </span><span class="n">cells</span><span class="p">%</span><span class="n">surface_storage</span><span class="p">,</span><span class="w"> </span><span class="n">cell_selection</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="n">snowmelt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mean</span><span class="p">(</span><span class="w"> </span><span class="n">cells</span><span class="p">%</span><span class="n">snowmelt</span><span class="p">,</span><span class="w"> </span><span class="n">cell_selection</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="n">impervious_frac</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.0_c_float</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">mean</span><span class="p">(</span><span class="w"> </span><span class="n">cells</span><span class="p">%</span><span class="n">pervious_fraction</span><span class="p">,</span><span class="w"> </span><span class="n">cell_selection</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">write</span><span class="p">(</span><span class="w"> </span><span class="n">unit</span><span class="o">=</span><span class="n">LU</span><span class="p">,</span><span class="w"> </span><span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;(2a,3(i0,a),15(f12.3,a),f12.3)&quot;</span><span class="w"> </span><span class="p">)</span><span class="w">                   </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">      </span><span class="n">date</span><span class="p">,</span><span class="w"> </span><span class="n">TAB</span><span class="p">,</span><span class="w">                                                             </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">      </span><span class="n">poly_id_l</span><span class="p">,</span><span class="w"> </span><span class="n">TAB</span><span class="p">,</span><span class="w"> </span><span class="nb">count</span><span class="p">(</span><span class="w"> </span><span class="n">cell_selection</span><span class="p">),</span><span class="w"> </span><span class="n">TAB</span><span class="p">,</span><span class="w"> </span><span class="n">lc</span><span class="p">,</span><span class="w"> </span><span class="n">TAB</span><span class="p">,</span><span class="w">                   </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">      </span><span class="n">sms_max</span><span class="p">,</span><span class="w"> </span><span class="n">TAB</span><span class="p">,</span><span class="w"> </span><span class="n">rain</span><span class="p">,</span><span class="w"> </span><span class="n">TAB</span><span class="p">,</span><span class="w"> </span><span class="n">fog</span><span class="p">,</span><span class="w"> </span><span class="n">TAB</span><span class="p">,</span><span class="w">                                     </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">      </span><span class="n">irr</span><span class="p">,</span><span class="w"> </span><span class="n">TAB</span><span class="p">,</span><span class="w"> </span><span class="n">runoff</span><span class="p">,</span><span class="w"> </span><span class="n">TAB</span><span class="p">,</span><span class="w"> </span><span class="n">can_evap</span><span class="p">,</span><span class="w"> </span><span class="n">TAB</span><span class="p">,</span><span class="w"> </span><span class="n">ref_et0</span><span class="p">,</span><span class="w"> </span><span class="n">TAB</span><span class="p">,</span><span class="w"> </span><span class="n">crop_et0</span><span class="p">,</span><span class="w"> </span><span class="n">TAB</span><span class="p">,</span><span class="w">     </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">      </span><span class="n">actual_et</span><span class="p">,</span><span class="w"> </span><span class="n">TAB</span><span class="p">,</span><span class="w"> </span><span class="n">recharge</span><span class="p">,</span><span class="w"> </span><span class="n">TAB</span><span class="p">,</span><span class="w"> </span><span class="n">sms_end</span><span class="p">,</span><span class="w"> </span><span class="n">TAB</span><span class="p">,</span><span class="w"> </span><span class="n">surface_storage_excess</span><span class="p">,</span><span class="w">   </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">      </span><span class="n">TAB</span><span class="p">,</span><span class="w"> </span><span class="n">surface_storage</span><span class="p">,</span><span class="w"> </span><span class="n">TAB</span><span class="p">,</span><span class="w"> </span><span class="n">snowmelt</span><span class="p">,</span><span class="w"> </span><span class="n">TAB</span><span class="p">,</span><span class="w"> </span><span class="n">impervious_frac</span><span class="p">,</span><span class="w">             </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">      </span><span class="n">TAB</span><span class="p">,</span><span class="w"> </span><span class="n">actual_et_soil</span><span class="w"></span>
-
-<span class="w">    </span><span class="nb">flush</span><span class="p">(</span><span class="w"> </span><span class="n">unit</span><span class="o">=</span><span class="n">LU</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">end subroutine </span><span class="n">write_out_values</span><span class="w"></span>
-</pre></div>
-
-    </section>
-    <br>
     
     </div>
   </div>
@@ -277,7 +210,7 @@
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-10-17T14:19:59.727997             </p>
+ on 2023-10-19T16:28:40.743458             </p>
           </div>
         </div>
         <br>

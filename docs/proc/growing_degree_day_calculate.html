@@ -86,7 +86,7 @@
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb justify-content-end mb-0">
                 <li class="breadcrumb-item"><a href='../sourcefile/growing_degree_day.f90.html'>growing_degree_day.F90</a></li>
-                <li class="breadcrumb-item"><a href='../module/growing_degree_day~2.html'>growing_degree_day</a></li>
+                <li class="breadcrumb-item"><a href='../module/growing_degree_day.html'>growing_degree_day</a></li>
             <li class="breadcrumb-item active" aria-current="page">growing_degree_day_calculate</li>
           </ol>
         </nav>
@@ -125,12 +125,6 @@
   
   
   
-    <div class="card card-primary">
-      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
-      <div class="list-group">
-        <a class="list-group-item" href="../proc/growing_degree_day_calculate.html#src">growing_degree_day_calculate</a>
-      </div>
-    </div>
 
 
   </div>
@@ -157,7 +151,7 @@
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-gdd~3"></span>
+              <span class="anchor" id="variable-gdd~2"></span>
               real(kind=c_float),
             </td>
 <td>intent(inout)</td>
@@ -172,7 +166,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-tmean~3"></span>
+              <span class="anchor" id="variable-tmean~2"></span>
               real(kind=c_float),
             </td>
 <td>intent(in)</td>
@@ -215,30 +209,6 @@
 
 
     
-    <section>
-    <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre><span></span><span class="w">  </span><span class="k">impure elemental subroutine </span><span class="n">growing_degree_day_calculate</span><span class="p">(</span><span class="w"> </span><span class="n">gdd</span><span class="p">,</span><span class="w"> </span><span class="n">tmean</span><span class="p">,</span><span class="w"> </span><span class="n">order</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! [ ARGUMENTS ]</span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w">       </span><span class="kd">::</span><span class="w"> </span><span class="n">gdd</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">          </span><span class="kd">::</span><span class="w"> </span><span class="n">tmean</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">         </span><span class="kd">::</span><span class="w"> </span><span class="n">order</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">associate</span><span class="p">(</span><span class="w"> </span><span class="n">doy_to_reset_gdd</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">GDD_RESET_DATE</span><span class="p">(</span><span class="w"> </span><span class="n">order</span><span class="w"> </span><span class="p">),</span><span class="w">         </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">               </span><span class="n">gdd_max</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">GDD_MAX</span><span class="p">(</span><span class="w"> </span><span class="n">order</span><span class="w"> </span><span class="p">),</span><span class="w">                         </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">               </span><span class="n">gdd_base</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">GDD_BASE</span><span class="p">(</span><span class="w"> </span><span class="n">order</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">SIM_DT</span><span class="p">%</span><span class="n">iDOY</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">doy_to_reset_gdd</span><span class="w"> </span><span class="p">)</span><span class="w">  </span><span class="n">gdd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0_c_float</span><span class="w"></span>
-<span class="w">      </span>
-<span class="w">      </span><span class="n">gdd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">gdd</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nb">max</span><span class="p">(</span><span class="n">tmean</span><span class="p">,</span><span class="w"> </span><span class="n">gdd_base</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">gdd_base</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">end associate</span>
-
-<span class="k">  end subroutine </span><span class="n">growing_degree_day_calculate</span><span class="w"></span>
-</pre></div>
-
-    </section>
-    <br>
     
     </div>
   </div>
@@ -255,7 +225,7 @@
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-10-17T14:19:59.727997             </p>
+ on 2023-10-19T16:28:40.743458             </p>
           </div>
         </div>
         <br>

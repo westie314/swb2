@@ -73,7 +73,7 @@
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip"
                  data-bs-placement="bottom" data-html="true"
-                 title=" 0.7% of total for procedures.">129 statements</a>
+                 title=" 1.5% of total for procedures.">129 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -125,12 +125,6 @@
   
   
   
-    <div class="card card-primary">
-      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
-      <div class="list-group">
-        <a class="list-group-item" href="../proc/awc_depth_integrated_read.html#src">awc_depth_integrated_read</a>
-      </div>
-    </div>
 
 
   </div>
@@ -190,251 +184,6 @@ where only some data fields are found, or are only partially populated.</p>
 
 
     
-    <section>
-    <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre><span></span><span class="w">  </span><span class="k">subroutine </span><span class="n">awc_depth_integrated_read</span><span class="p">(</span><span class="w"> </span><span class="n">fRooting_Depth</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w">       </span><span class="kd">::</span><span class="w"> </span><span class="n">fRooting_Depth</span><span class="p">(:,:)</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! [ LOCALS ]</span>
-
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">iLanduse_Code</span><span class="p">(:)</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">iSoils_Table_Code</span><span class="p">(:)</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">iSoils_Components</span><span class="p">(:)</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">iSoils_Horizons</span><span class="p">(:)</span><span class="w">    </span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="w">   </span><span class="kd">::</span><span class="w"> </span><span class="n">fSoils_AWC</span><span class="p">(:)</span><span class="w"> </span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="w">   </span><span class="kd">::</span><span class="w"> </span><span class="n">fSoils_Top_Depth</span><span class="p">(:)</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="w">   </span><span class="kd">::</span><span class="w"> </span><span class="n">fSoils_Bottom_Depth</span><span class="p">(:)</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="w">   </span><span class="kd">::</span><span class="w"> </span><span class="n">fSoils_Component_Fraction</span><span class="p">(:)</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="w">   </span><span class="kd">::</span><span class="w"> </span><span class="n">fSoils_Horizon_Thickness</span><span class="p">(:)</span><span class="w"></span>
-<span class="w">                   </span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">               </span><span class="kd">::</span><span class="w"> </span><span class="n">iNumberOfLanduses</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">               </span><span class="kd">::</span><span class="w"> </span><span class="n">iNumberOfSoils</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">               </span><span class="kd">::</span><span class="w"> </span><span class="n">iNumberOfSoilsComponents</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">               </span><span class="kd">::</span><span class="w"> </span><span class="n">iNumberOfSoilsHorizons</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">               </span><span class="kd">::</span><span class="w"> </span><span class="n">iNumberOfSoilsAWC</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">               </span><span class="kd">::</span><span class="w"> </span><span class="n">iNumberOfSoilsTopDepths</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">               </span><span class="kd">::</span><span class="w"> </span><span class="n">iNumberOfSoilsBottomDepths</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">               </span><span class="kd">::</span><span class="w"> </span><span class="n">iNumberOfSoilsComponentFractions</span><span class="w">     </span>
-
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">)</span><span class="w">                </span><span class="kd">::</span><span class="w"> </span><span class="n">fTemp_AWC</span><span class="w">               </span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">)</span><span class="w">                </span><span class="kd">::</span><span class="w"> </span><span class="n">fDepthOfDeepestHorizon</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">)</span><span class="w">                </span><span class="kd">::</span><span class="w"> </span><span class="n">fFinal_AWC</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">               </span><span class="kd">::</span><span class="w"> </span><span class="n">iDeepestSoilHorizon</span><span class="w"></span>
-<span class="w">    </span><span class="kt">logical</span><span class="w"> </span><span class="p">(</span><span class="kt">c_bool</span><span class="p">)</span><span class="w">              </span><span class="kd">::</span><span class="w"> </span><span class="n">lFirst</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">type</span><span class="w"> </span><span class="p">(</span><span class="n">FSTRING_LIST_T</span><span class="p">)</span><span class="w">               </span><span class="kd">::</span><span class="w"> </span><span class="n">slList</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">               </span><span class="kd">::</span><span class="w"> </span><span class="n">iStat</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">               </span><span class="kd">::</span><span class="w"> </span><span class="n">iIndex</span><span class="p">,</span><span class="w"> </span><span class="n">iIndex2</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">               </span><span class="kd">::</span><span class="w"> </span><span class="n">iIndex_x</span><span class="p">,</span><span class="w"> </span><span class="n">iIndex_y</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">)</span><span class="w">                </span><span class="kd">::</span><span class="w"> </span><span class="n">fRooting_Depth_inches</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">)</span><span class="w">                </span><span class="kd">::</span><span class="w"> </span><span class="n">fSoil_Thickness_Total</span><span class="w"></span>
-
-<span class="w">   </span><span class="k">call </span><span class="n">slList</span><span class="p">%</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;LU_Code&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="w">   </span><span class="k">call </span><span class="n">slList</span><span class="p">%</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Landuse_Code&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="w">   </span><span class="k">call </span><span class="n">slList</span><span class="p">%</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Landuse_Lookup_Code&quot;</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">   </span><span class="k">call </span><span class="n">PARAMS</span><span class="p">%</span><span class="n">get_parameters</span><span class="p">(</span><span class="w"> </span><span class="n">slKeys</span><span class="o">=</span><span class="n">slList</span><span class="p">,</span><span class="w"> </span><span class="n">iValues</span><span class="o">=</span><span class="n">iLanduse_Code</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">   </span><span class="n">iNumberOfLanduses</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">count</span><span class="p">(</span><span class="w"> </span><span class="n">iLanduse_Code</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">   </span><span class="k">call </span><span class="n">slList</span><span class="p">%</span><span class="n">clear</span><span class="p">()</span><span class="w"></span>
-
-
-<span class="w">   </span><span class="k">call </span><span class="n">slList</span><span class="p">%</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Soils_Code&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="w">   </span><span class="k">call </span><span class="n">slList</span><span class="p">%</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Soils_Lookup_Code&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="w">   </span><span class="k">call </span><span class="n">slList</span><span class="p">%</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Soil_Code&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="w">   </span><span class="k">call </span><span class="n">slList</span><span class="p">%</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Soil_Lookup_Code&quot;</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">   </span><span class="k">call </span><span class="n">PARAMS</span><span class="p">%</span><span class="n">get_parameters</span><span class="p">(</span><span class="w"> </span><span class="n">slKeys</span><span class="o">=</span><span class="n">slList</span><span class="p">,</span><span class="w"> </span><span class="n">iValues</span><span class="o">=</span><span class="n">iSoils_Table_Code</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">   </span><span class="n">iNumberOfSoils</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">count</span><span class="p">(</span><span class="w"> </span><span class="n">iSoils_Table_Code</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">   </span><span class="k">call </span><span class="n">slList</span><span class="p">%</span><span class="n">clear</span><span class="p">()</span><span class="w"></span>
-
-<span class="w">   </span><span class="k">call </span><span class="n">slList</span><span class="p">%</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Soils_Component&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="w">   </span><span class="k">call </span><span class="n">slList</span><span class="p">%</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Soils_Component_Number&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="w">   </span><span class="k">call </span><span class="n">slList</span><span class="p">%</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Soil_Component&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="w">   </span><span class="k">call </span><span class="n">slList</span><span class="p">%</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Soil_Component_Number&quot;</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">   </span><span class="k">call </span><span class="n">PARAMS</span><span class="p">%</span><span class="n">get_parameters</span><span class="p">(</span><span class="w"> </span><span class="n">slKeys</span><span class="o">=</span><span class="n">slList</span><span class="p">,</span><span class="w"> </span><span class="n">iValues</span><span class="o">=</span><span class="n">iSoils_Components</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">   </span><span class="n">iNumberOfSoilsComponents</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">count</span><span class="p">(</span><span class="w"> </span><span class="n">iSoils_Components</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">   </span><span class="k">call </span><span class="n">slList</span><span class="p">%</span><span class="n">clear</span><span class="p">()</span><span class="w"></span>
-
-<span class="w">   </span><span class="k">call </span><span class="n">slList</span><span class="p">%</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Soils_Top_Depth&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="w">   </span><span class="k">call </span><span class="n">slList</span><span class="p">%</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Soil_Top_Depth&quot;</span><span class="p">)</span><span class="w">   </span>
-<span class="w">   </span><span class="k">call </span><span class="n">slList</span><span class="p">%</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Soils_Z_Top&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="w">   </span><span class="k">call </span><span class="n">slList</span><span class="p">%</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Soils_Top_of_Horizon&quot;</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">   </span><span class="k">call </span><span class="n">PARAMS</span><span class="p">%</span><span class="n">get_parameters</span><span class="p">(</span><span class="w"> </span><span class="n">slKeys</span><span class="o">=</span><span class="n">slList</span><span class="p">,</span><span class="w"> </span><span class="n">fValues</span><span class="o">=</span><span class="n">fSoils_Top_Depth</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">   </span><span class="n">iNumberOfSoilsTopDepths</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">count</span><span class="p">(</span><span class="w"> </span><span class="n">fSoils_Top_Depth</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">   </span><span class="k">call </span><span class="n">slList</span><span class="p">%</span><span class="n">clear</span><span class="p">()</span><span class="w"></span>
-
-<span class="w">   </span><span class="k">call </span><span class="n">slList</span><span class="p">%</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Soils_Bottom_Depth&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="w">   </span><span class="k">call </span><span class="n">slList</span><span class="p">%</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Soil_Bottom_Depth&quot;</span><span class="p">)</span><span class="w">   </span>
-<span class="w">   </span><span class="k">call </span><span class="n">slList</span><span class="p">%</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Soils_Z_Bottom&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="w">   </span><span class="k">call </span><span class="n">slList</span><span class="p">%</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Soils_Bottom_of_Horizon&quot;</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">   </span><span class="k">call </span><span class="n">PARAMS</span><span class="p">%</span><span class="n">get_parameters</span><span class="p">(</span><span class="w"> </span><span class="n">slKeys</span><span class="o">=</span><span class="n">slList</span><span class="p">,</span><span class="w"> </span><span class="n">fValues</span><span class="o">=</span><span class="n">fSoils_Bottom_Depth</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">   </span><span class="n">iNumberOfSoilsBottomDepths</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">count</span><span class="p">(</span><span class="w"> </span><span class="n">fSoils_Bottom_Depth</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">   </span><span class="k">call </span><span class="n">slList</span><span class="p">%</span><span class="n">clear</span><span class="p">()</span><span class="w"></span>
-
-<span class="w">   </span><span class="k">call </span><span class="n">slList</span><span class="p">%</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Soils_Horizon&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="w">   </span><span class="k">call </span><span class="n">slList</span><span class="p">%</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Soils_Horizon_Number&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="w">   </span><span class="k">call </span><span class="n">slList</span><span class="p">%</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Soil_Horizon&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="w">   </span><span class="k">call </span><span class="n">slList</span><span class="p">%</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Soil_Horizon_Number&quot;</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">   </span><span class="k">call </span><span class="n">PARAMS</span><span class="p">%</span><span class="n">get_parameters</span><span class="p">(</span><span class="w"> </span><span class="n">slKeys</span><span class="o">=</span><span class="n">slList</span><span class="p">,</span><span class="w"> </span><span class="n">iValues</span><span class="o">=</span><span class="n">iSoils_Horizons</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">   </span><span class="n">iNumberOfSoilsHorizons</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">count</span><span class="p">(</span><span class="w"> </span><span class="n">iSoils_Horizons</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">   </span><span class="k">call </span><span class="n">slList</span><span class="p">%</span><span class="n">clear</span><span class="p">()</span><span class="w"></span>
-
-<span class="w">   </span><span class="k">call </span><span class="n">slList</span><span class="p">%</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Soils_Component_Fraction&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="w">   </span><span class="k">call </span><span class="n">slList</span><span class="p">%</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Soil_Component_Fraction&quot;</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">   </span><span class="k">call </span><span class="n">PARAMS</span><span class="p">%</span><span class="n">get_parameters</span><span class="p">(</span><span class="w"> </span><span class="n">slKeys</span><span class="o">=</span><span class="n">slList</span><span class="p">,</span><span class="w"> </span><span class="n">fValues</span><span class="o">=</span><span class="n">fSoils_Component_Fraction</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">   </span><span class="n">iNumberOfSoilsComponentFractions</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">count</span><span class="p">(</span><span class="w"> </span><span class="n">fSoils_Component_Fraction</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">   </span><span class="k">call </span><span class="n">slList</span><span class="p">%</span><span class="n">clear</span><span class="p">()</span><span class="w"></span>
-
-
-<span class="w">   </span><span class="k">call </span><span class="n">slList</span><span class="p">%</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Soils_Available_Water_Content&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="w">   </span><span class="k">call </span><span class="n">slList</span><span class="p">%</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Soils_AWC&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="w">   </span><span class="k">call </span><span class="n">slList</span><span class="p">%</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Soil_Available_Water_Content&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="w">   </span><span class="k">call </span><span class="n">slList</span><span class="p">%</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Soil_AWC&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="w">   </span><span class="k">call </span><span class="n">slList</span><span class="p">%</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Available_Water_Content&quot;</span><span class="p">)</span><span class="w"> </span>
-<span class="w">   </span><span class="k">call </span><span class="n">slList</span><span class="p">%</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;AWC&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="w"> </span>
-<span class="w">   </span><span class="k">call </span><span class="n">PARAMS</span><span class="p">%</span><span class="n">get_parameters</span><span class="p">(</span><span class="w"> </span><span class="n">slKeys</span><span class="o">=</span><span class="n">slList</span><span class="p">,</span><span class="w"> </span><span class="n">fValues</span><span class="o">=</span><span class="n">fSoils_AWC</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">   </span><span class="n">iNumberOfSoilsAWC</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">count</span><span class="p">(</span><span class="w"> </span><span class="n">fSoils_AWC</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">   </span><span class="k">call </span><span class="n">slList</span><span class="p">%</span><span class="n">clear</span><span class="p">()</span><span class="w"></span>
-
-<span class="w">   </span><span class="c">!&gt; @todo Need a *LOT* more data validation and guard code here to prevent execution in the case</span>
-<span class="w">   </span><span class="c">!! where only some data fields are found, or are only partially populated.</span>
-
-<span class="w">    </span><span class="c">! locate the data structure associated with the gridded rainfall zone entries</span>
-<span class="w">    </span><span class="n">pSOILS_CODE_GRID</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">DAT</span><span class="p">%</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;SOILS_CODE&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">call </span><span class="n">assert</span><span class="p">(</span><span class="w"> </span><span class="nb">associated</span><span class="p">(</span><span class="n">pSOILS_CODE_GRID</span><span class="p">),</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">      </span><span class="s2">&quot;A SOILS_CODE grid must be supplied in order to make use of this option.&quot;</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">FILE__</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">LINE__</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">call </span><span class="n">pSOILS_CODE_GRID</span><span class="p">%</span><span class="n">getvalues</span><span class="p">(</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">allocate</span><span class="w"> </span><span class="p">(</span><span class="n">fSoils_Horizon_Thickness</span><span class="p">(</span><span class="w"> </span><span class="nb">ubound</span><span class="p">(</span><span class="w"> </span><span class="n">fSoils_Bottom_Depth</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">),</span><span class="w"> </span><span class="nb">stat</span><span class="o">=</span><span class="n">iStat</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">allocate</span><span class="p">(</span><span class="n">AVAILABLE_WATER_CONTENT</span><span class="p">(</span><span class="w"> </span><span class="nb">ubound</span><span class="p">(</span><span class="n">fRooting_Depth</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="nb">ubound</span><span class="p">(</span><span class="n">fRooting_Depth</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="p">),</span><span class="w"> </span><span class="nb">stat</span><span class="o">=</span><span class="n">iStat</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! this should be in units of inches</span>
-<span class="w">    </span><span class="n">fSoils_Horizon_Thickness</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fSoils_Bottom_Depth</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">fSoils_Top_Depth</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">do </span><span class="n">iIndex_x</span><span class="o">=</span><span class="nb">lbound</span><span class="p">(</span><span class="w"> </span><span class="n">fRooting_Depth</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">),</span><span class="w"> </span><span class="nb">ubound</span><span class="p">(</span><span class="w"> </span><span class="n">fRooting_Depth</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">      </span><span class="k">do </span><span class="n">iIndex_y</span><span class="o">=</span><span class="nb">lbound</span><span class="p">(</span><span class="w"> </span><span class="n">fRooting_Depth</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="p">),</span><span class="w"> </span><span class="nb">ubound</span><span class="p">(</span><span class="w"> </span><span class="n">fRooting_Depth</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">        </span><span class="c">! rooting depth in feet * 12 in/ft = rooting depth in inches</span>
-<span class="w">        </span><span class="n">fRooting_Depth_inches</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fRooting_Depth</span><span class="p">(</span><span class="w"> </span><span class="n">iIndex_x</span><span class="p">,</span><span class="w"> </span><span class="n">iIndex_y</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">1</span><span class="mf">2.0_c_float</span><span class="w"></span>
-
-<span class="w">        </span><span class="n">fTemp_AWC</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0_c_float</span><span class="w"></span>
-<span class="w">        </span><span class="n">lFirst</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TRUE</span><span class="w"></span>
-<span class="w">        </span><span class="n">iDeepestSoilHorizon</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0_c_int</span><span class="w"></span>
-<span class="w">        </span><span class="n">fDepthOfDeepestHorizon</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0_c_float</span><span class="w"></span>
-<span class="w">        </span><span class="n">fFinal_AWC</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0_c_float</span><span class="w"></span>
-
-<span class="w">        </span><span class="k">do </span><span class="n">iIndex</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">iNumberOfSoils</span><span class="w"></span>
-<span class="w">          </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">pSOILS_CODE_GRID</span><span class="p">%</span><span class="n">pGrdBase</span><span class="p">%</span><span class="n">iData</span><span class="p">(</span><span class="w"> </span><span class="n">iIndex_x</span><span class="p">,</span><span class="w"> </span><span class="n">iIndex_y</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">iSoils_Table_Code</span><span class="p">(</span><span class="w"> </span><span class="n">iIndex</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span><span class="w"></span>
-
-<span class="w">            </span><span class="c">! look for current soil code; calculate the component-weighted mean AWC for the deepest horizon</span>
-<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">lFirst</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-
-<span class="k">              </span><span class="n">lFirst</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FALSE</span><span class="w"></span>
-
-<span class="w">              </span><span class="c">! find deepest soil horizon for the current soils code</span>
-<span class="w">              </span><span class="k">do </span><span class="n">iIndex2</span><span class="o">=</span><span class="n">iIndex</span><span class="p">,</span><span class="w"> </span><span class="n">iNumberOfSoils</span><span class="w"></span>
-<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">pSOILS_CODE_GRID</span><span class="p">%</span><span class="n">pGrdBase</span><span class="p">%</span><span class="n">iData</span><span class="p">(</span><span class="w"> </span><span class="n">iIndex_x</span><span class="p">,</span><span class="w"> </span><span class="n">iIndex_y</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">iSoils_Table_Code</span><span class="p">(</span><span class="w"> </span><span class="n">iIndex2</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w">  </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                  </span><span class="n">iDeepestSoilHorizon</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">max</span><span class="p">(</span><span class="w"> </span><span class="n">iDeepestSoilHorizon</span><span class="p">,</span><span class="w"> </span><span class="n">iSoils_Horizons</span><span class="p">(</span><span class="w"> </span><span class="n">iIndex2</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">              </span><span class="k">enddo</span><span class="w"></span>
-
-<span class="w">              </span><span class="c">! if we are in the deepest horizon of the current soils code, calculate the composite averaged AWC</span>
-<span class="w">              </span><span class="k">do </span><span class="n">iIndex2</span><span class="o">=</span><span class="n">iIndex</span><span class="p">,</span><span class="w"> </span><span class="n">iNumberOfSoils</span><span class="w"></span>
-<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">pSOILS_CODE_GRID</span><span class="p">%</span><span class="n">pGrdBase</span><span class="p">%</span><span class="n">iData</span><span class="p">(</span><span class="w"> </span><span class="n">iIndex_x</span><span class="p">,</span><span class="w"> </span><span class="n">iIndex_y</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">iSoils_Table_Code</span><span class="p">(</span><span class="w"> </span><span class="n">iIndex2</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w">  </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                  </span><span class="p">.</span><span class="nb">and</span><span class="p">.</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">iDeepestSoilHorizon</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">iSoils_Horizons</span><span class="p">(</span><span class="w"> </span><span class="n">iIndex2</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w">   </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                  </span><span class="n">fFinal_AWC</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fFinal_AWC</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">fSoils_AWC</span><span class="p">(</span><span class="w"> </span><span class="n">iIndex2</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">fSoils_Component_Fraction</span><span class="p">(</span><span class="w"> </span><span class="n">iIndex2</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">                  </span><span class="n">fDepthOfDeepestHorizon</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fSoils_Bottom_Depth</span><span class="p">(</span><span class="w"> </span><span class="n">iIndex2</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">              </span><span class="k">enddo</span>
-
-<span class="k">            endif</span><span class="w">  </span>
-
-<span class="w">            </span><span class="c">! rooting depth never reaches to this horizon; ignore</span>
-<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">fRooting_Depth_inches</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">fSoils_Top_Depth</span><span class="p">(</span><span class="w"> </span><span class="n">iIndex</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">cycle</span><span class="w"></span>
-
-<span class="w">            </span><span class="c">! rooting depth exceeds lower bound of current horizon; entire horizon</span>
-<span class="w">            </span><span class="c">! depth used as weight factor</span>
-<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">fRooting_Depth_inches</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">fSoils_Bottom_Depth</span><span class="p">(</span><span class="w"> </span><span class="n">iIndex</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-
-<span class="k">              </span><span class="n">fTemp_AWC</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fTemp_AWC</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">fSoils_AWC</span><span class="p">(</span><span class="w"> </span><span class="n">iIndex</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">fSoils_Component_Fraction</span><span class="p">(</span><span class="w"> </span><span class="n">iIndex</span><span class="w"> </span><span class="p">)</span><span class="w">     </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                    </span><span class="o">*</span><span class="w"> </span><span class="n">fSoils_Horizon_Thickness</span><span class="p">(</span><span class="w"> </span><span class="n">iIndex</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">            </span><span class="c">! rooting depth falls in between the upper and lower bounds of the current soil horizon</span>
-<span class="w">            </span><span class="n">elseif</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">fRooting_Depth_inches</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">fSoils_Top_Depth</span><span class="p">(</span><span class="w"> </span><span class="n">iIndex</span><span class="w"> </span><span class="p">)</span><span class="w">                    </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                   </span><span class="p">.</span><span class="nb">and</span><span class="p">.</span><span class="w"> </span><span class="n">fRooting_Depth_inches</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">fSoils_Bottom_Depth</span><span class="p">(</span><span class="w"> </span><span class="n">iIndex</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">            </span>
-<span class="k">              </span><span class="n">fTemp_AWC</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fTemp_AWC</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">fSoils_AWC</span><span class="p">(</span><span class="w"> </span><span class="n">iIndex</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">fSoils_Component_Fraction</span><span class="p">(</span><span class="w"> </span><span class="n">iIndex</span><span class="w"> </span><span class="p">)</span><span class="w">     </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                    </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">fRooting_Depth_inches</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">fSoils_Top_Depth</span><span class="p">(</span><span class="w"> </span><span class="n">iIndex</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">            </span><span class="k">endif                         </span>
-
-<span class="k">          endif</span>
-
-<span class="k">        enddo</span><span class="w">  </span>
-
-<span class="w">        </span><span class="c">! if the soil data from the table does not extend to the rooting depth, extrapolate</span>
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">fRooting_Depth_inches</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">fDepthOfDeepestHorizon</span><span class="w"> </span><span class="p">)</span><span class="w">  </span><span class="p">&amp;</span><span class="w"></span>
-
-<span class="w">              </span><span class="n">fTemp_AWC</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fTemp_AWC</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">fFinal_AWC</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">fRooting_Depth_inches</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">fDepthOfDeepestHorizon</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">fRooting_Depth_inches</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mf">0.0_c_float</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">          </span><span class="n">fTemp_AWC</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fTemp_AWC</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">fRooting_Depth_inches</span><span class="w">  </span><span class="c">! divide by total rooting depth to obtain weighted average</span>
-<span class="w">        </span><span class="k">else</span>
-<span class="k">          </span><span class="n">fTemp_AWC</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0_c_float</span><span class="w"></span>
-<span class="w">        </span><span class="k">endif</span><span class="w">    </span>
-
-<span class="w">        </span><span class="c">! table values are in/in; multiply by 12 in/ft to return AWC in inches/foot</span>
-<span class="w">        </span><span class="n">AVAILABLE_WATER_CONTENT</span><span class="p">(</span><span class="n">iIndex_x</span><span class="p">,</span><span class="w"> </span><span class="n">iIndex_y</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fTemp_AWC</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">1</span><span class="mf">2.0_c_float</span><span class="w"> </span>
-<span class="w"> </span>
-<span class="w">      </span><span class="k">enddo</span>
-
-<span class="k">    enddo</span><span class="w"></span>
-<span class="w"> </span>
-
-<span class="c">! Original HWB code...</span>
-
-<span class="c">! c........compute area-weighted soil-moisture storage capacity and account for</span>
-<span class="c">! c        depth-varying AWC</span>
-<span class="c">!          smca(i,k)=0.</span>
-<span class="c">!          do 420 j=1,nseq(i)</span>
-<span class="c">!          do 400 l=1,nlay(i,j)</span>
-<span class="c">!             if(z.ge.zt(i,j,l).and.z.le.zb(i,j,l))then</span>
-<span class="c">! c...........bottom of root zone is within current layer</span>
-<span class="c">!                smca(i,k)=smca(i,k)+pct(i,j,l)*awc(i,j,l)*(z-zt(i,j,l))</span>
-<span class="c">!             elseif(z.gt.zb(i,j,l).and.l.eq.nlay(i,j))then</span>
-<span class="c">! c...........bottom of root zone is below current layer, which is the</span>
-<span class="c">! c           bottom layer; extrapolate bottom layer down to root depth</span>
-<span class="c">!                smca(i,k)=smca(i,k)+pct(i,j,l)*awc(i,j,l)*(z-zt(i,j,l))</span>
-<span class="c">!             elseif(z.gt.zb(i,j,l).and.l.lt.nlay(i,j))then</span>
-<span class="c">! c...........bottom of root zone is below current layer, which is not the</span>
-<span class="c">! c           bottom layer; include entire current layer</span>
-<span class="c">!                smca(i,k)=smca(i,k)+pct(i,j,l)*awc(i,j,l)*</span>
-<span class="c">!      1         (zb(i,j,l)-zt(i,j,l))</span>
-<span class="c">! c...........exit if bottom of root zone is above current layer</span>
-<span class="c">!             elseif(z.lt.zt(i,j,l))then</span>
-<span class="c">!                goto 440</span>
-<span class="c">!             endif</span>
-<span class="c">!  400     continue</span>
-<span class="c">!  420     continue</span>
-<span class="c">!  440     continue</span>
-
-
-
-
-<span class="w">  </span><span class="k">end subroutine </span><span class="n">awc_depth_integrated_read</span><span class="w"></span>
-</pre></div>
-
-    </section>
-    <br>
     
     </div>
   </div>
@@ -451,7 +200,7 @@ where only some data fields are found, or are only partially populated.</p>
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-10-17T14:19:59.727997             </p>
+ on 2023-10-19T16:28:40.743458             </p>
           </div>
         </div>
         <br>

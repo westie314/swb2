@@ -73,7 +73,7 @@
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip"
                  data-bs-placement="bottom" data-html="true"
-                 title=" 0.1% of total for procedures.">22 statements</a>
+                 title=" 0.3% of total for procedures.">22 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -86,7 +86,7 @@
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb justify-content-end mb-0">
                 <li class="breadcrumb-item"><a href='../sourcefile/et__zone_values.f90.html'>et__zone_values.F90</a></li>
-                <li class="breadcrumb-item"><a href='../module/et__zone_values~2.html'>et__zone_values</a></li>
+                <li class="breadcrumb-item"><a href='../module/et__zone_values.html'>et__zone_values</a></li>
             <li class="breadcrumb-item active" aria-current="page">et_zone_values_calculate</li>
           </ol>
         </nav>
@@ -125,13 +125,8 @@
   
   
   
-    <div class="card card-primary">
-      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
-      <div class="list-group">
-        <a class="list-group-item" href="../proc/et_zone_values_calculate.html#src">et_zone_values_calculate</a>
-      </div>
-    </div>
 
+    <em>None</em>
 
   </div>
 
@@ -159,53 +154,6 @@
 
 
     
-    <section>
-    <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre><span></span><span class="w">  </span><span class="k">subroutine </span><span class="n">et_zone_values_calculate</span><span class="p">(</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! [ LOCALS ]</span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">iLineNum</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">iFieldNum</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">iET_zone_id</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">)</span><span class="w">   </span><span class="kd">::</span><span class="w"> </span><span class="n">fFactor</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">iCount</span><span class="w"></span>
-
-<span class="w">    </span><span class="n">ET_RATIOS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0_c_float</span><span class="w"></span>
-<span class="w">    </span><span class="n">iCount</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0_c_float</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">associate</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">dt</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">SIM_DT</span><span class="p">%</span><span class="n">curr</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">      </span><span class="k">call </span><span class="n">pET_GRID</span><span class="p">%</span><span class="n">getvalues</span><span class="p">(</span><span class="w"> </span><span class="n">dt</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">      </span><span class="c">! this assumes the input file is structured such that fields 2-13</span>
-<span class="w">      </span><span class="c">! correspond to the ET ratios for months 1-12 (Jan-Dec)</span>
-<span class="w">      </span><span class="n">iFieldNum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dt</span><span class="p">%</span><span class="n">iMonth</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
-
-<span class="w">      </span><span class="c">! if it is the first day of the month, update the ratio values</span>
-<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">dt</span><span class="p">%</span><span class="n">iDay</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-
-<span class="k">        do </span><span class="n">iLineNum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">lbound</span><span class="p">(</span><span class="n">ET_TABLE_VALUES</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="nb">ubound</span><span class="p">(</span><span class="n">ET_TABLE_VALUES</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">          </span><span class="n">iET_zone_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ET_TABLE_VALUES</span><span class="p">(</span><span class="n">iLineNum</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
-<span class="w">          </span><span class="n">iCount</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">iCount</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nb">count</span><span class="p">(</span><span class="w"> </span><span class="n">ET_ZONE</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">iFieldNum</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">          </span><span class="k">where</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">ET_ZONE</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">iET_zone_id</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">            </span><span class="n">ET_RATIOS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ET_TABLE_VALUES</span><span class="p">(</span><span class="w"> </span><span class="n">iLineNum</span><span class="p">,</span><span class="w"> </span><span class="n">iFieldNum</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">          </span><span class="k">end where</span>
-
-<span class="k">        enddo</span>
-
-<span class="k">      endif</span>
-
-<span class="k">    end associate</span>
-
-<span class="k">  end subroutine </span><span class="n">et_zone_values_calculate</span><span class="w"></span>
-</pre></div>
-
-    </section>
-    <br>
     
     </div>
   </div>
@@ -222,7 +170,7 @@
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-10-17T14:19:59.727997             </p>
+ on 2023-10-19T16:28:40.743458             </p>
           </div>
         </div>
         <br>

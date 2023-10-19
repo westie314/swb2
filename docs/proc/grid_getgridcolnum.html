@@ -73,7 +73,7 @@
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip"
                  data-bs-placement="bottom" data-html="true"
-                 title=" 0.0% of total for procedures.">6 statements</a>
+                 title=" 0.1% of total for procedures.">6 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -125,12 +125,6 @@
   
   
   
-    <div class="card card-primary">
-      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
-      <div class="list-group">
-        <a class="list-group-item" href="../proc/grid_getgridcolnum.html#src">grid_GetGridColNum</a>
-      </div>
-    </div>
 
 
   </div>
@@ -172,7 +166,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-rx~6"></span>
+              <span class="anchor" id="variable-rx~4"></span>
               real(kind=c_double)
             </td>
 <td></td>
@@ -208,45 +202,6 @@ transformed, there is no guarantee that the assumption used in this calculation 
 
 
     
-    <section>
-    <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre><span></span><span class="k">function </span><span class="n">grid_GetGridColNum</span><span class="p">(</span><span class="n">pGrd</span><span class="p">,</span><span class="n">rX</span><span class="p">)</span><span class="w">  </span><span class="k">result</span><span class="p">(</span><span class="n">iColumnNumber</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">type</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">GENERAL_GRID_T</span><span class="w"> </span><span class="p">),</span><span class="k">pointer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">pGrd</span><span class="w"></span>
-<span class="w">  </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_double</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">rX</span><span class="w"></span>
-<span class="w">  </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">iColumnNumber</span><span class="w"></span>
-
-<span class="w"> </span><span class="c">! print *, &quot;rX: &quot;,rX</span>
-<span class="w"> </span><span class="c">! print *, pGrd%rX0, pGrd%rX1, pGrd%iNX</span>
-
-<span class="w">  </span><span class="c">!! this only works if the data are in the originally supplied projection. If the coordinates have been</span>
-<span class="w">  </span><span class="c">!! transformed, there is no guarantee that the assumption used in this calculation will hold.</span>
-<span class="w">  </span><span class="n">iColumnNumber</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NINT</span><span class="p">(</span><span class="kt">real</span><span class="p">(</span><span class="n">pGrd</span><span class="p">%</span><span class="n">iNX</span><span class="p">,</span><span class="w"> </span><span class="kt">c_double</span><span class="p">)</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">               </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">rX</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">pGrd</span><span class="p">%</span><span class="n">rX0</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="n">pGrd</span><span class="p">%</span><span class="n">rX1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">pGrd</span><span class="p">%</span><span class="n">rX0</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">0.5_c_double</span><span class="p">,</span><span class="w"> </span><span class="kt">c_int</span><span class="p">)</span><span class="w"></span>
-
-<span class="c">!               * ( rX - pGrd%rX0 ) / (pGrd%rX1 - pGrd%rX0) + 0.5_c_double, c_int)</span>
-
-<span class="w"> </span><span class="c">! print *, &quot;iColumnNumber = &quot;, iColumnNumber</span>
-<span class="w"> </span><span class="c">! print *, &quot;calc: &quot;,  real(pGrd%iNX, c_double) &amp;</span>
-<span class="w"> </span><span class="c">!              * ( rX - pGrd%rX0 ) / (pGrd%rX1 - pGrd%rX0) + 0.5_c_double</span>
-<span class="w"> </span><span class="c">! print *, &quot;numerator: &quot;, real(pGrd%iNX, c_double) * ( rX - pGrd%rX0 )</span>
-<span class="w"> </span><span class="c">! print *, &quot;numerator (LHS): &quot;, real(pGrd%iNX, c_double)</span>
-<span class="w"> </span><span class="c">! print *, &quot;numerator (RHS): &quot;, rX, pGrd%rX0, ( rX - pGrd%rX0 )</span>
-<span class="w"> </span><span class="c">! print *, &quot;denominator: &quot;, (pGrd%rX1 - pGrd%rX0)</span>
-<span class="w"> </span><span class="c">!</span>
-<span class="c">!   if ( iColumnNumber &lt; 1 .or. iColumnNumber &gt; pGrd%iNX ) then</span>
-<span class="c">!     call grid_DumpGridExtent(pGrd)</span>
-<span class="c">!     write(*, fmt=&quot;(a)&quot;) &quot;was attempting to find column associated with X: &quot;//trim(asCharacter(rX))</span>
-<span class="c">!     call assert(FALSE,  &quot;INTERNAL PROGRAMMING ERROR: Column number out of bounds (value: &quot; &amp;</span>
-<span class="c">!      //trim( asCharacter(iColumnNumber))//&quot;)&quot;, &amp;</span>
-<span class="c">!      __FILE__, __LINE__)</span>
-<span class="c">!   endif</span>
-
-<span class="k">end function </span><span class="n">grid_GetGridColNum</span><span class="w"></span>
-</pre></div>
-
-    </section>
-    <br>
     
     </div>
   </div>
@@ -263,7 +218,7 @@ transformed, there is no guarantee that the assumption used in this calculation 
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-10-17T14:19:59.727997             </p>
+ on 2023-10-19T16:28:40.743458             </p>
           </div>
         </div>
         <br>

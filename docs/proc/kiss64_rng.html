@@ -73,7 +73,7 @@
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip"
                  data-bs-placement="bottom" data-html="true"
-                 title=" 0.1% of total for procedures.">13 statements</a>
+                 title=" 0.2% of total for procedures.">13 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -86,7 +86,7 @@
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb justify-content-end mb-0">
                 <li class="breadcrumb-item"><a href='../sourcefile/kiss_random_number_generator.f90.html'>kiss_random_number_generator.F90</a></li>
-                <li class="breadcrumb-item"><a href='../module/kiss_random_number_generator~2.html'>kiss_random_number_generator</a></li>
+                <li class="breadcrumb-item"><a href='../module/kiss_random_number_generator.html'>kiss_random_number_generator</a></li>
             <li class="breadcrumb-item active" aria-current="page">kiss64_rng</li>
           </ol>
         </nav>
@@ -125,13 +125,8 @@
   
   
   
-    <div class="card card-primary">
-      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
-      <div class="list-group">
-        <a class="list-group-item" href="../proc/kiss64_rng.html#src">kiss64_rng</a>
-      </div>
-    </div>
 
+    <em>None</em>
 
   </div>
 
@@ -166,29 +161,6 @@
 
 
     
-    <section>
-    <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre><span></span><span class="w">  </span><span class="k">function </span><span class="n">kiss64_rng</span><span class="p">()</span><span class="w">                                   </span><span class="k">result</span><span class="p">(</span><span class="n">pseudorandom_value</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="n">int64</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">pseudorandom_value</span><span class="w"></span>
-
-<span class="w">    </span><span class="n">t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">ishft</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="mi">58</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">c</span><span class="w"></span>
-<span class="w">    </span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">shift_bits</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="p">.</span><span class="n">eq</span><span class="p">.</span><span class="w"> </span><span class="n">shift_bits</span><span class="p">(</span><span class="n">t</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
-<span class="k">       </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">ishft</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">6</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">shift_bits</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">else</span>
-<span class="k">       </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">ishft</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">6</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">shift_bits</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">t</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">endif</span>
-
-<span class="k">    </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">x</span><span class="w"></span>
-<span class="w">    </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">bitwise_exclusive_or_operation</span><span class="p">(</span><span class="n">bitwise_exclusive_or_operation</span><span class="p">(</span><span class="n">bitwise_exclusive_or_operation</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="mi">13_int64</span><span class="p">),</span><span class="o">-</span><span class="mi">17_int64</span><span class="p">),</span><span class="w"> </span><span class="mi">43_int64</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="n">z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">6906969069_int64</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">z</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1234567</span><span class="w"></span>
-<span class="w">    </span><span class="n">pseudorandom_value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">z</span><span class="w"></span>
-<span class="w">  </span>
-<span class="w">  </span><span class="k">end function </span><span class="n">kiss64_rng</span><span class="w"></span>
-</pre></div>
-
-    </section>
-    <br>
     
     </div>
   </div>
@@ -205,7 +177,7 @@
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-10-17T14:19:59.727997             </p>
+ on 2023-10-19T16:28:40.743458             </p>
           </div>
         </div>
         <br>

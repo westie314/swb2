@@ -86,7 +86,7 @@
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb justify-content-end mb-0">
                 <li class="breadcrumb-item"><a href='../sourcefile/interception__gash.f90.html'>interception__gash.F90</a></li>
-                <li class="breadcrumb-item"><a href='../module/interception__gash~2.html'>interception__gash</a></li>
+                <li class="breadcrumb-item"><a href='../module/interception__gash.html'>interception__gash</a></li>
             <li class="breadcrumb-item active" aria-current="page">precipitation_at_saturation</li>
           </ol>
         </nav>
@@ -125,12 +125,6 @@
   
   
   
-    <div class="card card-primary">
-      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
-      <div class="list-group">
-        <a class="list-group-item" href="../proc/precipitation_at_saturation.html#src">precipitation_at_saturation</a>
-      </div>
-    </div>
 
 
   </div>
@@ -187,7 +181,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-canopy_cover_fraction~3"></span>
+              <span class="anchor" id="variable-canopy_cover_fraction~2"></span>
               real(kind=c_float),
             </td>
 <td>intent(in)</td>
@@ -222,39 +216,6 @@
 
 
     
-    <section>
-    <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre><span></span><span class="w">  </span><span class="k">elemental function </span><span class="n">precipitation_at_saturation</span><span class="p">(</span><span class="w"> </span><span class="n">E_div_P</span><span class="p">,</span><span class="w"> </span><span class="n">canopy_storage_capacity</span><span class="p">,</span><span class="w"> </span><span class="n">canopy_cover_fraction</span><span class="w"> </span><span class="p">)</span><span class="w">  </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                                                               </span><span class="k">result</span><span class="p">(</span><span class="w"> </span><span class="n">Psat</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">    </span><span class="kd">::</span><span class="w"> </span><span class="n">E_div_P</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">    </span><span class="kd">::</span><span class="w"> </span><span class="n">canopy_storage_capacity</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">    </span><span class="kd">::</span><span class="w"> </span><span class="n">canopy_cover_fraction</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">)</span><span class="w">                </span><span class="kd">::</span><span class="w"> </span><span class="n">Psat</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! [ LOCALS ]</span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">)</span><span class="w">                </span><span class="kd">::</span><span class="w"> </span><span class="n">P_div_E</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">canopy_cover_fraction</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mf">0.0_c_float</span><span class="w"> </span><span class="p">.</span><span class="nb">and</span><span class="p">.</span><span class="w"> </span><span class="n">canopy_storage_capacity</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mf">0.0_c_float</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-
-<span class="k">       </span><span class="n">Psat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">canopy_storage_capacity</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">canopy_cover_fraction</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">E_div_P</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w">      </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                     </span><span class="o">*</span><span class="w"> </span><span class="nb">log</span><span class="p">(</span><span class="w"> </span><span class="mf">1.0_c_float</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">E_div_P</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">else</span>
-
-<span class="k">      </span><span class="n">Psat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0_c_float</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">endif</span><span class="w"></span>
-
-<span class="c">!                !! calc Precip needed to saturate canopy</span>
-<span class="c">!                 Psat=-( cancap( ilu(ip) ) / ( canfrac( ip )*cerf( ip ) ) ) &amp;</span>
-<span class="c">!                       * log( ( 1 - cerf( ip ) ) / ( 1 - ( 1 - ceint2 ) * cerf( ip ) ) )</span>
-
-
-<span class="w">  </span><span class="k">end function </span><span class="n">precipitation_at_saturation</span><span class="w"></span>
-</pre></div>
-
-    </section>
-    <br>
     
     </div>
   </div>
@@ -271,7 +232,7 @@
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-10-17T14:19:59.727997             </p>
+ on 2023-10-19T16:28:40.743458             </p>
           </div>
         </div>
         <br>

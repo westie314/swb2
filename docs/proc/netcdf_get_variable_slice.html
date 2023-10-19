@@ -73,7 +73,7 @@
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip"
                  data-bs-placement="bottom" data-html="true"
-                 title=" 0.3% of total for procedures.">51 statements</a>
+                 title=" 0.6% of total for procedures.">51 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -86,7 +86,7 @@
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb justify-content-end mb-0">
                 <li class="breadcrumb-item"><a href='../sourcefile/netcdf4_support.f90.html'>netcdf4_support.F90</a></li>
-                <li class="breadcrumb-item"><a href='../module/netcdf4_support~2.html'>netcdf4_support</a></li>
+                <li class="breadcrumb-item"><a href='../module/netcdf4_support.html'>netcdf4_support</a></li>
             <li class="breadcrumb-item active" aria-current="page">netcdf_get_variable_slice</li>
           </ol>
         </nav>
@@ -125,12 +125,6 @@
   
   
   
-    <div class="card card-primary">
-      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
-      <div class="list-group">
-        <a class="list-group-item" href="../proc/netcdf_get_variable_slice.html#src">netcdf_get_variable_slice</a>
-      </div>
-    </div>
 
 
   </div>
@@ -157,8 +151,8 @@
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-ncfile~18"></span>
-              type(<a href='../type/t_netcdf4_file~2.html'>T_NETCDF4_FILE</a>),
+              <span class="anchor" id="variable-ncfile~17"></span>
+              type(<a href='../type/t_netcdf4_file.html'>T_NETCDF4_FILE</a>),
             </td>
 <td>intent(inout)</td>
               <td></td>            <td>
@@ -172,7 +166,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-rvalues~5"></span>
+              <span class="anchor" id="variable-rvalues~3"></span>
               real(kind=c_float),
             </td>
 <td></td>
@@ -202,7 +196,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-ivalues~15"></span>
+              <span class="anchor" id="variable-ivalues~8"></span>
               integer(kind=c_int),
             </td>
 <td></td>
@@ -230,87 +224,6 @@
 
 
     
-    <section>
-    <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre><span></span><span class="k">subroutine </span><span class="n">netcdf_get_variable_slice</span><span class="p">(</span><span class="n">NCFILE</span><span class="p">,</span><span class="w"> </span><span class="n">rValues</span><span class="p">,</span><span class="w"> </span><span class="n">dpValues</span><span class="p">,</span><span class="w"> </span><span class="n">iValues</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">type</span><span class="w"> </span><span class="p">(</span><span class="n">T_NETCDF4_FILE</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w">       </span><span class="kd">::</span><span class="w"> </span><span class="n">NCFILE</span><span class="w"></span>
-<span class="w">  </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">),</span><span class="w"> </span><span class="k">dimension</span><span class="p">(:,:),</span><span class="w"> </span><span class="k">optional</span><span class="w">   </span><span class="kd">::</span><span class="w"> </span><span class="n">rValues</span><span class="w"></span>
-<span class="w">  </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_double</span><span class="p">),</span><span class="w"> </span><span class="k">dimension</span><span class="p">(:,:),</span><span class="w"> </span><span class="k">optional</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">dpValues</span><span class="w"></span>
-<span class="w">  </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">),</span><span class="w"> </span><span class="k">dimension</span><span class="p">(:,:),</span><span class="w"> </span><span class="k">optional</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">iValues</span><span class="w"></span>
-
-<span class="w">  </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="w">     </span><span class="kd">::</span><span class="w"> </span><span class="n">rTempVals</span><span class="p">(:,:)</span><span class="w"></span>
-<span class="w">  </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_short</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">i2TempVals</span><span class="p">(:,:)</span><span class="w"></span>
-<span class="w">  </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="w">    </span><span class="kd">::</span><span class="w"> </span><span class="n">iTempVals</span><span class="p">(:,:)</span><span class="w"></span>
-<span class="w">  </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_double</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="w">    </span><span class="kd">::</span><span class="w"> </span><span class="n">dpTempVals</span><span class="p">(:,:)</span><span class="w"></span>
-<span class="w">  </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">                 </span><span class="kd">::</span><span class="w"> </span><span class="n">nrow</span><span class="p">,</span><span class="w"> </span><span class="n">ncol</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="w"> </span><span class="n">rValues</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">    </span><span class="n">nrow</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">size</span><span class="p">(</span><span class="n">rValues</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="n">ncol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">size</span><span class="p">(</span><span class="n">rValues</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
-<span class="w">  </span><span class="n">elseif</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="w"> </span><span class="n">dpValues</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">    </span><span class="n">nrow</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">size</span><span class="p">(</span><span class="n">dpValues</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="n">ncol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">size</span><span class="p">(</span><span class="n">dpValues</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
-<span class="w">  </span><span class="n">elseif</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="w"> </span><span class="n">iValues</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">    </span><span class="n">nrow</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">size</span><span class="p">(</span><span class="n">iValues</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="n">ncol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">size</span><span class="p">(</span><span class="n">iValues</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
-<span class="w">  </span><span class="k">else</span>
-<span class="k">    call </span><span class="n">die</span><span class="p">(</span><span class="s2">&quot;Internal programming error: unhandled data type&quot;</span><span class="p">,</span><span class="w">                </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">      </span><span class="err">__</span><span class="n">FILE__</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">LINE__</span><span class="p">)</span><span class="w"></span>
-<span class="w">  </span><span class="k">endif</span>
-
-<span class="k">  if</span><span class="w"> </span><span class="p">(</span><span class="w">   </span><span class="n">NCFILE</span><span class="p">%</span><span class="n">iVarType</span><span class="p">(</span><span class="n">NC_Z</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">NC_SHORT</span><span class="w">                                     </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">    </span><span class="p">.</span><span class="nb">or</span><span class="p">.</span><span class="w"> </span><span class="n">NCFILE</span><span class="p">%</span><span class="n">iVarType</span><span class="p">(</span><span class="n">NC_Z</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">NC_USHORT</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-
-<span class="k">    allocate</span><span class="p">(</span><span class="w"> </span><span class="n">i2TempVals</span><span class="p">(</span><span class="n">ncol</span><span class="p">,</span><span class="w"> </span><span class="n">nrow</span><span class="p">))</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">call </span><span class="n">nf_get_variable_slice_short</span><span class="p">(</span><span class="n">NCFILE</span><span class="p">,</span><span class="w"> </span><span class="n">i2TempVals</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">rValues</span><span class="p">))</span><span class="w">  </span><span class="n">rValues</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">asFloat</span><span class="p">(</span><span class="n">i2TempVals</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">iValues</span><span class="p">))</span><span class="w">  </span><span class="n">iValues</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i2TempVals</span><span class="w"></span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">dpValues</span><span class="p">))</span><span class="w">  </span><span class="n">dpValues</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">asDouble</span><span class="p">(</span><span class="n">i2TempVals</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">  </span><span class="n">elseif</span><span class="w"> </span><span class="p">(</span><span class="w">   </span><span class="n">NCFILE</span><span class="p">%</span><span class="n">iVarType</span><span class="p">(</span><span class="n">NC_Z</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">NC_INT</span><span class="w">                                   </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">    </span><span class="p">.</span><span class="nb">or</span><span class="p">.</span><span class="w"> </span><span class="n">NCFILE</span><span class="p">%</span><span class="n">iVarType</span><span class="p">(</span><span class="n">NC_Z</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">NC_UINT</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-
-<span class="k">    allocate</span><span class="p">(</span><span class="w"> </span><span class="n">iTempVals</span><span class="p">(</span><span class="n">ncol</span><span class="p">,</span><span class="w"> </span><span class="n">nrow</span><span class="p">))</span><span class="w"></span>
-<span class="w">    </span><span class="k">call </span><span class="n">nf_get_variable_slice_int</span><span class="p">(</span><span class="n">NCFILE</span><span class="p">,</span><span class="w"> </span><span class="n">iTempVals</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">rValues</span><span class="p">))</span><span class="w">  </span><span class="n">rValues</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">asFloat</span><span class="p">(</span><span class="n">iTempVals</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">iValues</span><span class="p">))</span><span class="w">  </span><span class="n">iValues</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">iTempVals</span><span class="w"></span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">dpValues</span><span class="p">))</span><span class="w">  </span><span class="n">dpValues</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">asDouble</span><span class="p">(</span><span class="n">iTempVals</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">  </span><span class="n">elseif</span><span class="w"> </span><span class="p">(</span><span class="n">NCFILE</span><span class="p">%</span><span class="n">iVarType</span><span class="p">(</span><span class="n">NC_Z</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">NC_FLOAT</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-
-<span class="k">    allocate</span><span class="p">(</span><span class="w"> </span><span class="n">rTempVals</span><span class="p">(</span><span class="n">ncol</span><span class="p">,</span><span class="w"> </span><span class="n">nrow</span><span class="p">))</span><span class="w"></span>
-<span class="w">    </span><span class="k">call </span><span class="n">nf_get_variable_slice_float</span><span class="p">(</span><span class="n">NCFILE</span><span class="p">,</span><span class="w"> </span><span class="n">rTempVals</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">rValues</span><span class="p">))</span><span class="w">  </span><span class="n">rValues</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rTempVals</span><span class="w"></span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">iValues</span><span class="p">))</span><span class="w">  </span><span class="n">iValues</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">asInt</span><span class="p">(</span><span class="n">rTempVals</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">dpValues</span><span class="p">))</span><span class="w">  </span><span class="n">dpValues</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">asDouble</span><span class="p">(</span><span class="n">rTempVals</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">  </span><span class="n">elseif</span><span class="w"> </span><span class="p">(</span><span class="n">NCFILE</span><span class="p">%</span><span class="n">iVarType</span><span class="p">(</span><span class="n">NC_Z</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">NC_DOUBLE</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-
-<span class="k">    allocate</span><span class="p">(</span><span class="w"> </span><span class="n">dpTempVals</span><span class="p">(</span><span class="n">ncol</span><span class="p">,</span><span class="w"> </span><span class="n">nrow</span><span class="p">))</span><span class="w"></span>
-<span class="w">    </span><span class="k">call </span><span class="n">nf_get_variable_slice_double</span><span class="p">(</span><span class="n">NCFILE</span><span class="p">,</span><span class="w"> </span><span class="n">dpTempVals</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">rValues</span><span class="p">))</span><span class="w">  </span><span class="n">rValues</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">asFloat</span><span class="p">(</span><span class="n">dpTempVals</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">iValues</span><span class="p">))</span><span class="w">  </span><span class="n">iValues</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">asInt</span><span class="p">(</span><span class="n">dpTempVals</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">dpValues</span><span class="p">))</span><span class="w">  </span><span class="n">dpValues</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dpTempVals</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">else</span>
-
-<span class="k">    call </span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Failed to find a method to retrieve data of the given type.&quot;</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">FILE__</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">LINE__</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">print</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;var type: &#39;</span><span class="p">,</span><span class="n">NCFILE</span><span class="p">%</span><span class="n">iVarType</span><span class="p">(</span><span class="n">NC_Z</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">endif</span>
-
-<span class="k">end subroutine </span><span class="n">netcdf_get_variable_slice</span><span class="w"></span>
-</pre></div>
-
-    </section>
-    <br>
     
     </div>
   </div>
@@ -327,7 +240,7 @@
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-10-17T14:19:59.727997             </p>
+ on 2023-10-19T16:28:40.743458             </p>
           </div>
         </div>
         <br>

@@ -73,7 +73,7 @@
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip"
                  data-bs-placement="bottom" data-html="true"
-                 title=" 0.1% of total for procedures.">20 statements</a>
+                 title=" 0.2% of total for procedures.">20 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -86,7 +86,7 @@
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb justify-content-end mb-0">
                 <li class="breadcrumb-item"><a href='../sourcefile/netcdf4_support.f90.html'>netcdf4_support.F90</a></li>
-                <li class="breadcrumb-item"><a href='../module/netcdf4_support~2.html'>netcdf4_support</a></li>
+                <li class="breadcrumb-item"><a href='../module/netcdf4_support.html'>netcdf4_support</a></li>
             <li class="breadcrumb-item active" aria-current="page">netcdf_put_variable_array</li>
           </ol>
         </nav>
@@ -125,12 +125,6 @@
   
   
   
-    <div class="card card-primary">
-      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
-      <div class="list-group">
-        <a class="list-group-item" href="../proc/netcdf_put_variable_array.html#src">netcdf_put_variable_array</a>
-      </div>
-    </div>
 
 
   </div>
@@ -157,8 +151,8 @@
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-ncfile~21"></span>
-              type(<a href='../type/t_netcdf4_file~2.html'>T_NETCDF4_FILE</a>)
+              <span class="anchor" id="variable-ncfile~20"></span>
+              type(<a href='../type/t_netcdf4_file.html'>T_NETCDF4_FILE</a>)
             </td>
 <td></td>
               <td></td>            <td>
@@ -172,7 +166,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-ivarid~3"></span>
+              <span class="anchor" id="variable-ivarid~2"></span>
               integer(kind=c_int)
             </td>
 <td></td>
@@ -187,7 +181,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-istart~3"></span>
+              <span class="anchor" id="variable-istart~2"></span>
               integer(kind=c_size_t),
             </td>
 <td></td>
@@ -202,7 +196,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-icount~4"></span>
+              <span class="anchor" id="variable-icount~3"></span>
               integer(kind=c_size_t),
             </td>
 <td></td>
@@ -217,7 +211,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-istride~3"></span>
+              <span class="anchor" id="variable-istride~2"></span>
               integer(kind=c_size_t),
             </td>
 <td></td>
@@ -232,7 +226,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-ivalues~16"></span>
+              <span class="anchor" id="variable-ivalues~9"></span>
               integer(kind=c_int),
             </td>
 <td></td>
@@ -247,7 +241,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-i2values~3"></span>
+              <span class="anchor" id="variable-i2values~2"></span>
               integer(kind=c_short),
             </td>
 <td></td>
@@ -262,7 +256,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-rvalues~6"></span>
+              <span class="anchor" id="variable-rvalues~4"></span>
               real(kind=c_float),
             </td>
 <td></td>
@@ -305,70 +299,6 @@
 
 
     
-    <section>
-    <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre><span></span><span class="k">subroutine </span><span class="n">netcdf_put_variable_array</span><span class="p">(</span><span class="n">NCFILE</span><span class="p">,</span><span class="w"> </span><span class="n">iVarID</span><span class="p">,</span><span class="w"> </span><span class="n">iStart</span><span class="p">,</span><span class="w"> </span><span class="n">iCount</span><span class="p">,</span><span class="w"> </span><span class="n">iStride</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">   </span><span class="n">iValues</span><span class="p">,</span><span class="w"> </span><span class="n">i2Values</span><span class="p">,</span><span class="w"> </span><span class="n">rValues</span><span class="p">,</span><span class="w"> </span><span class="n">dpValues</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">type</span><span class="w"> </span><span class="p">(</span><span class="n">T_NETCDF4_FILE</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">NCFILE</span><span class="w"></span>
-<span class="w">  </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">iVarID</span><span class="w"></span>
-<span class="w">  </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_size_t</span><span class="p">),</span><span class="w"> </span><span class="k">dimension</span><span class="p">(:)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">iStart</span><span class="w"></span>
-<span class="w">  </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_size_t</span><span class="p">),</span><span class="w"> </span><span class="k">dimension</span><span class="p">(:)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">iCount</span><span class="w"></span>
-<span class="w">  </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_size_t</span><span class="p">),</span><span class="w"> </span><span class="k">dimension</span><span class="p">(:)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">iStride</span><span class="w"></span>
-<span class="w">  </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">),</span><span class="w"> </span><span class="k">dimension</span><span class="p">(:,:),</span><span class="w"> </span><span class="k">optional</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">iValues</span><span class="w"></span>
-<span class="w">  </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_short</span><span class="p">),</span><span class="w"> </span><span class="k">dimension</span><span class="p">(:,:),</span><span class="w"> </span><span class="k">optional</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">i2Values</span><span class="w"></span>
-<span class="w">  </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">),</span><span class="w"> </span><span class="k">dimension</span><span class="p">(:,:),</span><span class="w"> </span><span class="k">optional</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">rValues</span><span class="w"></span>
-<span class="w">  </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_double</span><span class="p">),</span><span class="w"> </span><span class="k">dimension</span><span class="p">(:,:),</span><span class="w"> </span><span class="k">optional</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">dpValues</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">iValues</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-
-<span class="k">    call </span><span class="n">nf_trap</span><span class="p">(</span><span class="n">nc_put_vars_int</span><span class="p">(</span><span class="n">ncid</span><span class="o">=</span><span class="n">NCFILE</span><span class="p">%</span><span class="n">iNCID</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                       </span><span class="n">varid</span><span class="o">=</span><span class="n">iVarID</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                       </span><span class="n">startp</span><span class="o">=</span><span class="n">iStart</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                       </span><span class="n">countp</span><span class="o">=</span><span class="n">iCount</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                       </span><span class="n">stridep</span><span class="o">=</span><span class="n">iStride</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                       </span><span class="n">vars</span><span class="o">=</span><span class="n">iValues</span><span class="p">),</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                       </span><span class="err">__</span><span class="n">FILE__</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">LINE__</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">  </span><span class="n">elseif</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">i2Values</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-
-<span class="k">    call </span><span class="n">nf_trap</span><span class="p">(</span><span class="n">nc_put_vars_short</span><span class="p">(</span><span class="n">ncid</span><span class="o">=</span><span class="n">NCFILE</span><span class="p">%</span><span class="n">iNCID</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                       </span><span class="n">varid</span><span class="o">=</span><span class="n">iVarID</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                       </span><span class="n">startp</span><span class="o">=</span><span class="n">iStart</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                       </span><span class="n">countp</span><span class="o">=</span><span class="n">iCount</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                       </span><span class="n">stridep</span><span class="o">=</span><span class="n">iStride</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                       </span><span class="n">vars</span><span class="o">=</span><span class="n">i2Values</span><span class="p">),</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                       </span><span class="err">__</span><span class="n">FILE__</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">LINE__</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">  </span><span class="n">elseif</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">rValues</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-
-<span class="k">   call </span><span class="n">nf_trap</span><span class="p">(</span><span class="n">nc_put_vars_float</span><span class="p">(</span><span class="n">ncid</span><span class="o">=</span><span class="n">NCFILE</span><span class="p">%</span><span class="n">iNCID</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                       </span><span class="n">varid</span><span class="o">=</span><span class="n">iVarID</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                       </span><span class="n">startp</span><span class="o">=</span><span class="n">iStart</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                       </span><span class="n">countp</span><span class="o">=</span><span class="n">iCount</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                       </span><span class="n">stridep</span><span class="o">=</span><span class="n">iStride</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                       </span><span class="n">vars</span><span class="o">=</span><span class="n">rValues</span><span class="p">),</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                       </span><span class="err">__</span><span class="n">FILE__</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">LINE__</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">  </span><span class="n">elseif</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">dpValues</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-
-
-
-<span class="k">    call </span><span class="n">nf_trap</span><span class="p">(</span><span class="n">nc_put_vars_double</span><span class="p">(</span><span class="n">ncid</span><span class="o">=</span><span class="n">NCFILE</span><span class="p">%</span><span class="n">iNCID</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                       </span><span class="n">varid</span><span class="o">=</span><span class="n">iVarID</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                       </span><span class="n">startp</span><span class="o">=</span><span class="n">iStart</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                       </span><span class="n">countp</span><span class="o">=</span><span class="n">iCount</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                       </span><span class="n">stridep</span><span class="o">=</span><span class="n">iStride</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                       </span><span class="n">vars</span><span class="o">=</span><span class="n">dpValues</span><span class="p">),</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                       </span><span class="err">__</span><span class="n">FILE__</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">LINE__</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">endif</span>
-
-<span class="k">end subroutine </span><span class="n">netcdf_put_variable_array</span><span class="w"></span>
-</pre></div>
-
-    </section>
-    <br>
     
     </div>
   </div>
@@ -385,7 +315,7 @@
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-10-17T14:19:59.727997             </p>
+ on 2023-10-19T16:28:40.743458             </p>
           </div>
         </div>
         <br>

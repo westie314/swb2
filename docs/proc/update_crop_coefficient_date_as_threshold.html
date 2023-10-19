@@ -73,7 +73,7 @@
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip"
                  data-bs-placement="bottom" data-html="true"
-                 title=" 0.2% of total for procedures.">26 statements</a>
+                 title=" 0.3% of total for procedures.">26 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -86,7 +86,7 @@
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb justify-content-end mb-0">
                 <li class="breadcrumb-item"><a href='../sourcefile/crop_coefficients__fao56.f90.html'>crop_coefficients__fao56.F90</a></li>
-                <li class="breadcrumb-item"><a href='../module/crop_coefficients__fao56~2.html'>crop_coefficients__fao56</a></li>
+                <li class="breadcrumb-item"><a href='../module/crop_coefficients__fao56.html'>crop_coefficients__fao56</a></li>
             <li class="breadcrumb-item active" aria-current="page">update_crop_coefficient_date_as_threshold</li>
           </ol>
         </nav>
@@ -125,12 +125,6 @@
   
   
   
-    <div class="card card-primary">
-      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
-      <div class="list-group">
-        <a class="list-group-item" href="../proc/update_crop_coefficient_date_as_threshold.html#src">update_crop_coefficient_date_as_threshold</a>
-      </div>
-    </div>
 
 
   </div>
@@ -198,77 +192,6 @@ a SINGLE irrigation table entry</p>
 
 
     
-    <section>
-    <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre><span></span><span class="w"> </span><span class="k">impure elemental function </span><span class="n">update_crop_coefficient_date_as_threshold</span><span class="p">(</span><span class="w"> </span><span class="n">iLanduseIndex</span><span class="w"> </span><span class="p">)</span><span class="w">           </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                                                          </span><span class="k">result</span><span class="p">(</span><span class="n">Kcb</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">  </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">   </span><span class="kd">::</span><span class="w"> </span><span class="n">iLanduseIndex</span><span class="w"></span>
-<span class="w">  </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">)</span><span class="w">                </span><span class="kd">::</span><span class="w"> </span><span class="n">Kcb</span><span class="w"></span>
-
-<span class="w">  </span><span class="c">! [ LOCALS ]</span>
-<span class="w">  </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_double</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">fFrac</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">KCB_METHOD</span><span class="p">(</span><span class="w"> </span><span class="n">iLanduseIndex</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">KCB_METHOD_MONTHLY_VALUES</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-
-<span class="k">    </span><span class="n">Kcb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">KCB_l</span><span class="p">(</span><span class="w"> </span><span class="n">SIM_DT</span><span class="p">%</span><span class="n">curr</span><span class="p">%</span><span class="n">iMonth</span><span class="p">,</span><span class="w"> </span><span class="n">iLanduseIndex</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">else</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! define shorthand variable names for remainder of function</span>
-<span class="w">    </span><span class="k">associate</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">Date_ini</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">GROWTH_STAGE_DATE</span><span class="p">(</span><span class="w"> </span><span class="n">ENDDATE_INI</span><span class="p">,</span><span class="w"> </span><span class="n">iLanduseIndex</span><span class="w"> </span><span class="p">),</span><span class="w">           </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                </span><span class="n">Date_dev</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">GROWTH_STAGE_DATE</span><span class="p">(</span><span class="w"> </span><span class="n">ENDDATE_DEV</span><span class="p">,</span><span class="w"> </span><span class="n">iLanduseIndex</span><span class="w"> </span><span class="p">),</span><span class="w">           </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                </span><span class="n">Date_mid</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">GROWTH_STAGE_DATE</span><span class="p">(</span><span class="w"> </span><span class="n">ENDDATE_MID</span><span class="p">,</span><span class="w"> </span><span class="n">iLanduseIndex</span><span class="w"> </span><span class="p">),</span><span class="w">           </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                </span><span class="n">Date_late</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">GROWTH_STAGE_DATE</span><span class="p">(</span><span class="w"> </span><span class="n">ENDDATE_LATE</span><span class="p">,</span><span class="w"> </span><span class="n">iLanduseIndex</span><span class="w"> </span><span class="p">),</span><span class="w">         </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                </span><span class="n">Date_fallow</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">GROWTH_STAGE_DATE</span><span class="p">(</span><span class="w"> </span><span class="n">ENDDATE_FALLOW</span><span class="p">,</span><span class="w"> </span><span class="n">iLanduseIndex</span><span class="w"> </span><span class="p">),</span><span class="w">     </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                </span><span class="n">Kcb_ini</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">KCB_l</span><span class="p">(</span><span class="n">KCB_INI</span><span class="p">,</span><span class="w"> </span><span class="n">iLanduseIndex</span><span class="p">),</span><span class="w">                              </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                </span><span class="n">Kcb_mid</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">KCB_l</span><span class="p">(</span><span class="n">KCB_MID</span><span class="p">,</span><span class="w"> </span><span class="n">iLanduseIndex</span><span class="p">),</span><span class="w">                              </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                </span><span class="n">Kcb_min</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">KCB_l</span><span class="p">(</span><span class="n">KCB_MIN</span><span class="p">,</span><span class="w"> </span><span class="n">iLanduseIndex</span><span class="p">),</span><span class="w">                              </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                </span><span class="n">PlantingDate</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">GROWTH_STAGE_DATE</span><span class="p">(</span><span class="w"> </span><span class="n">PLANTING_DATE</span><span class="p">,</span><span class="w"> </span><span class="n">iLanduseIndex</span><span class="p">),</span><span class="w">      </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                </span><span class="n">Kcb_end</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">KCB_l</span><span class="p">(</span><span class="n">KCB_END</span><span class="p">,</span><span class="w"> </span><span class="n">iLanduseIndex</span><span class="p">),</span><span class="w">                              </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                </span><span class="n">current_date</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">SIM_DT</span><span class="p">%</span><span class="n">curr</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">      </span><span class="c">! now calculate Kcb for the given landuse</span>
-
-<span class="w">      </span><span class="k">if</span><span class="p">(</span><span class="w"> </span><span class="n">current_date</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">Date_late</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-
-<span class="k">        </span><span class="n">Kcb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Kcb_min</span><span class="w"></span>
-
-<span class="w">      </span><span class="n">elseif</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">current_date</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">Date_mid</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-
-<span class="k">        </span><span class="n">fFrac</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">current_date</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Date_mid</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">Date_late</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Date_mid</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">        </span><span class="n">Kcb</span><span class="w"> </span><span class="o">=</span><span class="w">  </span><span class="n">Kcb_mid</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="mf">1.0_c_double</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">fFrac</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">Kcb_end</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">fFrac</span><span class="w"></span>
-
-<span class="w">      </span><span class="n">elseif</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">current_date</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">Date_dev</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-
-<span class="k">        </span><span class="n">Kcb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Kcb_mid</span><span class="w"></span>
-
-<span class="w">      </span><span class="n">elseif</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">current_date</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">Date_ini</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-
-<span class="k">        </span><span class="n">fFrac</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">current_date</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Date_ini</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">Date_dev</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Date_ini</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">        </span><span class="n">Kcb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Kcb_ini</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="mf">1.0_c_double</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">fFrac</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">Kcb_mid</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">fFrac</span><span class="w"></span>
-
-<span class="w">      </span><span class="n">elseif</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">current_date</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">PlantingDate</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-
-<span class="k">        </span><span class="n">Kcb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Kcb_ini</span><span class="w"></span>
-
-<span class="w">      </span><span class="k">else</span>
-
-<span class="k">        </span><span class="n">Kcb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Kcb_min</span><span class="w"></span>
-
-<span class="w">      </span><span class="k">endif</span>
-
-<span class="k">    end associate</span>
-
-<span class="k">  end if</span>
-
-<span class="k">end function </span><span class="n">update_crop_coefficient_date_as_threshold</span><span class="w"></span>
-</pre></div>
-
-    </section>
-    <br>
     
     </div>
   </div>
@@ -285,7 +208,7 @@ a SINGLE irrigation table entry</p>
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-10-17T14:19:59.727997             </p>
+ on 2023-10-19T16:28:40.743458             </p>
           </div>
         </div>
         <br>

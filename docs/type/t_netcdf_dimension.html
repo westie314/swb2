@@ -73,7 +73,7 @@
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip"
                  data-bs-placement="bottom" data-html="true"
-                 title="<p> 0.3% of total for derived types.</p>Including implementation: 6 statements,  0.1% of total for derived types.">6 statements</a>
+                 title="<p> 0.7% of total for derived types.</p>Including implementation: 6 statements,  0.1% of total for derived types.">6 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -85,7 +85,7 @@
       <div class="col">
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb justify-content-end mb-0">
-                <li class="breadcrumb-item"><a href='../sourcefile/netcdf4_support.f90~2.html'>netcdf4_support.F90</a></li>
+                <li class="breadcrumb-item"><a href='../sourcefile/netcdf4_support.f90.html'>netcdf4_support.F90</a></li>
                 <li class="breadcrumb-item"><a href='../module/netcdf4_support.html'>netcdf4_support</a></li>
             <li class="breadcrumb-item active" aria-current="page">T_NETCDF_DIMENSION</li>
           </ol>
@@ -113,10 +113,10 @@
       </a>
       <div id="vars-0" class="collapse">
         <div class="list-group list-group-flush">
-            <a class="list-group-item" href="../type/t_netcdf_dimension.html#variable-sdimensionname~2">sDimensionName</a>
-            <a class="list-group-item" href="../type/t_netcdf_dimension.html#variable-inc_dimid~3">iNC_DimID</a>
-            <a class="list-group-item" href="../type/t_netcdf_dimension.html#variable-inc_dimsize~2">iNC_DimSize</a>
-            <a class="list-group-item" href="../type/t_netcdf_dimension.html#variable-lunlimited~2">lUnlimited</a>
+            <a class="list-group-item" href="../type/t_netcdf_dimension.html#variable-sdimensionname">sDimensionName</a>
+            <a class="list-group-item" href="../type/t_netcdf_dimension.html#variable-inc_dimid">iNC_DimID</a>
+            <a class="list-group-item" href="../type/t_netcdf_dimension.html#variable-inc_dimsize">iNC_DimSize</a>
+            <a class="list-group-item" href="../type/t_netcdf_dimension.html#variable-lunlimited">lUnlimited</a>
         </div>
       </div>
     </div>
@@ -139,12 +139,6 @@
   
   
   
-    <div class="card card-primary">
-      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
-      <div class="list-group">
-        <a class="list-group-item" href="../type/t_netcdf_dimension.html#src">T_NETCDF_DIMENSION</a>
-      </div>
-    </div>
 
 
   </div>
@@ -170,7 +164,7 @@
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-sdimensionname~2"></span>
+              <span class="anchor" id="variable-sdimensionname"></span>
               character(len=64),
             </td>
               <td>public</td>
@@ -187,7 +181,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-inc_dimid~3"></span>
+              <span class="anchor" id="variable-inc_dimid"></span>
               integer(kind=c_int),
             </td>
               <td>public</td>
@@ -204,7 +198,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-inc_dimsize~2"></span>
+              <span class="anchor" id="variable-inc_dimsize"></span>
               integer(kind=c_size_t),
             </td>
               <td>public</td>
@@ -221,7 +215,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-lunlimited~2"></span>
+              <span class="anchor" id="variable-lunlimited"></span>
               logical(kind=c_bool),
             </td>
               <td>public</td>
@@ -245,17 +239,6 @@
 
 
 
-    <section>
-    <h3><span class="anchor" id="src"></span>Source Code</h3>
-    <div class="highlight"><pre><span></span><span class="w">  </span><span class="k">type </span><span class="n">T_NETCDF_DIMENSION</span><span class="w"></span>
-<span class="w">    </span><span class="kt">character</span><span class="w"> </span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">64</span><span class="p">)</span><span class="w">      </span><span class="kd">::</span><span class="w"> </span><span class="n">sDimensionName</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">    </span><span class="kd">::</span><span class="w"> </span><span class="n">iNC_DimID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">NC_NA_INT</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_size_t</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">iNC_DimSize</span><span class="w"></span>
-<span class="w">    </span><span class="kt">logical</span><span class="w"> </span><span class="p">(</span><span class="kt">c_bool</span><span class="p">)</span><span class="w">   </span><span class="kd">::</span><span class="w"> </span><span class="n">lUnlimited</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FALSE</span><span class="w"></span>
-<span class="w">  </span><span class="k">end type </span><span class="n">T_NETCDF_DIMENSION</span><span class="w"></span>
-</pre></div>
-
-    </section>
     
     </div>
   </div>
@@ -272,7 +255,7 @@
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-10-17T14:19:59.727997             </p>
+ on 2023-10-19T16:28:40.743458             </p>
           </div>
         </div>
         <br>

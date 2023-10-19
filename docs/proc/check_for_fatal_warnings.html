@@ -73,7 +73,7 @@
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip"
                  data-bs-placement="bottom" data-html="true"
-                 title=" 0.2% of total for procedures.">35 statements</a>
+                 title=" 0.4% of total for procedures.">34 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -125,13 +125,8 @@
   
   
   
-    <div class="card card-primary">
-      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
-      <div class="list-group">
-        <a class="list-group-item" href="../proc/check_for_fatal_warnings.html#src">check_for_fatal_warnings</a>
-      </div>
-    </div>
 
+    <em>None</em>
 
   </div>
 
@@ -159,61 +154,6 @@
 
 
     
-    <section>
-    <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre><span></span><span class="w">  </span><span class="k">subroutine </span><span class="n">check_for_fatal_warnings</span><span class="p">()</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! [ LOCALS ]</span>
-<span class="w">    </span><span class="kt">character</span><span class="w"> </span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span><span class="w">     </span><span class="kd">::</span><span class="w"> </span><span class="n">sNumWarnings</span><span class="w"></span>
-<span class="w">    </span><span class="kt">character</span><span class="w"> </span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span><span class="w">     </span><span class="kd">::</span><span class="w"> </span><span class="n">sMaxWarnings</span><span class="w"></span>
-<span class="w">    </span><span class="kt">character</span><span class="w"> </span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span><span class="w">     </span><span class="kd">::</span><span class="w"> </span><span class="n">sIndex</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">iIndex</span><span class="w"></span>
-<span class="w">    </span><span class="kt">character</span><span class="w"> </span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span><span class="w">    </span><span class="kd">::</span><span class="w"> </span><span class="n">sBigS</span><span class="w"></span>
-<span class="w">    </span><span class="kt">character</span><span class="w"> </span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="w">     </span><span class="kd">::</span><span class="w"> </span><span class="n">sLittleS</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">NUMBER_OF_FATAL_WARNINGS</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-
-<span class="k">      if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">NUMBER_OF_FATAL_WARNINGS</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">        </span><span class="n">sBigS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;S WERE&quot;</span><span class="w"></span>
-<span class="w">        </span><span class="n">sLittleS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;s&quot;</span><span class="w"></span>
-<span class="w">      </span><span class="k">else</span>
-<span class="k">        </span><span class="n">sBigS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot; WAS&quot;</span><span class="w"></span>
-<span class="w">        </span><span class="n">sLittleS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="w"></span>
-<span class="w">      </span><span class="k">endif</span>
-
-<span class="k">      call </span><span class="n">LOGS</span><span class="p">%</span><span class="n">set_loglevel</span><span class="p">(</span><span class="w"> </span><span class="n">LOG_ALL</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">      </span><span class="k">call </span><span class="n">LOGS</span><span class="p">%</span><span class="n">set_echo</span><span class="p">(</span><span class="w"> </span><span class="p">.</span><span class="n">true</span><span class="p">.</span><span class="err">_</span><span class="n">c_bool</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="n">unit</span><span class="o">=</span><span class="n">sNumWarnings</span><span class="p">,</span><span class="w"> </span><span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;(i0)&quot;</span><span class="p">)</span><span class="w"> </span><span class="n">NUMBER_OF_FATAL_WARNINGS</span><span class="w"></span>
-<span class="w">      </span><span class="k">call </span><span class="n">LOGS</span><span class="p">%</span><span class="k">write</span><span class="p">(</span><span class="w"> </span><span class="s2">&quot;** &quot;</span><span class="o">//</span><span class="nb">trim</span><span class="p">(</span><span class="nb">adjustl</span><span class="p">(</span><span class="n">sNumWarnings</span><span class="p">))</span><span class="o">//</span><span class="s2">&quot; FATAL WARNING&quot;</span><span class="o">//</span><span class="nb">trim</span><span class="p">(</span><span class="n">sBigS</span><span class="p">)</span><span class="w">     </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                       </span><span class="o">//</span><span class="s2">&quot; DETECTED IN INPUT **&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">iLinesBefore</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">iLinesAfter</span><span class="o">=</span><span class="mi">1</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">      </span><span class="k">call </span><span class="n">LOGS</span><span class="p">%</span><span class="k">write</span><span class="p">(</span><span class="w"> </span><span class="s2">&quot;# Summary of fatal warning&quot;</span><span class="o">//</span><span class="nb">trim</span><span class="p">(</span><span class="n">sLittleS</span><span class="p">)</span><span class="o">//</span><span class="s2">&quot; #&quot;</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">      </span><span class="k">call </span><span class="n">LOGS</span><span class="p">%</span><span class="k">write</span><span class="p">(</span><span class="w"> </span><span class="s2">&quot;-------------------------------&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">iLinesAfter</span><span class="o">=</span><span class="mi">1</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">      </span><span class="k">do </span><span class="n">iIndex</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">NUMBER_OF_FATAL_WARNINGS</span><span class="w"></span>
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">iIndex</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">MAX_FATAL_WARNINGS</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">          write</span><span class="p">(</span><span class="n">unit</span><span class="o">=</span><span class="n">sIndex</span><span class="p">,</span><span class="w"> </span><span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;(i0)&quot;</span><span class="p">)</span><span class="w"> </span><span class="n">iIndex</span><span class="w"></span>
-<span class="w">          </span><span class="k">call </span><span class="n">LOGS</span><span class="p">%</span><span class="k">write</span><span class="p">(</span><span class="w"> </span><span class="nb">trim</span><span class="p">(</span><span class="nb">adjustl</span><span class="p">(</span><span class="n">sIndex</span><span class="p">))</span><span class="o">//</span><span class="s2">&quot;: &quot;</span><span class="o">//</span><span class="nb">trim</span><span class="p">(</span><span class="n">WARNING_TEXT</span><span class="p">(</span><span class="n">iIndex</span><span class="p">)),</span><span class="w"> </span><span class="n">iLinesBefore</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
-<span class="w">        </span><span class="k">endif</span>
-<span class="k">      enddo</span>
-
-<span class="k">      if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">NUMBER_OF_FATAL_WARNINGS</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">MAX_FATAL_WARNINGS</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">        write</span><span class="p">(</span><span class="n">unit</span><span class="o">=</span><span class="n">sMaxWarnings</span><span class="p">,</span><span class="w"> </span><span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;(i0)&quot;</span><span class="p">)</span><span class="w"> </span><span class="n">MAX_FATAL_WARNINGS</span><span class="w"></span>
-<span class="w">        </span><span class="k">call </span><span class="n">LOGS</span><span class="p">%</span><span class="k">write</span><span class="p">(</span><span class="w"> </span><span class="s2">&quot;*There were more than &quot;</span><span class="o">//</span><span class="nb">trim</span><span class="p">(</span><span class="nb">adjustl</span><span class="p">(</span><span class="n">sMaxWarnings</span><span class="p">))</span><span class="o">//</span><span class="s2">&quot; fatal warnings. &quot;</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">          </span><span class="o">//</span><span class="s2">&quot; Only a partial list of warnings is shown above.*&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">iLinesBefore</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">iLinesAfter</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">iTab</span><span class="o">=</span><span class="mi">2</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">      </span><span class="k">endif</span>
-
-<span class="k">      call </span><span class="n">die</span><span class="p">(</span><span class="w"> </span><span class="n">sMessage</span><span class="o">=</span><span class="s2">&quot;Fatal warning&quot;</span><span class="o">//</span><span class="nb">trim</span><span class="p">(</span><span class="n">sLittleS</span><span class="p">)</span><span class="o">//</span><span class="s2">&quot; associated with input.&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                </span><span class="n">sHints</span><span class="o">=</span><span class="s2">&quot;Address the problem&quot;</span><span class="o">//</span><span class="nb">trim</span><span class="p">(</span><span class="n">sLittleS</span><span class="p">)</span><span class="o">//</span><span class="s2">&quot; listed above and try again.&quot;</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">endif</span>
-
-<span class="k">  end subroutine </span><span class="n">check_for_fatal_warnings</span><span class="w"></span>
-</pre></div>
-
-    </section>
-    <br>
     
     </div>
   </div>
@@ -230,7 +170,7 @@
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-10-17T14:19:59.727997             </p>
+ on 2023-10-19T16:28:40.743458             </p>
           </div>
         </div>
         <br>

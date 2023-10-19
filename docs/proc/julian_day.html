@@ -73,7 +73,7 @@
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip"
                  data-bs-placement="bottom" data-html="true"
-                 title=" 0.3% of total for procedures.">53 statements</a>
+                 title=" 0.6% of total for procedures.">53 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -125,12 +125,6 @@
   
   
   
-    <div class="card card-primary">
-      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
-      <div class="list-group">
-        <a class="list-group-item" href="../proc/julian_day.html#src">julian_day</a>
-      </div>
-    </div>
 
 
   </div>
@@ -157,7 +151,7 @@
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-iyear~11"></span>
+              <span class="anchor" id="variable-iyear~6"></span>
               integer(kind=c_int),
             </td>
 <td>intent(in)</td>
@@ -172,7 +166,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-imonth~9"></span>
+              <span class="anchor" id="variable-imonth~5"></span>
               integer(kind=c_int),
             </td>
 <td>intent(in)</td>
@@ -187,7 +181,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-iday~7"></span>
+              <span class="anchor" id="variable-iday~4"></span>
               integer(kind=c_int),
             </td>
 <td>intent(in)</td>
@@ -252,99 +246,6 @@
 
 
     
-    <section>
-    <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre><span></span><span class="k">function </span><span class="n">julian_day</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">iYear</span><span class="p">,</span><span class="w"> </span><span class="n">iMonth</span><span class="p">,</span><span class="w"> </span><span class="n">iDay</span><span class="p">,</span><span class="w"> </span><span class="n">iOrigin</span><span class="p">,</span><span class="w"> </span><span class="n">sInputItemName</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">result</span><span class="p">(</span><span class="n">iJD</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">  </span><span class="c">! [ ARGUMENTS ]</span>
-<span class="w">  </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">     </span><span class="kd">::</span><span class="w"> </span><span class="n">iYear</span><span class="p">,</span><span class="w"> </span><span class="n">iMonth</span><span class="p">,</span><span class="w"> </span><span class="n">iDay</span><span class="w"></span>
-<span class="w">  </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">),</span><span class="w"> </span><span class="k">optional</span><span class="w">       </span><span class="kd">::</span><span class="w"> </span><span class="n">iOrigin</span><span class="w"></span>
-<span class="w">  </span><span class="kt">character</span><span class="w"> </span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="w"> </span><span class="k">optional</span><span class="w">     </span><span class="kd">::</span><span class="w"> </span><span class="n">sInputItemName</span><span class="w"></span>
-
-
-<span class="w">  </span><span class="c">! [ LOCALS ]</span>
-<span class="w">  </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="w"></span>
-<span class="w">  </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">iOffset</span><span class="w"></span>
-<span class="w">  </span><span class="kt">character</span><span class="w"> </span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">256</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">sBuf</span><span class="w"></span>
-<span class="w">  </span><span class="kt">character</span><span class="w"> </span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">sInputItemName_</span><span class="w"></span>
-<span class="w">  </span><span class="kt">logical</span><span class="w"> </span><span class="p">(</span><span class="kt">c_bool</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">illegal_month</span><span class="p">,</span><span class="w"> </span><span class="n">illegal_day</span><span class="w"></span>
-
-<span class="w">  </span><span class="c">! [ RETURN VALUE ]</span>
-<span class="w">  </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">iJD</span><span class="w"></span>
-<span class="w">  </span><span class="n">sBuf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="w"></span>
-
-<span class="w">   </span><span class="n">illegal_month</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FALSE</span><span class="w"></span>
-<span class="w">   </span><span class="n">illegal_day</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="n">FALSE</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">sInputItemName</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
-<span class="k">    </span><span class="n">sInputItemName_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">trim</span><span class="p">(</span><span class="n">sInputItemName</span><span class="p">)</span><span class="w"></span>
-<span class="w">  </span><span class="k">else</span>
-<span class="k">    </span><span class="n">sInputItemName_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;unspecified&quot;</span><span class="w"></span>
-<span class="w">  </span><span class="k">endif</span>
-
-<span class="k">  </span><span class="n">i</span><span class="o">=</span><span class="w"> </span><span class="n">iYear</span><span class="w"></span>
-<span class="w">  </span><span class="n">j</span><span class="o">=</span><span class="w"> </span><span class="n">iMonth</span><span class="w"></span>
-<span class="w">  </span><span class="n">k</span><span class="o">=</span><span class="w"> </span><span class="n">iDay</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">select case</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">iMonth</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">12</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">iDay</span><span class="w">  </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">.</span><span class="nb">or</span><span class="p">.</span><span class="w"> </span><span class="n">iDay</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">31</span><span class="w"> </span><span class="p">)</span><span class="w">   </span><span class="n">illegal_day</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TRUE</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">isLeap</span><span class="p">(</span><span class="w"> </span><span class="n">iYear</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">        if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">iDay</span><span class="w">  </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">.</span><span class="nb">or</span><span class="p">.</span><span class="w"> </span><span class="n">iDay</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">29</span><span class="w"> </span><span class="p">)</span><span class="w">   </span><span class="n">illegal_day</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TRUE</span><span class="w"></span>
-<span class="w">      </span><span class="k">else</span>
-<span class="k">        if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">iDay</span><span class="w">  </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">.</span><span class="nb">or</span><span class="p">.</span><span class="w"> </span><span class="n">iDay</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">28</span><span class="w"> </span><span class="p">)</span><span class="w">   </span><span class="n">illegal_day</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TRUE</span><span class="w"></span>
-<span class="w">      </span><span class="k">endif</span>
-<span class="k">    case</span><span class="w"> </span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span><span class="w"> </span><span class="mi">9</span><span class="p">,</span><span class="w"> </span><span class="mi">11</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">iDay</span><span class="w">  </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">.</span><span class="nb">or</span><span class="p">.</span><span class="w"> </span><span class="n">iDay</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">31</span><span class="w"> </span><span class="p">)</span><span class="w">   </span><span class="n">illegal_day</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TRUE</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">case </span><span class="n">default</span><span class="w"></span>
-
-<span class="w">      </span><span class="n">illegal_month</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TRUE</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">end select</span>
-
-<span class="k">  if</span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">iOrigin</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
-<span class="k">    </span><span class="n">iOffset</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">iOrigin</span><span class="w"></span>
-<span class="w">  </span><span class="k">else</span>
-<span class="k">    </span><span class="n">iOffset</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"></span>
-<span class="w">  </span><span class="k">endif</span>
-
-<span class="k">  </span><span class="n">iJD</span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">k</span><span class="o">-</span><span class="mi">32075_c_int</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1461_c_int</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">4800_c_int</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">j</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">14_c_int</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">12_c_int</span><span class="p">)</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="o">/</span><span class="mi">4_c_int</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">367_c_int</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="n">j</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">2_c_int</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="p">(</span><span class="n">j</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">14_c_int</span><span class="p">)</span><span class="o">/</span><span class="w"> </span><span class="mi">12_c_int</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">12_c_int</span><span class="p">)</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="o">/</span><span class="mi">12_c_int</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">3_c_int</span><span class="w"> </span><span class="o">*</span><span class="p">((</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">4900_c_int</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">j</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">14_c_int</span><span class="p">)</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="o">/</span><span class="mi">12_c_int</span><span class="p">)</span><span class="o">/</span><span class="mi">100_c_int</span><span class="p">)</span><span class="o">/</span><span class="mi">4_c_int</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">iOffset</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">illegal_month</span><span class="w"> </span><span class="p">.</span><span class="nb">or</span><span class="p">.</span><span class="w"> </span><span class="n">illegal_day</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span><span class="w"></span>
-<span class="c">!    call LOGS%write(&quot; ** there was a problem converting month, day, year values to a Julian date **&quot;,    &amp;</span>
-<span class="c">!      iLinesBefore=2, iLogLevel=LOG_ALL, lEcho=TRUE, iTab=5)</span>
-<span class="w">    </span><span class="k">call </span><span class="n">LOGS</span><span class="p">%</span><span class="k">write</span><span class="p">(</span><span class="s2">&quot;month value: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">as_character</span><span class="p">(</span><span class="n">iMonth</span><span class="p">),</span><span class="w"> </span><span class="n">iTab</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">call </span><span class="n">LOGS</span><span class="p">%</span><span class="k">write</span><span class="p">(</span><span class="s2">&quot;day value: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">as_character</span><span class="p">(</span><span class="n">iDay</span><span class="p">),</span><span class="w"> </span><span class="n">iTab</span><span class="o">=</span><span class="mi">18</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">call </span><span class="n">LOGS</span><span class="p">%</span><span class="k">write</span><span class="p">(</span><span class="s2">&quot;year value: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">as_character</span><span class="p">(</span><span class="n">iYear</span><span class="p">),</span><span class="w"> </span><span class="n">iTab</span><span class="o">=</span><span class="mi">17</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">call </span><span class="n">LOGS</span><span class="p">%</span><span class="k">write</span><span class="p">(</span><span class="s2">&quot;input type: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">sInputItemName_</span><span class="p">,</span><span class="w"> </span><span class="n">iLinesAfter</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">iTab</span><span class="o">=</span><span class="mi">17</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="n">sBuf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;there was a problem converting month, day, year values to a Julian date: &quot;</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">illegal_month</span><span class="p">)</span><span class="w">     </span><span class="n">sBuf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">adjustl</span><span class="p">(</span><span class="nb">trim</span><span class="p">(</span><span class="n">sBuf</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s2">&quot; month value is illegal. &quot;</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">illegal_day</span><span class="p">)</span><span class="w">       </span><span class="n">sBuf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">adjustl</span><span class="p">(</span><span class="nb">trim</span><span class="p">(</span><span class="n">sBuf</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s2">&quot; day value is illegal.&quot;</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">call </span><span class="n">Assert</span><span class="p">(</span><span class="w"> </span><span class="n">FALSE</span><span class="p">,</span><span class="w"> </span><span class="nb">trim</span><span class="p">(</span><span class="n">sBuf</span><span class="p">),</span><span class="w"> </span><span class="err">__</span><span class="n">FILE__</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">LINE__</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! will never get here normally, but for unit testing purposes, return some nonsensical value</span>
-<span class="w">    </span><span class="n">iJD</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">iTINYVAL</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">endif</span>
-<span class="k">      </span>
-<span class="k">end function </span><span class="n">julian_day</span><span class="w"></span>
-</pre></div>
-
-    </section>
-    <br>
     
     </div>
   </div>
@@ -361,7 +262,7 @@
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-10-17T14:19:59.727997             </p>
+ on 2023-10-19T16:28:40.743458             </p>
           </div>
         </div>
         <br>

@@ -73,7 +73,7 @@
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip"
                  data-bs-placement="bottom" data-html="true"
-                 title=" 0.1% of total for procedures.">17 statements</a>
+                 title=" 0.2% of total for procedures.">17 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -125,12 +125,6 @@
   
   
   
-    <div class="card card-primary">
-      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
-      <div class="list-group">
-        <a class="list-group-item" href="../proc/net_longwave_radiation__rnl.html#src">net_longwave_radiation__Rnl</a>
-      </div>
-    </div>
 
 
   </div>
@@ -174,7 +168,7 @@
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-ftmin~7"></span>
+              <span class="anchor" id="variable-ftmin~6"></span>
               real(kind=c_float),
             </td>
 <td>intent(in)</td>
@@ -254,38 +248,6 @@
 
 
     
-    <section>
-    <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre><span></span><span class="w">  </span><span class="k">elemental function </span><span class="n">net_longwave_radiation__Rnl</span><span class="p">(</span><span class="n">fTMin</span><span class="p">,</span><span class="w"> </span><span class="n">fTMax</span><span class="p">,</span><span class="w"> </span><span class="n">dRs</span><span class="p">,</span><span class="w"> </span><span class="n">dRso</span><span class="p">)</span><span class="w">  </span><span class="k">result</span><span class="p">(</span><span class="n">dRnl</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="kt">c_float</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">fTMin</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="kt">c_float</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">fTMax</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="kt">c_double</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">dRs</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="kt">c_double</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">dRso</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="kt">c_double</span><span class="p">)</span><span class="w">             </span><span class="kd">::</span><span class="w"> </span><span class="n">dRnl</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! [ LOCALS ]</span>
-<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="kt">c_double</span><span class="p">)</span><span class="w">             </span><span class="kd">::</span><span class="w"> </span><span class="n">dTAvg_K</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="kt">c_double</span><span class="p">)</span><span class="w">             </span><span class="kd">::</span><span class="w"> </span><span class="n">dTAvg_4</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_double</span><span class="p">)</span><span class="w">            </span><span class="kd">::</span><span class="w"> </span><span class="n">d_ea</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_double</span><span class="p">)</span><span class="w">            </span><span class="kd">::</span><span class="w"> </span><span class="n">dCloudFrac</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_double</span><span class="p">),</span><span class="w"> </span><span class="k">parameter</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">dSIGMA</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">4.903E-9_c_double</span><span class="w"></span>
-
-<span class="w">    </span><span class="n">dTAvg_K</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">C_to_K</span><span class="p">((</span><span class="n">fTMin</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">fTMax</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">2.0_c_float</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="n">dTAvg_4</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dTAvg_K</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">dTAvg_K</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">dTAvg_K</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">dTAvg_K</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">dSIGMA</span><span class="w"></span>
-<span class="w">    </span><span class="n">d_ea</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dewpoint_vapor_pressure__e_a</span><span class="p">(</span><span class="w"> </span><span class="n">fTMin</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="n">dCloudFrac</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">min</span><span class="p">(</span><span class="w"> </span><span class="n">dRs</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">dRso</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0_c_double</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="n">dRnl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dTAvg_4</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="mf">0.34_c_double</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">0.14_c_double</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nb">sqrt</span><span class="p">(</span><span class="w"> </span><span class="n">d_ea</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">            </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="mf">1.35_c_double</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">dCloudFrac</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">0.35_c_double</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">end function </span><span class="n">net_longwave_radiation__Rnl</span><span class="w"></span>
-</pre></div>
-
-    </section>
-    <br>
     
     </div>
   </div>
@@ -302,7 +264,7 @@
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-10-17T14:19:59.727997             </p>
+ on 2023-10-19T16:28:40.743458             </p>
           </div>
         </div>
         <br>

@@ -73,7 +73,7 @@
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip"
                  data-bs-placement="bottom" data-html="true"
-                 title=" 0.1% of total for procedures.">14 statements</a>
+                 title=" 0.2% of total for procedures.">14 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -125,12 +125,6 @@
   
   
   
-    <div class="card card-primary">
-      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
-      <div class="list-group">
-        <a class="list-group-item" href="../proc/zenith_angle__theta_z.html#src">zenith_angle__theta_z</a>
-      </div>
-    </div>
 
 
   </div>
@@ -240,36 +234,6 @@ the center of the sun's disk.</p>
 
 
     
-    <section>
-    <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre><span></span><span class="w">	</span><span class="k">function </span><span class="n">zenith_angle__theta_z</span><span class="p">(</span><span class="w"> </span><span class="n">dLatitude</span><span class="p">,</span><span class="w"> </span><span class="n">dDelta</span><span class="p">,</span><span class="w"> </span><span class="n">dOmega</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">result</span><span class="p">(</span><span class="w"> </span><span class="n">dTheta_z</span><span class="w"> </span><span class="p">)</span><span class="w">     </span><span class="k">bind</span><span class="p">(</span><span class="n">c</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">	  </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_double</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">            </span><span class="kd">::</span><span class="w"> </span><span class="n">dLatitude</span><span class="w"></span>
-<span class="w">	  </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_double</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">            </span><span class="kd">::</span><span class="w"> </span><span class="n">dDelta</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_double</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="w"> </span><span class="k">optional</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">dOmega</span><span class="w"></span>
-
-<span class="w">	  </span><span class="c">! [ LOCALS ]</span>
-<span class="w">	  </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_double</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">dTheta_z</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_double</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">dOmega_l</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="nb">present</span><span class="p">(</span><span class="w"> </span><span class="n">dOmega</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">      </span><span class="n">dOmega_l</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dOmega_l</span><span class="w"></span>
-<span class="w">    </span><span class="k">else</span>
-<span class="k">      </span><span class="n">dOmega_l</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0_c_double</span><span class="w"></span>
-<span class="w">    </span><span class="k">endif</span>
-
-<span class="k">	  call </span><span class="n">assert</span><span class="p">(</span><span class="w"> </span><span class="n">dLatitude</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">HALFPI</span><span class="w"> </span><span class="p">.</span><span class="nb">and</span><span class="p">.</span><span class="w"> </span><span class="n">dLatitude</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="o">-</span><span class="n">HALFPI</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">	    </span><span class="s2">&quot;Internal programming error: Latitude must be expressed in RADIANS and range from -pi/2 to pi/2&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">	    </span><span class="err">__</span><span class="n">FILE__</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">LINE__</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-
-<span class="w">	  </span><span class="n">dTheta_z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">acos</span><span class="p">(</span><span class="w"> </span><span class="nb">sin</span><span class="p">(</span><span class="n">dLatitude</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nb">sin</span><span class="p">(</span><span class="n">dDelta</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nb">cos</span><span class="p">(</span><span class="n">dLatitude</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nb">cos</span><span class="p">(</span><span class="n">dDelta</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nb">cos</span><span class="p">(</span><span class="n">dOmega_l</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">	</span><span class="k">end function </span><span class="n">zenith_angle__theta_z</span><span class="w"></span>
-</pre></div>
-
-    </section>
-    <br>
     
     </div>
   </div>
@@ -286,7 +250,7 @@ the center of the sun's disk.</p>
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-10-17T14:19:59.727997             </p>
+ on 2023-10-19T16:28:40.743458             </p>
           </div>
         </div>
         <br>

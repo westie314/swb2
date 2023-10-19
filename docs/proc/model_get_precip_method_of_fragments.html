@@ -73,7 +73,7 @@
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip"
                  data-bs-placement="bottom" data-html="true"
-                 title=" 0.1% of total for procedures.">16 statements</a>
+                 title=" 0.2% of total for procedures.">16 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -86,7 +86,7 @@
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb justify-content-end mb-0">
                 <li class="breadcrumb-item"><a href='../sourcefile/model_domain.f90.html'>model_domain.F90</a></li>
-                <li class="breadcrumb-item"><a href='../module/model_domain~2.html'>model_domain</a></li>
+                <li class="breadcrumb-item"><a href='../module/model_domain.html'>model_domain</a></li>
             <li class="breadcrumb-item active" aria-current="page">model_get_precip_method_of_fragments</li>
           </ol>
         </nav>
@@ -125,12 +125,6 @@
   
   
   
-    <div class="card card-primary">
-      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
-      <div class="list-group">
-        <a class="list-group-item" href="../proc/model_get_precip_method_of_fragments.html#src">model_get_precip_method_of_fragments</a>
-      </div>
-    </div>
 
 
   </div>
@@ -169,8 +163,8 @@
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-this~566"></span>
-              class(<a href='../type/model_domain_t~2.html'>MODEL_DOMAIN_T</a>),
+              <span class="anchor" id="variable-this~334"></span>
+              class(<a href='../type/model_domain_t.html'>MODEL_DOMAIN_T</a>),
             </td>
 <td>intent(inout)</td>
               <td></td>            <td>
@@ -197,68 +191,6 @@
 
 
     
-    <section>
-    <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre><span></span><span class="w">  </span><span class="k">subroutine </span><span class="n">model_get_precip_method_of_fragments</span><span class="p">(</span><span class="n">this</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">use </span><span class="n">precipitation__method_of_fragments</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">class</span><span class="w"> </span><span class="p">(</span><span class="n">MODEL_DOMAIN_T</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">this</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! [ LOCALS ]</span>
-<span class="w">    </span><span class="k">type</span><span class="w"> </span><span class="p">(</span><span class="n">DATA_CATALOG_ENTRY_T</span><span class="p">),</span><span class="w"> </span><span class="k">pointer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">pPRCP</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">targetindex</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">indexval</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! in this usage, it is assumed that the precipitation grids that are being read in represent</span>
-<span class="w">    </span><span class="c">! MONTHLY sum of precipitation</span>
-<span class="w">    </span><span class="n">pPRCP</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">DAT</span><span class="p">%</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;PRECIPITATION&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="p">.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="nb">associated</span><span class="p">(</span><span class="n">pPRCP</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="k">call </span><span class="n">die</span><span class="p">(</span><span class="s2">&quot;INTERNAL PROGRAMMING ERROR: attempted use of NULL pointer&quot;</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">FILE__</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">LINE__</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">associate</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">dt</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">SIM_DT</span><span class="p">%</span><span class="n">curr</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">      </span><span class="c">! get current grid value for precip; in the design case, this is a grid of MONTHLY</span>
-<span class="w">      </span><span class="c">! mean precipitation totals in inches</span>
-<span class="w">      </span><span class="k">call </span><span class="n">pPRCP</span><span class="p">%</span><span class="n">getvalues</span><span class="p">(</span><span class="w"> </span><span class="n">dt</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">end associate</span>
-
-<span class="k">    if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="nb">associated</span><span class="p">(</span><span class="n">pPRCP</span><span class="p">%</span><span class="n">pGrdBase</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">      </span><span class="k">call </span><span class="n">die</span><span class="p">(</span><span class="s2">&quot;INTERNAL PROGRAMMING ERROR: attempted use of NULL pointer.&quot;</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">FILE__</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">LINE__</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">call </span><span class="n">precipitation_method_of_fragments_calculate</span><span class="p">(</span><span class="w"> </span><span class="n">this</span><span class="p">%</span><span class="n">active</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="n">this</span><span class="p">%</span><span class="n">gross_precip</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">pack</span><span class="p">(</span><span class="w"> </span><span class="n">pPRCP</span><span class="p">%</span><span class="n">pGrdBase</span><span class="p">%</span><span class="n">rData</span><span class="p">,</span><span class="w"> </span><span class="n">this</span><span class="p">%</span><span class="n">active</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">FRAGMENT_VALUE</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">RAINFALL_ADJUST_FACTOR</span><span class="w"></span>
-<span class="w">    </span><span class="n">this</span><span class="p">%</span><span class="n">monthly_gross_precip</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">pack</span><span class="p">(</span><span class="w"> </span><span class="n">pPRCP</span><span class="p">%</span><span class="n">pGrdBase</span><span class="p">%</span><span class="n">rData</span><span class="p">,</span><span class="w"> </span><span class="n">this</span><span class="p">%</span><span class="n">active</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">RAINFALL_ADJUST_FACTOR</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! print *, &quot;*****************************************************************&quot;</span>
-<span class="w">    </span><span class="c">! do indexval=5,7</span>
-
-<span class="w">    </span><span class="c">!   targetindex = this%row_column_to_index_fn( indexval, 151 )</span>
-
-<span class="w">    </span><span class="c">!   if ( targetindex &gt; 0 ) then</span>
-
-<span class="w">    </span><span class="c">!     print *, &quot; row 151, col &quot;, indexval</span>
-<span class="w">    </span><span class="c">!     print *, &quot;----------------&quot;</span>
-<span class="w">    </span><span class="c">!     print *, &quot;active?:        &quot;, this%active( indexval,151 )</span>
-<span class="w">    </span><span class="c">!     print *, &quot;gross_precip:   &quot;, this%gross_precip( targetindex )</span>
-<span class="w">    </span><span class="c">!     print *, &quot;FRAGMENT_VALUE: &quot;, FRAGMENT_VALUE( targetindex )</span>
-<span class="w">    </span><span class="c">!     print *, &quot;RAIN_ADJST_FAC: &quot;, RAINFALL_ADJUST_FACTOR( targetindex )</span>
-<span class="w">    </span><span class="c">!     print *, &quot;Raw PRCP grid:  &quot;, pPRCP%pGrdBase%rData( indexval, 151 )</span>
-<span class="w">    </span><span class="c">!     print *, &quot;Rain Gage ID:   &quot;, RAIN_GAGE_ID( targetindex )</span>
-<span class="w">    </span><span class="c">!     print *, &quot; &quot;</span>
-<span class="w">    </span><span class="c">!   endif</span>
-
-<span class="w">    </span><span class="c">! enddo</span>
-
-<span class="w">    </span><span class="c">! print *, &quot;*****************************************************************&quot;</span>
-
-<span class="w">  </span><span class="k">end subroutine </span><span class="n">model_get_precip_method_of_fragments</span><span class="w"></span>
-</pre></div>
-
-    </section>
-    <br>
     
     </div>
   </div>
@@ -275,7 +207,7 @@
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-10-17T14:19:59.727997             </p>
+ on 2023-10-19T16:28:40.743458             </p>
           </div>
         </div>
         <br>

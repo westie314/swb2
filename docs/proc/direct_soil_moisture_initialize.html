@@ -73,7 +73,7 @@
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip"
                  data-bs-placement="bottom" data-html="true"
-                 title=" 0.3% of total for procedures.">51 statements</a>
+                 title=" 0.6% of total for procedures.">53 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -125,12 +125,6 @@
   
   
   
-    <div class="card card-primary">
-      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
-      <div class="list-group">
-        <a class="list-group-item" href="../proc/direct_soil_moisture_initialize.html#src">direct_soil_moisture_initialize</a>
-      </div>
-    </div>
 
 
   </div>
@@ -184,7 +178,7 @@ Open a NetCDF output file to hold variable output.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-landuse_index~13"></span>
+              <span class="anchor" id="variable-landuse_index~12"></span>
               integer(kind=c_int),
             </td>
 <td>intent(in)</td>
@@ -212,112 +206,6 @@ Open a NetCDF output file to hold variable output.</p>
 
 
     
-    <section>
-    <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre><span></span><span class="w">  </span><span class="k">subroutine </span><span class="n">direct_soil_moisture_initialize</span><span class="p">(</span><span class="w"> </span><span class="n">is_cell_active</span><span class="p">,</span><span class="w"> </span><span class="n">landuse_index</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="kt">logical</span><span class="w"> </span><span class="p">(</span><span class="kt">c_bool</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">     </span><span class="kd">::</span><span class="w"> </span><span class="n">is_cell_active</span><span class="p">(:,:)</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">      </span><span class="kd">::</span><span class="w"> </span><span class="n">landuse_index</span><span class="p">(:)</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! [ LOCALS ]</span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">                 </span><span class="kd">::</span><span class="w"> </span><span class="n">iStat</span><span class="w"></span>
-<span class="w">    </span><span class="k">type</span><span class="w"> </span><span class="p">(</span><span class="n">FSTRING_LIST_T</span><span class="p">)</span><span class="w">            </span><span class="kd">::</span><span class="w"> </span><span class="n">parameter_list</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">                 </span><span class="kd">::</span><span class="w"> </span><span class="n">iIndex</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">                 </span><span class="kd">::</span><span class="w"> </span><span class="n">iNX</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">                 </span><span class="kd">::</span><span class="w"> </span><span class="n">iNY</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="w">    </span><span class="kd">::</span><span class="w"> </span><span class="n">iLanduseCodes</span><span class="p">(:)</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">                 </span><span class="kd">::</span><span class="w"> </span><span class="n">iNumberOfLanduses</span><span class="w"></span>
-<span class="w">    </span><span class="kt">logical</span><span class="w"> </span><span class="p">(</span><span class="kt">c_bool</span><span class="p">)</span><span class="w">                </span><span class="kd">::</span><span class="w"> </span><span class="n">lAreLengthsEqual</span><span class="w"></span>
-
-
-<span class="w">    </span><span class="c">!&gt; Determine how many landuse codes are present</span>
-<span class="w">    </span><span class="k">call </span><span class="n">parameter_list</span><span class="p">%</span><span class="n">append</span><span class="p">(</span><span class="w"> </span><span class="s2">&quot;LU_Code&quot;</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">call </span><span class="n">parameter_list</span><span class="p">%</span><span class="n">append</span><span class="p">(</span><span class="w"> </span><span class="s2">&quot;Landuse_Code&quot;</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">call </span><span class="n">PARAMS</span><span class="p">%</span><span class="n">get_parameters</span><span class="p">(</span><span class="w"> </span><span class="n">slKeys</span><span class="o">=</span><span class="n">parameter_list</span><span class="p">,</span><span class="w"> </span><span class="n">iValues</span><span class="o">=</span><span class="n">iLanduseCodes</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="n">iNumberOfLanduses</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">count</span><span class="p">(</span><span class="w"> </span><span class="n">iLanduseCodes</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">call </span><span class="n">parameter_list</span><span class="p">%</span><span class="n">clear</span><span class="p">()</span><span class="w"></span>
-<span class="w">    </span><span class="k">call </span><span class="n">parameter_list</span><span class="p">%</span><span class="n">append</span><span class="p">(</span><span class="w"> </span><span class="s2">&quot;Septic_system_discharge&quot;</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">call </span><span class="n">parameter_list</span><span class="p">%</span><span class="n">append</span><span class="p">(</span><span class="w"> </span><span class="s2">&quot;SEPTIC_DISCHARGE&quot;</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">call </span><span class="n">parameter_list</span><span class="p">%</span><span class="n">append</span><span class="p">(</span><span class="w"> </span><span class="s2">&quot;Daily_septic_discharge&quot;</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">call </span><span class="n">PARAMS</span><span class="p">%</span><span class="n">get_parameters</span><span class="p">(</span><span class="w"> </span><span class="n">slKeys</span><span class="o">=</span><span class="n">parameter_list</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">fValues</span><span class="o">=</span><span class="n">fSEPTIC_DISCHARGE_TABLE</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! attempt to find a source of GRIDDED SEPTIC DISCHARGE data</span>
-<span class="w">    </span><span class="n">pSEPTIC_DISCHARGE</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">DAT</span><span class="p">%</span><span class="n">find</span><span class="p">(</span><span class="w"> </span><span class="s2">&quot;SEPTIC_DISCHARGE&quot;</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! look for data in the form of a grid</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="nb">associated</span><span class="p">(</span><span class="w"> </span><span class="n">pSEPTIC_DISCHARGE</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-
-<span class="k">      allocate</span><span class="p">(</span><span class="w"> </span><span class="n">fSEPTIC_DISCHARGE</span><span class="p">(</span><span class="w"> </span><span class="nb">count</span><span class="p">(</span><span class="w"> </span><span class="n">is_cell_active</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">),</span><span class="w"> </span><span class="nb">stat</span><span class="o">=</span><span class="n">iStat</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">      </span><span class="k">call </span><span class="n">assert</span><span class="p">(</span><span class="w"> </span><span class="n">iStat</span><span class="o">==</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Problem allocating memory&quot;</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">FILE__</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">LINE__</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! no grid? then look for a table version; values &gt; TINYVAL indicate that</span>
-<span class="w">    </span><span class="c">! something is present</span>
-<span class="w">    </span><span class="n">elseif</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">fSEPTIC_DISCHARGE_TABLE</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">fTINYVAL</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-
-<span class="k">      </span><span class="n">lAreLengthsEqual</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="nb">ubound</span><span class="p">(</span><span class="n">fSEPTIC_DISCHARGE_TABLE</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">ubound</span><span class="p">(</span><span class="n">iLanduseCodes</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w">  </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="p">.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="n">lAreLengthsEqual</span><span class="w"> </span><span class="p">)</span><span class="w">     </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="k">call </span><span class="n">warn</span><span class="p">(</span><span class="w"> </span><span class="n">sMessage</span><span class="o">=</span><span class="s2">&quot;The number of landuses does not match the number of annual direct&quot;</span><span class="w">   </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">          </span><span class="o">//</span><span class="s2">&quot; recharge rate values.&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">sModule</span><span class="o">=</span><span class="err">__</span><span class="n">FILE__</span><span class="p">,</span><span class="w"> </span><span class="n">iLine</span><span class="o">=</span><span class="err">__</span><span class="n">LINE__</span><span class="p">,</span><span class="w"> </span><span class="n">lFatal</span><span class="o">=</span><span class="p">.</span><span class="n">true</span><span class="p">.</span><span class="err">_</span><span class="n">c_bool</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">      </span><span class="k">allocate</span><span class="p">(</span><span class="w"> </span><span class="n">fSEPTIC_DISCHARGE</span><span class="p">(</span><span class="w"> </span><span class="nb">count</span><span class="p">(</span><span class="w"> </span><span class="n">is_cell_active</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">),</span><span class="w"> </span><span class="nb">stat</span><span class="o">=</span><span class="n">iStat</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">      </span><span class="k">call </span><span class="n">assert</span><span class="p">(</span><span class="w"> </span><span class="n">iStat</span><span class="o">==</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Problem allocating memory&quot;</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">FILE__</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">LINE__</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">      </span><span class="c">! now populate the vector of cell values</span>
-<span class="w">      </span><span class="k">do </span><span class="n">iIndex</span><span class="o">=</span><span class="nb">lbound</span><span class="p">(</span><span class="w"> </span><span class="n">landuse_index</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">),</span><span class="w"> </span><span class="nb">ubound</span><span class="p">(</span><span class="w"> </span><span class="n">landuse_index</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">        </span><span class="n">fSEPTIC_DISCHARGE</span><span class="p">(</span><span class="w"> </span><span class="n">iIndex</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fSEPTIC_DISCHARGE_TABLE</span><span class="p">(</span><span class="w"> </span><span class="n">landuse_index</span><span class="p">(</span><span class="w"> </span><span class="n">iIndex</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">      </span><span class="k">enddo</span>
-
-<span class="k">     endif</span>
-
-<span class="k">    call </span><span class="n">parameter_list</span><span class="p">%</span><span class="n">clear</span><span class="p">()</span><span class="w"></span>
-<span class="w">    </span><span class="k">call </span><span class="n">parameter_list</span><span class="p">%</span><span class="n">append</span><span class="p">(</span><span class="w"> </span><span class="s2">&quot;ANNUAL_septic_system_discharge&quot;</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">call </span><span class="n">parameter_list</span><span class="p">%</span><span class="n">append</span><span class="p">(</span><span class="w"> </span><span class="s2">&quot;ANNUAL_SEPTIC_DISCHARGE&quot;</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">call </span><span class="n">parameter_list</span><span class="p">%</span><span class="n">append</span><span class="p">(</span><span class="w"> </span><span class="s2">&quot;ANNUAL_septic_discharge&quot;</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">call </span><span class="n">PARAMS</span><span class="p">%</span><span class="n">get_parameters</span><span class="p">(</span><span class="w"> </span><span class="n">slKeys</span><span class="o">=</span><span class="n">parameter_list</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">fValues</span><span class="o">=</span><span class="n">fANNUAL_SEPTIC_DISCHARGE_TABLE</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! attempt to find a source of GRIDDED ANNUAL SEPTIC DISCHARGE data</span>
-<span class="w">    </span><span class="n">pANNUAL_SEPTIC_DISCHARGE</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">DAT</span><span class="p">%</span><span class="n">find</span><span class="p">(</span><span class="w"> </span><span class="s2">&quot;ANNUAL_SEPTIC_DISCHARGE&quot;</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! look for data in the form of a grid</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="nb">associated</span><span class="p">(</span><span class="w"> </span><span class="n">pANNUAL_SEPTIC_DISCHARGE</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-
-<span class="k">      allocate</span><span class="p">(</span><span class="w"> </span><span class="n">fANNUAL_SEPTIC_DISCHARGE</span><span class="p">(</span><span class="w"> </span><span class="nb">count</span><span class="p">(</span><span class="w"> </span><span class="n">is_cell_active</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">),</span><span class="w"> </span><span class="nb">stat</span><span class="o">=</span><span class="n">iStat</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">      </span><span class="k">call </span><span class="n">assert</span><span class="p">(</span><span class="w"> </span><span class="n">iStat</span><span class="o">==</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Problem allocating memory&quot;</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">FILE__</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">LINE__</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! no grid? then look for a table version; values &gt; TINYVAL indicate that</span>
-<span class="w">    </span><span class="c">! something is present</span>
-<span class="w">    </span><span class="n">elseif</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">fANNUAL_SEPTIC_DISCHARGE_TABLE</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">fTINYVAL</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-
-<span class="k">      </span><span class="n">lAreLengthsEqual</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="nb">ubound</span><span class="p">(</span><span class="n">fANNUAL_SEPTIC_DISCHARGE_TABLE</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">ubound</span><span class="p">(</span><span class="n">iLanduseCodes</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w">  </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="p">.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="n">lAreLengthsEqual</span><span class="w"> </span><span class="p">)</span><span class="w">     </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="k">call </span><span class="n">warn</span><span class="p">(</span><span class="w"> </span><span class="n">sMessage</span><span class="o">=</span><span class="s2">&quot;The number of landuses does not match the number of annual direct&quot;</span><span class="w">   </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">          </span><span class="o">//</span><span class="s2">&quot; recharge rate values.&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">sModule</span><span class="o">=</span><span class="err">__</span><span class="n">FILE__</span><span class="p">,</span><span class="w"> </span><span class="n">iLine</span><span class="o">=</span><span class="err">__</span><span class="n">LINE__</span><span class="p">,</span><span class="w"> </span><span class="n">lFatal</span><span class="o">=</span><span class="p">.</span><span class="n">true</span><span class="p">.</span><span class="err">_</span><span class="n">c_bool</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">      </span><span class="k">allocate</span><span class="p">(</span><span class="w"> </span><span class="n">fANNUAL_SEPTIC_DISCHARGE</span><span class="p">(</span><span class="w"> </span><span class="nb">count</span><span class="p">(</span><span class="w"> </span><span class="n">is_cell_active</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">),</span><span class="w"> </span><span class="nb">stat</span><span class="o">=</span><span class="n">iStat</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">      </span><span class="k">call </span><span class="n">assert</span><span class="p">(</span><span class="w"> </span><span class="n">iStat</span><span class="o">==</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Problem allocating memory&quot;</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">FILE__</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">LINE__</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">      </span><span class="c">! now populate the vector of cell values</span>
-<span class="w">      </span><span class="k">do </span><span class="n">iIndex</span><span class="o">=</span><span class="nb">lbound</span><span class="p">(</span><span class="w"> </span><span class="n">landuse_index</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">),</span><span class="w"> </span><span class="nb">ubound</span><span class="p">(</span><span class="w"> </span><span class="n">landuse_index</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">        </span><span class="n">fANNUAL_SEPTIC_DISCHARGE</span><span class="p">(</span><span class="w"> </span><span class="n">iIndex</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fANNUAL_SEPTIC_DISCHARGE_TABLE</span><span class="p">(</span><span class="w"> </span><span class="n">landuse_index</span><span class="p">(</span><span class="w"> </span><span class="n">iIndex</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">      </span><span class="k">enddo</span>
-
-<span class="k">     endif</span><span class="w"></span>
-
-<span class="w">     </span><span class="c">! initialize last retrieval date to something implausibly low to trigger initial read</span>
-<span class="w">     </span><span class="c">! in the calculate procedure</span>
-<span class="w">     </span><span class="k">call </span><span class="n">DATE_OF_LAST_RETRIEVAL</span><span class="p">%</span><span class="n">parseDate</span><span class="p">(</span><span class="s2">&quot;01/01/1000&quot;</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">end subroutine </span><span class="n">direct_soil_moisture_initialize</span><span class="w"></span>
-</pre></div>
-
-    </section>
-    <br>
     
     </div>
   </div>
@@ -334,7 +222,7 @@ Open a NetCDF output file to hold variable output.</p>
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-10-17T14:19:59.727997             </p>
+ on 2023-10-19T16:28:40.743458             </p>
           </div>
         </div>
         <br>

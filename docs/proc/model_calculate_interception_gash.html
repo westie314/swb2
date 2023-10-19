@@ -86,7 +86,7 @@
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb justify-content-end mb-0">
                 <li class="breadcrumb-item"><a href='../sourcefile/model_domain.f90.html'>model_domain.F90</a></li>
-                <li class="breadcrumb-item"><a href='../module/model_domain~2.html'>model_domain</a></li>
+                <li class="breadcrumb-item"><a href='../module/model_domain.html'>model_domain</a></li>
             <li class="breadcrumb-item active" aria-current="page">model_calculate_interception_gash</li>
           </ol>
         </nav>
@@ -125,12 +125,6 @@
   
   
   
-    <div class="card card-primary">
-      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
-      <div class="list-group">
-        <a class="list-group-item" href="../proc/model_calculate_interception_gash.html#src">model_calculate_interception_gash</a>
-      </div>
-    </div>
 
 
   </div>
@@ -146,7 +140,7 @@
         <ul class="list-group list-group-flush">
             <li class="list-group-item">
               <ul class="list-inline">
-                  <li class="list-inline-item"><a href='../module/interception__gash~2.html'>interception__gash</a></li>
+                  <li class="list-inline-item"><a href='../module/interception__gash.html'>interception__gash</a></li>
               </ul>
             </li>
         </ul>
@@ -169,8 +163,8 @@
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-this~468"></span>
-              class(<a href='../type/model_domain_t~2.html'>MODEL_DOMAIN_T</a>),
+              <span class="anchor" id="variable-this~236"></span>
+              class(<a href='../type/model_domain_t.html'>MODEL_DOMAIN_T</a>),
             </td>
 <td>intent(inout)</td>
               <td></td>            <td>
@@ -197,37 +191,6 @@
 
 
     
-    <section>
-    <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre><span></span><span class="w">  </span><span class="k">subroutine </span><span class="n">model_calculate_interception_gash</span><span class="p">(</span><span class="n">this</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">use </span><span class="n">interception__gash</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">class</span><span class="w"> </span><span class="p">(</span><span class="n">MODEL_DOMAIN_T</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w">      </span><span class="kd">::</span><span class="w"> </span><span class="n">this</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! [ LOCALS ]</span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">fTrunk_Storage_Capacity</span><span class="p">(:)</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">fStemflow_Fraction</span><span class="p">(:)</span><span class="w"></span>
-
-<span class="w">    </span><span class="n">fTrunk_Storage_Capacity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TRUNK_STORAGE_CAPACITY_TABLE_VALUES</span><span class="p">(</span><span class="w"> </span><span class="n">this</span><span class="p">%</span><span class="n">landuse_index</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="n">fStemflow_Fraction</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">STEMFLOW_FRACTION_TABLE_VALUES</span><span class="p">(</span><span class="w"> </span><span class="n">this</span><span class="p">%</span><span class="n">landuse_index</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">call </span><span class="n">interception_gash_calculate</span><span class="p">(</span><span class="w"> </span><span class="n">this</span><span class="p">%</span><span class="n">rainfall</span><span class="p">,</span><span class="w">                                      </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                               </span><span class="n">this</span><span class="p">%</span><span class="n">fog</span><span class="p">,</span><span class="w">                                                  </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                               </span><span class="n">this</span><span class="p">%</span><span class="n">canopy_cover_fraction</span><span class="p">,</span><span class="w">                                </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                               </span><span class="c">!TRUNK_STORAGE_CAPACITY_TABLE_VALUES( this%landuse_index ), &amp;</span>
-<span class="w">                               </span><span class="n">fTrunk_Storage_Capacity</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                               </span><span class="c">!STEMFLOW_FRACTION_TABLE_VALUES( this%landuse_index ),      &amp;</span>
-<span class="w">                               </span><span class="n">fStemflow_Fraction</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                               </span><span class="n">EVAPORATION_TO_RAINFALL_RATIO</span><span class="p">,</span><span class="w">                             </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                               </span><span class="n">P_SAT</span><span class="p">,</span><span class="w">                                                     </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                               </span><span class="n">this</span><span class="p">%</span><span class="n">interception</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">end subroutine </span><span class="n">model_calculate_interception_gash</span><span class="w"></span>
-</pre></div>
-
-    </section>
-    <br>
     
     </div>
   </div>
@@ -244,7 +207,7 @@
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-10-17T14:19:59.727997             </p>
+ on 2023-10-19T16:28:40.743458             </p>
           </div>
         </div>
         <br>

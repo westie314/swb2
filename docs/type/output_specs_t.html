@@ -73,7 +73,7 @@
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip"
                  data-bs-placement="bottom" data-html="true"
-                 title="<p> 0.4% of total for derived types.</p>Including implementation: 8 statements,  0.1% of total for derived types.">8 statements</a>
+                 title="<p> 0.9% of total for derived types.</p>Including implementation: 8 statements,  0.1% of total for derived types.">8 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -85,7 +85,7 @@
       <div class="col">
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb justify-content-end mb-0">
-                <li class="breadcrumb-item"><a href='../sourcefile/output.f90~2.html'>output.F90</a></li>
+                <li class="breadcrumb-item"><a href='../sourcefile/output.f90.html'>output.F90</a></li>
                 <li class="breadcrumb-item"><a href='../module/output.html'>output</a></li>
             <li class="breadcrumb-item active" aria-current="page">OUTPUT_SPECS_T</li>
           </ol>
@@ -113,12 +113,12 @@
       </a>
       <div id="vars-0" class="collapse">
         <div class="list-group list-group-flush">
-            <a class="list-group-item" href="../type/output_specs_t.html#variable-variable_name~2">variable_name</a>
-            <a class="list-group-item" href="../type/output_specs_t.html#variable-variable_units~2">variable_units</a>
-            <a class="list-group-item" href="../type/output_specs_t.html#variable-valid_minimum~2">valid_minimum</a>
-            <a class="list-group-item" href="../type/output_specs_t.html#variable-valid_maximum~2">valid_maximum</a>
-            <a class="list-group-item" href="../type/output_specs_t.html#variable-is_active~2">is_active</a>
-            <a class="list-group-item" href="../type/output_specs_t.html#variable-multisim_outputs~2">multisim_outputs</a>
+            <a class="list-group-item" href="../type/output_specs_t.html#variable-variable_name">variable_name</a>
+            <a class="list-group-item" href="../type/output_specs_t.html#variable-variable_units">variable_units</a>
+            <a class="list-group-item" href="../type/output_specs_t.html#variable-valid_minimum">valid_minimum</a>
+            <a class="list-group-item" href="../type/output_specs_t.html#variable-valid_maximum">valid_maximum</a>
+            <a class="list-group-item" href="../type/output_specs_t.html#variable-is_active">is_active</a>
+            <a class="list-group-item" href="../type/output_specs_t.html#variable-multisim_outputs">multisim_outputs</a>
         </div>
       </div>
     </div>
@@ -141,12 +141,6 @@
   
   
   
-    <div class="card card-primary">
-      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
-      <div class="list-group">
-        <a class="list-group-item" href="../type/output_specs_t.html#src">OUTPUT_SPECS_T</a>
-      </div>
-    </div>
 
 
   </div>
@@ -172,7 +166,7 @@
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-variable_name~2"></span>
+              <span class="anchor" id="variable-variable_name"></span>
               character(len=27),
             </td>
               <td>public</td>
@@ -189,7 +183,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-variable_units~2"></span>
+              <span class="anchor" id="variable-variable_units"></span>
               character(len=21),
             </td>
               <td>public</td>
@@ -206,7 +200,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-valid_minimum~2"></span>
+              <span class="anchor" id="variable-valid_minimum"></span>
               real(kind=c_float),
             </td>
               <td>public</td>
@@ -223,7 +217,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-valid_maximum~2"></span>
+              <span class="anchor" id="variable-valid_maximum"></span>
               real(kind=c_float),
             </td>
               <td>public</td>
@@ -240,7 +234,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-is_active~2"></span>
+              <span class="anchor" id="variable-is_active"></span>
               logical(kind=c_bool),
             </td>
               <td>public</td>
@@ -257,7 +251,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-multisim_outputs~2"></span>
+              <span class="anchor" id="variable-multisim_outputs"></span>
               logical(kind=c_bool),
             </td>
               <td>public</td>
@@ -281,19 +275,6 @@
 
 
 
-    <section>
-    <h3><span class="anchor" id="src"></span>Source Code</h3>
-    <div class="highlight"><pre><span></span><span class="w">  </span><span class="k">type </span><span class="n">OUTPUT_SPECS_T</span><span class="w"></span>
-<span class="w">    </span><span class="kt">character</span><span class="w"> </span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">27</span><span class="p">)</span><span class="w">          </span><span class="kd">::</span><span class="w"> </span><span class="n">variable_name</span><span class="w"></span>
-<span class="w">    </span><span class="kt">character</span><span class="w"> </span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">21</span><span class="p">)</span><span class="w">          </span><span class="kd">::</span><span class="w"> </span><span class="n">variable_units</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">)</span><span class="w">              </span><span class="kd">::</span><span class="w"> </span><span class="n">valid_minimum</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">)</span><span class="w">              </span><span class="kd">::</span><span class="w"> </span><span class="n">valid_maximum</span><span class="w"></span>
-<span class="w">    </span><span class="kt">logical</span><span class="w"> </span><span class="p">(</span><span class="kt">c_bool</span><span class="p">)</span><span class="w">            </span><span class="kd">::</span><span class="w"> </span><span class="n">is_active</span><span class="w"></span>
-<span class="w">    </span><span class="kt">logical</span><span class="w"> </span><span class="p">(</span><span class="kt">c_bool</span><span class="p">)</span><span class="w">            </span><span class="kd">::</span><span class="w"> </span><span class="n">multisim_outputs</span><span class="w"></span>
-<span class="w">  </span><span class="k">end type </span><span class="n">OUTPUT_SPECS_T</span><span class="w"></span>
-</pre></div>
-
-    </section>
     
     </div>
   </div>
@@ -310,7 +291,7 @@
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-10-17T14:19:59.727997             </p>
+ on 2023-10-19T16:28:40.743458             </p>
           </div>
         </div>
         <br>

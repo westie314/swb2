@@ -73,7 +73,7 @@
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip"
                  data-bs-placement="bottom" data-html="true"
-                 title=" 0.4% of total for procedures.">77 statements</a>
+                 title=" 0.9% of total for procedures.">77 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -86,7 +86,7 @@
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb justify-content-end mb-0">
                 <li class="breadcrumb-item"><a href='../sourcefile/irrigation.f90.html'>irrigation.F90</a></li>
-                <li class="breadcrumb-item"><a href='../module/irrigation~2.html'>irrigation</a></li>
+                <li class="breadcrumb-item"><a href='../module/irrigation.html'>irrigation</a></li>
             <li class="breadcrumb-item active" aria-current="page">irrigation__calculate</li>
           </ol>
         </nav>
@@ -125,12 +125,6 @@
   
   
   
-    <div class="card card-primary">
-      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
-      <div class="list-group">
-        <a class="list-group-item" href="../proc/irrigation__calculate.html#src">irrigation__calculate</a>
-      </div>
-    </div>
 
 
   </div>
@@ -172,7 +166,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-landuse_index~18"></span>
+              <span class="anchor" id="variable-landuse_index~17"></span>
               integer(kind=c_int),
             </td>
 <td>intent(in)</td>
@@ -187,7 +181,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-soil_storage~6"></span>
+              <span class="anchor" id="variable-soil_storage~5"></span>
               real(kind=c_double),
             </td>
 <td>intent(in)</td>
@@ -202,7 +196,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-soil_storage_max~6"></span>
+              <span class="anchor" id="variable-soil_storage_max~5"></span>
               real(kind=c_float),
             </td>
 <td>intent(in)</td>
@@ -232,7 +226,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-rainfall~3"></span>
+              <span class="anchor" id="variable-rainfall~2"></span>
               real(kind=c_float),
             </td>
 <td>intent(in)</td>
@@ -247,7 +241,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-runoff~3"></span>
+              <span class="anchor" id="variable-runoff~2"></span>
               real(kind=c_float),
             </td>
 <td>intent(in)</td>
@@ -262,7 +256,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-crop_etc~7"></span>
+              <span class="anchor" id="variable-crop_etc~6"></span>
               real(kind=c_float),
             </td>
 <td>intent(in)</td>
@@ -277,7 +271,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-irrigation_mask~3"></span>
+              <span class="anchor" id="variable-irrigation_mask~2"></span>
               real(kind=c_float),
             </td>
 <td>intent(in)</td>
@@ -322,7 +316,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-monthly_runoff~3"></span>
+              <span class="anchor" id="variable-monthly_runoff~2"></span>
               real(kind=c_float),
             </td>
 <td>intent(in),</td>
@@ -350,165 +344,6 @@
 
 
     
-    <section>
-    <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre><span></span><span class="w">  </span><span class="k">impure elemental subroutine </span><span class="n">irrigation__calculate</span><span class="p">(</span><span class="w"> </span><span class="n">irrigation_amount</span><span class="p">,</span><span class="w">     </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                              </span><span class="n">landuse_index</span><span class="p">,</span><span class="w">                </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                              </span><span class="n">soil_storage</span><span class="p">,</span><span class="w">                 </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                              </span><span class="n">soil_storage_max</span><span class="p">,</span><span class="w">             </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                              </span><span class="n">total_available_water</span><span class="p">,</span><span class="w">        </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                              </span><span class="n">rainfall</span><span class="p">,</span><span class="w">                     </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                              </span><span class="n">runoff</span><span class="p">,</span><span class="w">                       </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                              </span><span class="n">crop_etc</span><span class="p">,</span><span class="w">                     </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                              </span><span class="n">irrigation_mask</span><span class="p">,</span><span class="w">              </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                              </span><span class="n">num_days_since_planting</span><span class="p">,</span><span class="w">      </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                              </span><span class="n">monthly_rainfall</span><span class="p">,</span><span class="w">             </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                              </span><span class="n">monthly_runoff</span><span class="w">                </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                                </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w">          </span><span class="kd">::</span><span class="w"> </span><span class="n">irrigation_amount</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">            </span><span class="kd">::</span><span class="w"> </span><span class="n">landuse_index</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_double</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">            </span><span class="kd">::</span><span class="w"> </span><span class="n">soil_storage</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">             </span><span class="kd">::</span><span class="w"> </span><span class="n">soil_storage_max</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_double</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">            </span><span class="kd">::</span><span class="w"> </span><span class="n">total_available_water</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">             </span><span class="kd">::</span><span class="w"> </span><span class="n">rainfall</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">             </span><span class="kd">::</span><span class="w"> </span><span class="n">runoff</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">             </span><span class="kd">::</span><span class="w"> </span><span class="n">crop_etc</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">             </span><span class="kd">::</span><span class="w"> </span><span class="n">irrigation_mask</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">            </span><span class="kd">::</span><span class="w"> </span><span class="n">num_days_since_planting</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="w"> </span><span class="k">optional</span><span class="w">   </span><span class="kd">::</span><span class="w"> </span><span class="n">monthly_rainfall</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="w"> </span><span class="k">optional</span><span class="w">   </span><span class="kd">::</span><span class="w"> </span><span class="n">monthly_runoff</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! [ LOCALS ]</span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">)</span><span class="w">        </span><span class="kd">::</span><span class="w"> </span><span class="n">depletion_fraction</span><span class="w"></span>
-
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">       </span><span class="kd">::</span><span class="w"> </span><span class="n">month</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">       </span><span class="kd">::</span><span class="w"> </span><span class="n">day</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">       </span><span class="kd">::</span><span class="w"> </span><span class="n">year</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">       </span><span class="kd">::</span><span class="w"> </span><span class="n">julian_day</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">       </span><span class="kd">::</span><span class="w"> </span><span class="n">day_of_year</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">       </span><span class="kd">::</span><span class="w"> </span><span class="n">days_in_month</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">       </span><span class="kd">::</span><span class="w"> </span><span class="n">num_days_from_origin</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">       </span><span class="kd">::</span><span class="w"> </span><span class="nb">index</span>
-<span class="nb">    </span><span class="kt">character</span><span class="w"> </span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">31</span><span class="p">)</span><span class="w">         </span><span class="kd">::</span><span class="w"> </span><span class="n">irrigation_day</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">       </span><span class="kd">::</span><span class="w"> </span><span class="n">irrigation_days_per_month</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">)</span><span class="w">        </span><span class="kd">::</span><span class="w"> </span><span class="n">efficiency</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">)</span><span class="w">        </span><span class="kd">::</span><span class="w"> </span><span class="n">interim_irrigation_amount</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">       </span><span class="kd">::</span><span class="w"> </span><span class="n">option</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! zero out Irrigation term</span>
-<span class="c">!    IRRIGATION_FROM_GROUNDWATER = rZERO</span>
-<span class="c">!    IRRIGATION_FROM_SURFACE_WATER = rZERO</span>
-
-<span class="w">    </span><span class="k">associate</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">dt</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">SIM_DT</span><span class="p">%</span><span class="n">curr</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">      </span><span class="n">julian_day</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dt</span><span class="p">%</span><span class="n">getJulianDay</span><span class="p">()</span><span class="w"></span>
-<span class="w">      </span><span class="n">month</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">asInt</span><span class="p">(</span><span class="w"> </span><span class="n">dt</span><span class="p">%</span><span class="n">iMonth</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">      </span><span class="n">day</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">asInt</span><span class="p">(</span><span class="w"> </span><span class="n">dt</span><span class="p">%</span><span class="n">iDay</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">      </span><span class="n">year</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dt</span><span class="p">%</span><span class="n">iYear</span><span class="w"></span>
-<span class="w">      </span><span class="n">days_in_month</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SIM_DT</span><span class="p">%</span><span class="n">iDaysInMonth</span><span class="w"></span>
-<span class="w">      </span><span class="n">day_of_year</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SIM_DT</span><span class="p">%</span><span class="n">iDOY</span><span class="w"></span>
-<span class="w">      </span><span class="n">num_days_from_origin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SIM_DT</span><span class="p">%</span><span class="n">iNumDaysFromOrigin</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">end associate</span><span class="w"></span>
-
-<span class="c">!     call pIRRIGATION_MASK%getvalues( month, day, year, julian_day )</span>
-<span class="c">!     iIrrigation_Mask = pack( pIRRIGATION_MASK%pGrdBase%iData, is_active )</span>
-
-<span class="w">    </span><span class="c">! for each cell, add water if soil storage zone is below the</span>
-<span class="w">    </span><span class="c">! maximum allowable depletion</span>
-
-<span class="w">    </span><span class="c">! now we run the gauntlet of tests to ensure that we really need</span>
-<span class="w">    </span><span class="c">! to perform all of the irrigation calculations</span>
-
-<span class="w">    </span><span class="k">do</span>
-
-<span class="k">      </span><span class="n">irrigation_amount</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0_c_float</span><span class="w"></span>
-<span class="w">      </span><span class="n">interim_irrigation_amount</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0_c_float</span><span class="w"></span>
-<span class="w">      </span><span class="n">depletion_fraction</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0_c_float</span><span class="w"></span>
-
-<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">day_of_year</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">FIRST_DAY_OF_IRRIGATION</span><span class="p">(</span><span class="w"> </span><span class="n">landuse_index</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="p">.</span><span class="nb">or</span><span class="p">.</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">day_of_year</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">LAST_DAY_OF_IRRIGATION</span><span class="p">(</span><span class="w"> </span><span class="n">landuse_index</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w">  </span><span class="k">exit</span><span class="w"></span>
-
-<span class="c">!      if ( MAXIMUM_ALLOWABLE_DEPLETION_FRACTION( landuse_index ) &gt; 0.99 )  exit</span>
-<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">soil_storage_max</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mf">0.0_c_float</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">exit</span>
-<span class="k">      if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">IRRIGATION_MASK</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mf">1.0e-6_c_float</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">exit</span>
-<span class="k">      if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">num_days_since_planting</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">NUM_DAYS_OF_IRRIGATION</span><span class="p">(</span><span class="w"> </span><span class="n">landuse_index</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">exit</span><span class="w"></span>
-
-<span class="w">      </span><span class="c">! total_available_water is calculated only by the fao56_two_stage module, but</span>
-<span class="w">      </span><span class="c">! not by any other modules; need to just calculate depletion fraction based on</span>
-<span class="w">      </span><span class="c">! total soil moisture storage capacity in this case</span>
-<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">total_available_water</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mf">0.0_c_float</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">        </span><span class="n">depletion_fraction</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">min</span><span class="p">(</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">soil_storage_max</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">soil_storage</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">total_available_water</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0_c_float</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">      </span><span class="k">else</span>
-<span class="k">        </span><span class="n">depletion_fraction</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">min</span><span class="p">(</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">soil_storage_max</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">soil_storage</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">soil_storage_max</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0_c_float</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">      </span><span class="k">endif</span>
-
-<span class="k">      </span><span class="n">option</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">APPLICATION_METHOD_CODE</span><span class="p">(</span><span class="w"> </span><span class="n">landuse_index</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">      </span><span class="k">select case</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">option</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">APP_FIELD_CAPACITY</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">          </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">depletion_fraction</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">MAXIMUM_ALLOWABLE_DEPLETION_FRACTION</span><span class="p">(</span><span class="w"> </span><span class="n">landuse_index</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w">      </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">            </span><span class="n">interim_irrigation_amount</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">max</span><span class="p">(</span><span class="w"> </span><span class="mf">0.0_c_float</span><span class="p">,</span><span class="w"> </span><span class="n">soil_storage_max</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">soil_storage</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">APP_DEFINED_DEFICIT</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">          </span><span class="c">! @TODO check this calculation</span>
-
-<span class="w">          </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">depletion_fraction</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">MAXIMUM_ALLOWABLE_DEPLETION_FRACTION</span><span class="p">(</span><span class="w"> </span><span class="n">landuse_index</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w">      </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">            </span><span class="n">interim_irrigation_amount</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">max</span><span class="p">(</span><span class="w"> </span><span class="mf">0.0_c_float</span><span class="p">,</span><span class="w"> </span><span class="n">APPLICATION_AMOUNT</span><span class="p">(</span><span class="w"> </span><span class="n">landuse_index</span><span class="w"> </span><span class="p">)</span><span class="w">     </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                        </span><span class="o">*</span><span class="w"> </span><span class="n">soil_storage_max</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">soil_storage</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">APP_CONSTANT_AMOUNT</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">          </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">depletion_fraction</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">MAXIMUM_ALLOWABLE_DEPLETION_FRACTION</span><span class="p">(</span><span class="w"> </span><span class="n">landuse_index</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w">      </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">            </span><span class="n">interim_irrigation_amount</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">APPLICATION_AMOUNT</span><span class="p">(</span><span class="w"> </span><span class="n">landuse_index</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">APP_HWB_DEMAND_BASED</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">          </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">MONTHLY_IRRIGATION_SCHEDULE</span><span class="p">(</span><span class="w"> </span><span class="n">landuse_index</span><span class="p">,</span><span class="w"> </span><span class="n">day</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">exit</span>
-
-<span class="k">          if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="w"> </span><span class="n">monthly_runoff</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">.</span><span class="nb">and</span><span class="p">.</span><span class="w"> </span><span class="nb">present</span><span class="p">(</span><span class="w"> </span><span class="n">monthly_rainfall</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-
-<span class="k">            </span><span class="n">irrigation_days_per_month</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">count</span><span class="p">(</span><span class="w"> </span><span class="n">MONTHLY_IRRIGATION_SCHEDULE</span><span class="p">(</span><span class="w"> </span><span class="n">landuse_index</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span><span class="n">days_in_month</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">irrigation_days_per_month</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">              </span><span class="n">interim_irrigation_amount</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0_c_float</span><span class="w"></span>
-<span class="w">            </span><span class="k">else</span>
-<span class="k">              </span><span class="n">interim_irrigation_amount</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">max</span><span class="p">(</span><span class="w"> </span><span class="mf">0.0_c_float</span><span class="p">,</span><span class="w">    </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">              </span><span class="p">(</span><span class="w"> </span><span class="n">crop_etc</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="kt">real</span><span class="p">(</span><span class="w"> </span><span class="n">days_in_month</span><span class="p">,</span><span class="w"> </span><span class="kt">c_float</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">monthly_runoff</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">monthly_rainfall</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w">  </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                </span><span class="o">/</span><span class="w"> </span><span class="kt">real</span><span class="p">(</span><span class="w"> </span><span class="n">irrigation_days_per_month</span><span class="p">,</span><span class="w"> </span><span class="kt">c_float</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">            </span><span class="k">endif</span>
-
-<span class="k">          else</span>
-
-<span class="k">            </span><span class="n">interim_irrigation_amount</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">max</span><span class="p">(</span><span class="w"> </span><span class="mf">0.0_c_float</span><span class="p">,</span><span class="w"> </span><span class="n">crop_etc</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">runoff</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">rainfall</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">          </span><span class="k">endif</span>
-
-<span class="k">        case </span><span class="n">default</span><span class="w"></span>
-
-<span class="w">          </span><span class="n">interim_irrigation_amount</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0_c_float</span><span class="w"></span>
-
-<span class="w">      </span><span class="k">end select</span>
-
-<span class="k">      </span><span class="n">efficiency</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">max</span><span class="p">(</span><span class="w"> </span><span class="n">IRRIGATION_EFFICIENCY</span><span class="p">(</span><span class="w"> </span><span class="n">landuse_index</span><span class="w"> </span><span class="p">),</span><span class="w"> </span><span class="mf">0.20_c_float</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">      </span><span class="n">irrigation_amount</span><span class="w"> </span><span class="o">=</span><span class="w">  </span><span class="n">interim_irrigation_amount</span><span class="w">                                    </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                     </span><span class="o">*</span><span class="w"> </span><span class="n">irrigation_mask</span><span class="w">                                  </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                     </span><span class="o">/</span><span class="w"> </span><span class="n">efficiency</span><span class="w"></span>
-
-<span class="w">      </span><span class="k">exit</span>
-
-<span class="k">    enddo</span>
-
-<span class="k">  end subroutine </span><span class="n">irrigation__calculate</span><span class="w"></span>
-</pre></div>
-
-    </section>
-    <br>
     
     </div>
   </div>
@@ -525,7 +360,7 @@
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-10-17T14:19:59.727997             </p>
+ on 2023-10-19T16:28:40.743458             </p>
           </div>
         </div>
         <br>

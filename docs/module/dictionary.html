@@ -73,7 +73,7 @@
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip"
                  data-bs-placement="bottom" data-html="true"
-                 title=" 1.6% of total for modules and submodules.">580 statements</a>
+                 title=" 3.0% of total for modules and submodules.">569 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -85,7 +85,7 @@
       <div class="col">
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb justify-content-end mb-0">
-                <li class="breadcrumb-item"><a href='../sourcefile/dictionary.f90~2.html'>dictionary.F90</a></li>
+                <li class="breadcrumb-item"><a href='../sourcefile/dictionary.f90.html'>dictionary.F90</a></li>
             <li class="breadcrumb-item active" aria-current="page">dictionary</li>
           </ol>
         </nav>
@@ -112,8 +112,8 @@
       </a>
       <div id="vars-0" class="collapse">
         <div class="list-group list-group-flush">
-            <a class="list-group-item" href="../module/dictionary.html#variable-cf_dict~2">CF_DICT</a>
-            <a class="list-group-item" href="../module/dictionary.html#variable-cf_entry~2">CF_ENTRY</a>
+            <a class="list-group-item" href="../module/dictionary.html#variable-cf_dict">CF_DICT</a>
+            <a class="list-group-item" href="../module/dictionary.html#variable-cf_entry">CF_ENTRY</a>
         </div>
       </div>
     </div>
@@ -165,10 +165,10 @@ linked list of DICT_ENTRY_T objects</p>
             <li class="list-group-item">
               <ul class="list-inline">
                   <li class="list-inline-item"><a href='../module/fstring.html'>fstring</a></li>
-                  <li class="list-inline-item"><a href='../module/fstring_list.html'>fstring_list</a></li>
+                  <li class="list-inline-item"><a href='../module/logfiles.html'>logfiles</a></li>
+                  <li class="list-inline-item"><a href='../module/constants_and_conversions.html'>constants_and_conversions</a></li>
                   <li class="list-inline-item"><a href='../module/exceptions.html'>exceptions</a></li>
-                  <li class="list-inline-item"><a href='../module/constants_and_conversions~2.html'>constants_and_conversions</a></li>
-                  <li class="list-inline-item"><a href='../module/logfiles~2.html'>logfiles</a></li>
+                  <li class="list-inline-item"><a href='../module/fstring_list.html'>fstring_list</a></li>
                   <li class="list-inline-item"><a href='http://fortranwiki.org/fortran/show/iso_c_binding'>iso_c_binding</a></li>
               </ul>
             </li>
@@ -194,7 +194,7 @@ linked list of DICT_ENTRY_T objects</p>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-cf_dict~2"></span>
+              <span class="anchor" id="variable-cf_dict"></span>
               type(<a href='../type/dict_t.html'>DICT_T</a>),
             </td>
               <td>public</td>
@@ -211,7 +211,7 @@ linked list of DICT_ENTRY_T objects</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-cf_entry~2"></span>
+              <span class="anchor" id="variable-cf_entry"></span>
               type(<a href='../type/dict_entry_t.html'>DICT_ENTRY_T</a>),
             </td>
               <td>public,</td>
@@ -262,7 +262,7 @@ linked list of DICT_ENTRY_T objects</p>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-key~10"></span>
+              <span class="anchor" id="variable-key~5"></span>
               character(len=:),
             </td>
               <td>public,</td>
@@ -279,7 +279,7 @@ linked list of DICT_ENTRY_T objects</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-secondary_key~2"></span>
+              <span class="anchor" id="variable-secondary_key"></span>
               character(len=:),
             </td>
               <td>public,</td>
@@ -296,7 +296,7 @@ linked list of DICT_ENTRY_T objects</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-sl~2"></span>
+              <span class="anchor" id="variable-sl"></span>
               type(<a href='../type/fstring_list_t.html'>FSTRING_LIST_T</a>),
             </td>
               <td>public</td>
@@ -313,7 +313,7 @@ linked list of DICT_ENTRY_T objects</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-previous~4"></span>
+              <span class="anchor" id="variable-previous~2"></span>
               type(<a href='../type/dict_entry_t.html'>DICT_ENTRY_T</a>),
             </td>
               <td>public,</td>
@@ -330,7 +330,7 @@ linked list of DICT_ENTRY_T objects</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-next~6"></span>
+              <span class="anchor" id="variable-next~3"></span>
               type(<a href='../type/dict_entry_t.html'>DICT_ENTRY_T</a>),
             </td>
               <td>public,</td>
@@ -356,42 +356,42 @@ linked list of DICT_ENTRY_T objects</p>
           <tbody>
               <tr>
                 <td>  procedure, public ::
-  <strong><a href='../type/dict_entry_t.html#boundprocedure-add_key_sub~2'>add_key_sub</a></strong></td>
+  <strong><a href='../type/dict_entry_t.html#boundprocedure-add_key_sub'>add_key_sub</a></strong></td>
                 <td></td>
               </tr>
               <tr>
                 <td>  generic, public ::
-  <strong><a href='../type/dict_entry_t.html#boundprocedure-add_key~2'>add_key</a></strong> => <a href='../type/dict_entry_t.html#boundprocedure-add_key_sub~2'>add_key_sub</a></td>
+  <strong><a href='../type/dict_entry_t.html#boundprocedure-add_key'>add_key</a></strong> => <a href='../type/dict_entry_t.html#boundprocedure-add_key_sub'>add_key_sub</a></td>
                 <td></td>
               </tr>
               <tr>
                 <td>  procedure, public ::
-  <strong><a href='../type/dict_entry_t.html#boundprocedure-add_string_sub~2'>add_string_sub</a></strong></td>
+  <strong><a href='../type/dict_entry_t.html#boundprocedure-add_string_sub'>add_string_sub</a></strong></td>
                 <td></td>
               </tr>
               <tr>
                 <td>  procedure, public ::
-  <strong><a href='../type/dict_entry_t.html#boundprocedure-add_integer_sub~2'>add_integer_sub</a></strong></td>
+  <strong><a href='../type/dict_entry_t.html#boundprocedure-add_integer_sub'>add_integer_sub</a></strong></td>
                 <td></td>
               </tr>
               <tr>
                 <td>  procedure, public ::
-  <strong><a href='../type/dict_entry_t.html#boundprocedure-add_float_sub~2'>add_float_sub</a></strong></td>
+  <strong><a href='../type/dict_entry_t.html#boundprocedure-add_float_sub'>add_float_sub</a></strong></td>
                 <td></td>
               </tr>
               <tr>
                 <td>  procedure, public ::
-  <strong><a href='../type/dict_entry_t.html#boundprocedure-add_double_sub~2'>add_double_sub</a></strong></td>
+  <strong><a href='../type/dict_entry_t.html#boundprocedure-add_double_sub'>add_double_sub</a></strong></td>
                 <td></td>
               </tr>
               <tr>
                 <td>  procedure, public ::
-  <strong><a href='../type/dict_entry_t.html#boundprocedure-add_logical_sub~2'>add_logical_sub</a></strong></td>
+  <strong><a href='../type/dict_entry_t.html#boundprocedure-add_logical_sub'>add_logical_sub</a></strong></td>
                 <td></td>
               </tr>
               <tr>
                 <td>  generic, public ::
-  <strong><a href='../type/dict_entry_t.html#boundprocedure-add_value~2'>add_value</a></strong> => <a href='../type/dict_entry_t.html#boundprocedure-add_string_sub~2'>add_string_sub</a>, <a href='../type/dict_entry_t.html#boundprocedure-add_integer_sub~2'>add_integer_sub</a>, <a href='../type/dict_entry_t.html#boundprocedure-add_float_sub~2'>add_float_sub</a>, <a href='../type/dict_entry_t.html#boundprocedure-add_double_sub~2'>add_double_sub</a>, <a href='../type/dict_entry_t.html#boundprocedure-add_logical_sub~2'>add_logical_sub</a></td>
+  <strong><a href='../type/dict_entry_t.html#boundprocedure-add_value'>add_value</a></strong> => <a href='../type/dict_entry_t.html#boundprocedure-add_string_sub'>add_string_sub</a>, <a href='../type/dict_entry_t.html#boundprocedure-add_integer_sub'>add_integer_sub</a>, <a href='../type/dict_entry_t.html#boundprocedure-add_float_sub'>add_float_sub</a>, <a href='../type/dict_entry_t.html#boundprocedure-add_double_sub'>add_double_sub</a>, <a href='../type/dict_entry_t.html#boundprocedure-add_logical_sub'>add_logical_sub</a></td>
                 <td></td>
               </tr>
           </tbody>
@@ -424,7 +424,7 @@ linked list of DICT_ENTRY_T objects</p>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-first~4"></span>
+              <span class="anchor" id="variable-first~2"></span>
               type(<a href='../type/dict_entry_t.html'>DICT_ENTRY_T</a>),
             </td>
               <td>public,</td>
@@ -441,7 +441,7 @@ linked list of DICT_ENTRY_T objects</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-last~4"></span>
+              <span class="anchor" id="variable-last~2"></span>
               type(<a href='../type/dict_entry_t.html'>DICT_ENTRY_T</a>),
             </td>
               <td>public,</td>
@@ -458,7 +458,7 @@ linked list of DICT_ENTRY_T objects</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-current~4"></span>
+              <span class="anchor" id="variable-current~2"></span>
               type(<a href='../type/dict_entry_t.html'>DICT_ENTRY_T</a>),
             </td>
               <td>public,</td>
@@ -475,7 +475,7 @@ linked list of DICT_ENTRY_T objects</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-count~6"></span>
+              <span class="anchor" id="variable-count~2"></span>
               integer(kind=c_int),
             </td>
               <td>public</td>
@@ -501,57 +501,57 @@ linked list of DICT_ENTRY_T objects</p>
           <tbody>
               <tr>
                 <td>  generic, public ::
-  <strong><a href='../type/dict_t.html#boundprocedure-get_entry~2'>get_entry</a></strong> => get_entry_by_key_fn, get_entry_by_index_fn</td>
+  <strong><a href='../type/dict_t.html#boundprocedure-get_entry'>get_entry</a></strong> => get_entry_by_key_fn, get_entry_by_index_fn</td>
                 <td></td>
               </tr>
               <tr>
                 <td>  generic, public ::
-  <strong><a href='../type/dict_t.html#boundprocedure-get_next_entry~2'>get_next_entry</a></strong> => get_next_entry_by_key_fn, get_next_entry_fn</td>
+  <strong><a href='../type/dict_t.html#boundprocedure-get_next_entry'>get_next_entry</a></strong> => get_next_entry_by_key_fn, get_next_entry_fn</td>
                 <td></td>
               </tr>
               <tr>
                 <td>  generic, public ::
-  <strong><a href='../type/dict_t.html#boundprocedure-add_entry~2'>add_entry</a></strong> => add_entry_to_dict_sub</td>
+  <strong><a href='../type/dict_t.html#boundprocedure-add_entry'>add_entry</a></strong> => add_entry_to_dict_sub</td>
                 <td></td>
               </tr>
               <tr>
                 <td>  generic, public ::
-  <strong><a href='../type/dict_t.html#boundprocedure-key_already_in_use~2'>key_already_in_use</a></strong> => key_name_already_in_use_fn</td>
+  <strong><a href='../type/dict_t.html#boundprocedure-key_already_in_use'>key_already_in_use</a></strong> => key_name_already_in_use_fn</td>
                 <td></td>
               </tr>
               <tr>
                 <td>  procedure, public ::
-  <strong><a href='../type/dict_t.html#boundprocedure-find_dict_entry_fn~2'>find_dict_entry_fn</a></strong></td>
+  <strong><a href='../type/dict_t.html#boundprocedure-find_dict_entry_fn'>find_dict_entry_fn</a></strong></td>
                 <td></td>
               </tr>
               <tr>
                 <td>  generic, public ::
-  <strong><a href='../type/dict_t.html#boundprocedure-find_dict_entry~2'>find_dict_entry</a></strong> => <a href='../type/dict_t.html#boundprocedure-find_dict_entry_fn~2'>find_dict_entry_fn</a></td>
+  <strong><a href='../type/dict_t.html#boundprocedure-find_dict_entry'>find_dict_entry</a></strong> => <a href='../type/dict_t.html#boundprocedure-find_dict_entry_fn'>find_dict_entry_fn</a></td>
                 <td></td>
               </tr>
               <tr>
                 <td>  generic, public ::
-  <strong><a href='../type/dict_t.html#boundprocedure-delete_entry~2'>delete_entry</a></strong> => delete_entry_by_key_sub</td>
+  <strong><a href='../type/dict_t.html#boundprocedure-delete_entry'>delete_entry</a></strong> => delete_entry_by_key_sub</td>
                 <td></td>
               </tr>
               <tr>
                 <td>  generic, public ::
-  <strong><a href='../type/dict_t.html#boundprocedure-print_all~3'>print_all</a></strong> => print_all_dictionary_entries_sub</td>
+  <strong><a href='../type/dict_t.html#boundprocedure-print_all'>print_all</a></strong> => print_all_dictionary_entries_sub</td>
                 <td></td>
               </tr>
               <tr>
                 <td>  generic, public ::
-  <strong><a href='../type/dict_t.html#boundprocedure-grep_keys~2'>grep_keys</a></strong> => grep_dictionary_key_names_fn</td>
+  <strong><a href='../type/dict_t.html#boundprocedure-grep_keys'>grep_keys</a></strong> => grep_dictionary_key_names_fn</td>
                 <td></td>
               </tr>
               <tr>
                 <td>  procedure, public ::
-  <strong><a href='../type/dict_t.html#boundprocedure-get_value~2'>get_value</a></strong> => get_value_as_string_sub</td>
+  <strong><a href='../type/dict_t.html#boundprocedure-get_value'>get_value</a></strong> => get_value_as_string_sub</td>
                 <td></td>
               </tr>
               <tr>
                 <td>  generic, public ::
-  <strong><a href='../type/dict_t.html#boundprocedure-get_values~2'>get_values</a></strong> => get_values_as_int_sub, get_values_as_float_sub, get_values_as_logical_sub, get_values_as_string_list_sub, get_values_as_int_given_list_of_keys_sub, get_values_as_float_given_list_of_keys_sub, get_values_as_logical_given_list_of_keys_sub, get_values_as_string_list_given_list_of_keys_sub</td>
+  <strong><a href='../type/dict_t.html#boundprocedure-get_values'>get_values</a></strong> => get_values_as_int_sub, get_values_as_float_sub, get_values_as_logical_sub, get_values_as_string_list_sub, get_values_as_int_given_list_of_keys_sub, get_values_as_float_given_list_of_keys_sub, get_values_as_logical_given_list_of_keys_sub, get_values_as_string_list_given_list_of_keys_sub</td>
                 <td></td>
               </tr>
           </tbody>
@@ -581,7 +581,7 @@ linked list of DICT_ENTRY_T objects</p>
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-10-17T14:19:59.727997             </p>
+ on 2023-10-19T16:28:40.743458             </p>
           </div>
         </div>
         <br>

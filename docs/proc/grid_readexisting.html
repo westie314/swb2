@@ -73,7 +73,7 @@
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip"
                  data-bs-placement="bottom" data-html="true"
-                 title=" 0.1% of total for procedures.">13 statements</a>
+                 title=" 0.2% of total for procedures.">13 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -125,12 +125,6 @@
   
   
   
-    <div class="card card-primary">
-      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
-      <div class="list-group">
-        <a class="list-group-item" href="../proc/grid_readexisting.html#src">grid_ReadExisting</a>
-      </div>
-    </div>
 
 
   </div>
@@ -157,7 +151,7 @@
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-sfilename~24"></span>
+              <span class="anchor" id="variable-sfilename~13"></span>
               character(len=*),
             </td>
 <td>intent(in)</td>
@@ -172,7 +166,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-sfiletype~4"></span>
+              <span class="anchor" id="variable-sfiletype~3"></span>
               character(len=*),
             </td>
 <td>intent(in)</td>
@@ -215,30 +209,6 @@
 
 
     
-    <section>
-    <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre><span></span><span class="k">subroutine </span><span class="n">grid_ReadExisting</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">sFileName</span><span class="p">,</span><span class="w"> </span><span class="n">sFileType</span><span class="p">,</span><span class="w"> </span><span class="n">pGrd</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">  </span><span class="c">! ARGUMENTS</span>
-<span class="w">  </span><span class="kt">character</span><span class="w"> </span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">sFilename</span><span class="w">          </span><span class="c">! Name of the grid input file</span>
-<span class="w">  </span><span class="kt">character</span><span class="w"> </span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">sFileType</span><span class="w">          </span><span class="c">! File type (see above)</span>
-<span class="w">  </span><span class="k">type</span><span class="w"> </span><span class="p">(</span><span class="n">GENERAL_GRID_T</span><span class="p">),</span><span class="w"> </span><span class="k">pointer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">pGrd</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="nb">trim</span><span class="p">(</span><span class="n">sFileType</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;ARC_GRID&quot;</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">      call </span><span class="n">grid_ReadArcGrid_sub</span><span class="p">(</span><span class="w"> </span><span class="n">sFilename</span><span class="p">,</span><span class="w"> </span><span class="n">pGrd</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">  </span><span class="k">else if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="nb">trim</span><span class="p">(</span><span class="n">sFileType</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;SURFER&quot;</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">      call </span><span class="n">grid_ReadSurferGrid_sub</span><span class="p">(</span><span class="w"> </span><span class="n">sFilename</span><span class="p">,</span><span class="w"> </span><span class="n">pGrd</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">  </span><span class="k">else</span>
-<span class="k">      call </span><span class="n">assert</span><span class="p">(</span><span class="w"> </span><span class="n">FALSE</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Illegal grid file type requested&quot;</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">  </span><span class="k">end if</span>
-
-<span class="k">  </span><span class="n">pGrd</span><span class="p">%</span><span class="n">sFilename</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">trim</span><span class="p">(</span><span class="n">sFilename</span><span class="p">)</span><span class="w"></span>
-
-<span class="k">end subroutine </span><span class="n">grid_ReadExisting</span><span class="w"></span>
-</pre></div>
-
-    </section>
-    <br>
     
     </div>
   </div>
@@ -255,7 +225,7 @@
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-10-17T14:19:59.727997             </p>
+ on 2023-10-19T16:28:40.743458             </p>
           </div>
         </div>
         <br>

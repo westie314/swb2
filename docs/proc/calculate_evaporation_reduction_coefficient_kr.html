@@ -73,7 +73,7 @@
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip"
                  data-bs-placement="bottom" data-html="true"
-                 title=" 0.1% of total for procedures.">15 statements</a>
+                 title=" 0.2% of total for procedures.">15 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -86,7 +86,7 @@
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb justify-content-end mb-0">
                 <li class="breadcrumb-item"><a href='../sourcefile/actual_et__fao56__two_stage.f90.html'>actual_et__fao56__two_stage.F90</a></li>
-                <li class="breadcrumb-item"><a href='../module/actual_et__fao56__two_stage~2.html'>actual_et__fao56__two_stage</a></li>
+                <li class="breadcrumb-item"><a href='../module/actual_et__fao56__two_stage.html'>actual_et__fao56__two_stage</a></li>
             <li class="breadcrumb-item active" aria-current="page">calculate_evaporation_reduction_coefficient_Kr</li>
           </ol>
         </nav>
@@ -125,12 +125,6 @@
   
   
   
-    <div class="card card-primary">
-      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
-      <div class="list-group">
-        <a class="list-group-item" href="../proc/calculate_evaporation_reduction_coefficient_kr.html#src">calculate_evaporation_reduction_coefficient_Kr</a>
-      </div>
-    </div>
 
 
   </div>
@@ -157,7 +151,7 @@
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-landuse_index~4"></span>
+              <span class="anchor" id="variable-landuse_index~3"></span>
               integer(kind=c_int),
             </td>
 <td>intent(in)</td>
@@ -172,7 +166,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-soil_group~3"></span>
+              <span class="anchor" id="variable-soil_group~2"></span>
               integer(kind=c_int),
             </td>
 <td>intent(in)</td>
@@ -187,7 +181,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-evaporable_water_deficit~3"></span>
+              <span class="anchor" id="variable-evaporable_water_deficit~2"></span>
               real(kind=c_float),
             </td>
 <td>intent(in)</td>
@@ -222,39 +216,6 @@
 
 
     
-    <section>
-    <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre><span></span><span class="k">elemental function </span><span class="n">calculate_evaporation_reduction_coefficient_Kr</span><span class="p">(</span><span class="w"> </span><span class="n">landuse_index</span><span class="p">,</span><span class="w">                          </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                                                   </span><span class="n">soil_group</span><span class="p">,</span><span class="w">                             </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                                                   </span><span class="n">evaporable_water_deficit</span><span class="w"> </span><span class="p">)</span><span class="w">   </span><span class="k">result</span><span class="p">(</span><span class="w"> </span><span class="n">Kr</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">  </span><span class="c">! [ ARGUMENTS ]</span>
-<span class="w">  </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">landuse_index</span><span class="w"></span>
-<span class="w">  </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">soil_group</span><span class="w"></span>
-<span class="w">  </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">   </span><span class="kd">::</span><span class="w"> </span><span class="n">evaporable_water_deficit</span><span class="w"></span>
-
-<span class="w">  </span><span class="c">! [ RESULT ]</span>
-<span class="w">  </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_double</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">Kr</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">associate</span><span class="p">(</span><span class="w"> </span><span class="n">REW</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">REW_l</span><span class="p">(</span><span class="w"> </span><span class="n">landuse_index</span><span class="p">,</span><span class="w"> </span><span class="n">soil_group</span><span class="w"> </span><span class="p">),</span><span class="w">         </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">             </span><span class="n">TEW</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">TEW_l</span><span class="p">(</span><span class="w"> </span><span class="n">landuse_index</span><span class="p">,</span><span class="w"> </span><span class="n">soil_group</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">evaporable_water_deficit</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">REW</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">      </span><span class="n">Kr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1._c_double</span><span class="w"></span>
-<span class="w">    </span><span class="n">elseif</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">evaporable_water_deficit</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">TEW</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">      </span><span class="n">Kr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="kt">real</span><span class="p">(</span><span class="n">TEW</span><span class="p">,</span><span class="w"> </span><span class="kt">c_double</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">evaporable_water_deficit</span><span class="w"> </span><span class="p">)</span><span class="w">         </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">          </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="kt">real</span><span class="p">(</span><span class="n">TEW</span><span class="p">,</span><span class="w"> </span><span class="kt">c_double</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="kt">real</span><span class="p">(</span><span class="n">REW</span><span class="p">,</span><span class="w"> </span><span class="kt">c_double</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">1.0E-8</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">else</span>
-<span class="k">      </span><span class="n">Kr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0._c_double</span><span class="w"></span>
-<span class="w">    </span><span class="k">endif</span>
-
-<span class="k">  end associate</span>
-
-<span class="k">end function </span><span class="n">calculate_evaporation_reduction_coefficient_Kr</span><span class="w"></span>
-</pre></div>
-
-    </section>
-    <br>
     
     </div>
   </div>
@@ -271,7 +232,7 @@
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-10-17T14:19:59.727997             </p>
+ on 2023-10-19T16:28:40.743458             </p>
           </div>
         </div>
         <br>

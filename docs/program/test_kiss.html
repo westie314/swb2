@@ -72,7 +72,7 @@
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip"
                  data-bs-placement="bottom" data-html="true"
-                 title=" 2.8% of total for programs.">28 statements</a>
+                 title=" 5.5% of total for programs.">28 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -113,7 +113,7 @@
         <div class="list-group list-group-flush">
             <a class="list-group-item" href="../program/test_kiss.html#variable-i8b">i8b</a>
             <a class="list-group-item" href="../program/test_kiss.html#variable-r8b">r8b</a>
-            <a class="list-group-item" href="../program/test_kiss.html#variable-x~9">x</a>
+            <a class="list-group-item" href="../program/test_kiss.html#variable-x~5">x</a>
             <a class="list-group-item" href="../program/test_kiss.html#variable-minx">minx</a>
             <a class="list-group-item" href="../program/test_kiss.html#variable-maxx">maxx</a>
             <a class="list-group-item" href="../program/test_kiss.html#variable-i">i</a>
@@ -139,12 +139,6 @@
   
   
   
-    <div class="card card-primary">
-      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
-      <div class="list-group">
-        <a class="list-group-item" href="../program/test_kiss.html#src">test_kiss</a>
-      </div>
-    </div>
 
 
   </div>
@@ -159,7 +153,7 @@
             <li class="list-group-item">
               <ul class="list-inline">
                   <li class="list-inline-item"><a href='http://fortranwiki.org/fortran/show/iso_fortran_env'>iso_fortran_env</a></li>
-                  <li class="list-inline-item"><a href='../module/kiss_random_number_generator~2.html'>kiss_random_number_generator</a></li>
+                  <li class="list-inline-item"><a href='../module/kiss_random_number_generator.html'>kiss_random_number_generator</a></li>
               </ul>
             </li>
         </ul>
@@ -215,7 +209,7 @@ parameter
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-x~9"></span>
+              <span class="anchor" id="variable-x~5"></span>
               integer(kind=i8b)
             </td>
             <td>
@@ -291,53 +285,6 @@ parameter
 
     
 
-    <section>
-    <h2 id="src">Source Code</h2>
-    <div class="highlight"><pre><span></span><span class="k">program </span><span class="n">test_kiss</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">use </span><span class="n">kiss_random_number_generator</span><span class="p">,</span><span class="w"> </span><span class="k">only</span><span class="w">   </span><span class="p">:</span><span class="w"> </span><span class="n">kiss64_rng</span><span class="p">,</span><span class="w">               </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                             </span><span class="n">kiss64_initialize</span><span class="p">,</span><span class="w">        </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                             </span><span class="n">kiss64_uniform_rng</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">use </span><span class="n">iso_fortran_env</span><span class="p">,</span><span class="w"> </span><span class="k">only</span><span class="w">                </span><span class="p">:</span><span class="w"> </span><span class="n">real128</span><span class="w"> </span>
-<span class="w">  </span><span class="k">implicit none</span>
-
-<span class="k">  </span><span class="kt">integer</span><span class="p">,</span><span class="k">parameter</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">i8b</span><span class="o">=</span><span class="nb">selected_int_kind</span><span class="p">(</span><span class="mi">18</span><span class="p">)</span><span class="w"></span>
-<span class="w">  </span><span class="kt">integer</span><span class="p">,</span><span class="k">parameter</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">r8b</span><span class="o">=</span><span class="nb">selected_real_kind</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span><span class="mi">18</span><span class="p">)</span><span class="w"></span>
-<span class="w">  </span>
-<span class="w">  </span><span class="kt">integer</span><span class="p">(</span><span class="n">i8b</span><span class="p">)</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">x</span><span class="w"></span>
-<span class="w">  </span><span class="kt">integer</span><span class="p">(</span><span class="n">i8b</span><span class="p">)</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">minx</span><span class="p">,</span><span class="w"> </span><span class="n">maxx</span><span class="w"></span>
-<span class="w">  </span><span class="kt">integer</span><span class="p">(</span><span class="n">i8b</span><span class="p">)</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">i</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">call </span><span class="n">kiss64_initialize</span><span class="p">()</span><span class="w"></span>
-
-<span class="w">  </span><span class="n">minx</span><span class="o">=</span><span class="mi">99999999</span><span class="w"></span>
-<span class="w">  </span><span class="n">maxx</span><span class="o">=-</span><span class="mi">99999999</span><span class="w"></span>
-<span class="w">  </span><span class="k">do </span><span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="mi">100000000_i8b</span><span class="w"></span>
-<span class="w">    </span><span class="n">x</span><span class="o">=</span><span class="n">kiss64_rng</span><span class="p">()</span><span class="w"></span>
-<span class="w">    </span><span class="n">minx</span><span class="o">=</span><span class="nb">min</span><span class="p">(</span><span class="n">minx</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="n">maxx</span><span class="o">=</span><span class="nb">max</span><span class="p">(</span><span class="n">maxx</span><span class="p">,</span><span class="n">x</span><span class="p">)</span><span class="w"></span>
-<span class="w">  </span><span class="k">end do</span>
-
-<span class="k">  print</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="kt">real</span><span class="p">(</span><span class="n">minx</span><span class="p">,</span><span class="w"> </span><span class="nb">kind</span><span class="o">=</span><span class="n">real128</span><span class="p">),</span><span class="w"> </span><span class="kt">real</span><span class="p">(</span><span class="n">maxx</span><span class="p">,</span><span class="w"> </span><span class="nb">kind</span><span class="o">=</span><span class="n">real128</span><span class="p">),</span><span class="w"> </span><span class="kt">real</span><span class="p">(</span><span class="n">maxx</span><span class="p">,</span><span class="w"> </span><span class="nb">kind</span><span class="o">=</span><span class="n">real128</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="kt">real</span><span class="p">(</span><span class="n">minx</span><span class="p">,</span><span class="w"> </span><span class="nb">kind</span><span class="o">=</span><span class="n">real128</span><span class="p">)</span><span class="w">  </span>
-
-
-<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1666297717051644203_i8b</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">    print</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;After 100 million calls, KISS random number generator yields the expected value (1666297717051644203). Pass.&quot;</span><span class="w"></span>
-<span class="w">  </span><span class="k">else </span>
-<span class="k">    stop</span><span class="w"> </span><span class="s2">&quot;After 100 million calls, KISS random number generator *does not* give the expected value (1666297717051644203). Fail.&quot;</span><span class="w"></span>
-<span class="w">  </span><span class="k">endif   </span>
-
-<span class="k">  open</span><span class="p">(</span><span class="n">unit</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span><span class="k">file</span><span class="o">=</span><span class="s2">&quot;kiss64_uniform.txt&quot;</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">do </span><span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="mi">100000</span><span class="w"></span>
-<span class="w">    </span><span class="k">write</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;(F16.14)&quot;</span><span class="p">)</span><span class="w"> </span><span class="n">kiss64_uniform_rng</span><span class="p">()</span><span class="w"></span>
-<span class="w">  </span><span class="k">enddo</span>
-
-<span class="k">end program </span><span class="n">test_kiss</span><span class="w"></span>
-</pre></div>
-
-    </section>
     
     </div>
   </div>
@@ -354,7 +301,7 @@ parameter
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-10-17T14:19:59.727997             </p>
+ on 2023-10-19T16:28:40.743458             </p>
           </div>
         </div>
         <br>

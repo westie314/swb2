@@ -73,7 +73,7 @@
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip"
                  data-bs-placement="bottom" data-html="true"
-                 title="<p> 1.2% of total for derived types.</p>Including implementation: 22 statements,  0.2% of total for derived types.">22 statements</a>
+                 title="<p> 2.4% of total for derived types.</p>Including implementation: 22 statements,  0.4% of total for derived types.">22 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -157,12 +157,6 @@
   
   
   
-    <div class="card card-primary">
-      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
-      <div class="list-group">
-        <a class="list-group-item" href="../type/general_grid_t.html#src">GENERAL_GRID_T</a>
-      </div>
-    </div>
 
 
   </div>
@@ -569,36 +563,6 @@
 
 
 
-    <section>
-    <h3><span class="anchor" id="src"></span>Source Code</h3>
-    <div class="highlight"><pre><span></span><span class="w">  </span><span class="k">type</span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">GENERAL_GRID_T</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">            </span><span class="kd">::</span><span class="w"> </span><span class="n">iNX</span><span class="w">                   </span><span class="c">! Number of cells in the x-direction</span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">            </span><span class="kd">::</span><span class="w"> </span><span class="n">iNY</span><span class="w">                   </span><span class="c">! Number of cells in the y-direction</span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">            </span><span class="kd">::</span><span class="w"> </span><span class="n">iNumGridCells</span><span class="w">         </span><span class="c">! Total number of grid cells</span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">            </span><span class="kd">::</span><span class="w"> </span><span class="n">iDataType</span><span class="w">             </span><span class="c">! Data type contained in the grid (integer, real, SWB cell)</span>
-<span class="w">    </span><span class="kt">character</span><span class="w"> </span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="w"> </span><span class="k">allocatable</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">sProj4_string</span><span class="w">         </span><span class="c">! proj4 string defining coordinate system of grid</span>
-<span class="w">    </span><span class="kt">character</span><span class="w"> </span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="w"> </span><span class="k">allocatable</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">sFilename</span><span class="w">             </span><span class="c">! original file name that the data was read from</span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_double</span><span class="p">)</span><span class="w">            </span><span class="kd">::</span><span class="w"> </span><span class="n">rGridCellSize</span><span class="w">         </span><span class="c">! size of one side of a grid cell</span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">            </span><span class="kd">::</span><span class="w"> </span><span class="n">iLengthUnits</span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mi">99999</span><span class="w">  </span><span class="c">! length units code</span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_double</span><span class="p">)</span><span class="w">            </span><span class="kd">::</span><span class="w"> </span><span class="n">rX0</span><span class="p">,</span><span class="w"> </span><span class="n">rX1</span><span class="w">              </span><span class="c">! World-coordinate range in X</span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_double</span><span class="p">)</span><span class="w">            </span><span class="kd">::</span><span class="w"> </span><span class="n">rY0</span><span class="p">,</span><span class="w"> </span><span class="n">rY1</span><span class="w">              </span><span class="c">! World-coordinate range in Y</span>
-
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">),</span><span class="w"> </span><span class="k">dimension</span><span class="p">(:,:),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">iData</span><span class="w"> </span><span class="c">! Integer data</span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">),</span><span class="w"> </span><span class="k">dimension</span><span class="p">(:,:),</span><span class="w"> </span><span class="k">allocatable</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">rData</span><span class="w">    </span><span class="c">! Real data</span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">),</span><span class="w"> </span><span class="k">dimension</span><span class="p">(:,:),</span><span class="w"> </span><span class="k">allocatable</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">fData</span><span class="w">    </span><span class="c">! Float data</span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_double</span><span class="p">),</span><span class="w"> </span><span class="k">dimension</span><span class="p">(:,:),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">dpData</span><span class="w">   </span><span class="c">! Douple-precision data</span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_double</span><span class="p">),</span><span class="w"> </span><span class="k">dimension</span><span class="p">(:,:),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">rX</span><span class="w">    </span><span class="c">! x coordinate associated with data</span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_double</span><span class="p">),</span><span class="w"> </span><span class="k">dimension</span><span class="p">(:,:),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">rY</span><span class="w">    </span><span class="c">! y coordinate associated with data</span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">),</span><span class="w"> </span><span class="k">dimension</span><span class="p">(:,:),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">iMask</span><span class="w"> </span><span class="c">! Mask for processing results</span>
-
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">                    </span><span class="kd">::</span><span class="w"> </span><span class="n">iNoDataValue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">NC_FILL_INT</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">)</span><span class="w">                     </span><span class="kd">::</span><span class="w"> </span><span class="n">rNoDataValue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">NC_FILL_FLOAT</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_double</span><span class="p">)</span><span class="w">                    </span><span class="kd">::</span><span class="w"> </span><span class="n">dpNoDataValue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">NC_FILL_DOUBLE</span><span class="w"></span>
-<span class="c">!      type (T_CELL), dimension(:,:), pointer :: Cells        ! T_CELL objects</span>
-<span class="w">  </span><span class="k">end type </span><span class="n">GENERAL_GRID_T</span><span class="w"></span>
-</pre></div>
-
-    </section>
     
     </div>
   </div>
@@ -615,7 +579,7 @@
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-10-17T14:19:59.727997             </p>
+ on 2023-10-19T16:28:40.743458             </p>
           </div>
         </div>
         <br>

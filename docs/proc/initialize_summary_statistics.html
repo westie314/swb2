@@ -125,13 +125,8 @@
   
   
   
-    <div class="card card-primary">
-      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
-      <div class="list-group">
-        <a class="list-group-item" href="../proc/initialize_summary_statistics.html#src">initialize_summary_statistics</a>
-      </div>
-    </div>
 
+    <em>None</em>
 
   </div>
 
@@ -159,33 +154,6 @@
 
 
     
-    <section>
-    <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre><span></span><span class="w">  </span><span class="k">subroutine </span><span class="n">initialize_summary_statistics</span><span class="p">()</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! [ LOCALS ]</span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">status</span><span class="w"></span>
-<span class="w">    </span><span class="kt">character</span><span class="w"> </span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">256</span><span class="p">)</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">fname</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">anything_to_summarize</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-
-<span class="k">      </span><span class="n">fname</span><span class="o">=</span><span class="s2">&quot;Daily_SWB2_summary_statistics.txt&quot;</span><span class="w"></span>
-<span class="w">      </span><span class="k">open</span><span class="p">(</span><span class="w"> </span><span class="n">newunit</span><span class="o">=</span><span class="n">LU</span><span class="p">,</span><span class="w"> </span><span class="k">file</span><span class="o">=</span><span class="n">fname</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="w"> </span><span class="n">LU</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;(256a)&quot;</span><span class="p">)</span><span class="w"> </span><span class="s2">&quot;Date&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">TAB</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;POLY_ID&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">TAB</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;count&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">TAB</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;lc&quot;</span><span class="p">,</span><span class="w">   </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="n">TAB</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;sms_max&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">TAB</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;rain&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">TAB</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;fog&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">TAB</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;irr&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">TAB</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;runoff&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">TAB</span><span class="p">,</span><span class="w">       </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="s2">&quot;can_evap&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">TAB</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;ref_et0&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">TAB</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;crop_et0&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">TAB</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;actual_et&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">TAB</span><span class="p">,</span><span class="w">            </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="s2">&quot;recharge&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">TAB</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;sms_end&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">TAB</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;surface_storage_excess&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">TAB</span><span class="p">,</span><span class="w">                </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="s2">&quot;surface_storage&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">TAB</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;snowmelt&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">TAB</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;impervious_fraction&quot;</span><span class="p">,</span><span class="w">                </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="n">TAB</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;actual_et_soil&quot;</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">endif</span>
-
-<span class="k">  end subroutine </span><span class="n">initialize_summary_statistics</span><span class="w"></span>
-</pre></div>
-
-    </section>
-    <br>
     
     </div>
   </div>
@@ -202,7 +170,7 @@
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-10-17T14:19:59.727997             </p>
+ on 2023-10-19T16:28:40.743458             </p>
           </div>
         </div>
         <br>

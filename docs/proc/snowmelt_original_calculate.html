@@ -73,7 +73,7 @@
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip"
                  data-bs-placement="bottom" data-html="true"
-                 title=" 0.1% of total for procedures.">19 statements</a>
+                 title=" 0.2% of total for procedures.">19 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -86,7 +86,7 @@
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb justify-content-end mb-0">
                 <li class="breadcrumb-item"><a href='../sourcefile/snowmelt__original.f90.html'>snowmelt__original.F90</a></li>
-                <li class="breadcrumb-item"><a href='../module/snowmelt__original~2.html'>snowmelt__original</a></li>
+                <li class="breadcrumb-item"><a href='../module/snowmelt__original.html'>snowmelt__original</a></li>
             <li class="breadcrumb-item active" aria-current="page">snowmelt_original_calculate</li>
           </ol>
         </nav>
@@ -125,12 +125,6 @@
   
   
   
-    <div class="card card-primary">
-      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
-      <div class="list-group">
-        <a class="list-group-item" href="../proc/snowmelt_original_calculate.html#src">snowmelt_original_calculate</a>
-      </div>
-    </div>
 
 
   </div>
@@ -159,7 +153,7 @@
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-potential_snowmelt~4"></span>
+              <span class="anchor" id="variable-potential_snowmelt~3"></span>
               real(kind=c_float),
             </td>
 <td>intent(inout)</td>
@@ -174,7 +168,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-tmin~6"></span>
+              <span class="anchor" id="variable-tmin~5"></span>
               real(kind=c_float),
             </td>
 <td>intent(in)</td>
@@ -189,7 +183,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-tmax~6"></span>
+              <span class="anchor" id="variable-tmax~5"></span>
               real(kind=c_float),
             </td>
 <td>intent(in)</td>
@@ -232,50 +226,6 @@
 
 
     
-    <section>
-    <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre><span></span><span class="w">  </span><span class="k">elemental subroutine </span><span class="n">snowmelt_original_calculate</span><span class="p">(</span><span class="w"> </span><span class="n">potential_snowmelt</span><span class="p">,</span><span class="w"> </span><span class="n">tmin</span><span class="p">,</span><span class="w"> </span><span class="n">tmax</span><span class="p">,</span><span class="w"> </span><span class="n">imperial_units</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w">      </span><span class="kd">::</span><span class="w"> </span><span class="n">potential_snowmelt</span><span class="w"> </span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">         </span><span class="kd">::</span><span class="w"> </span><span class="n">tmin</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_float</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">         </span><span class="kd">::</span><span class="w"> </span><span class="n">tmax</span><span class="w"></span>
-<span class="w">    </span><span class="kt">logical</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="kt">c_bool</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">      </span><span class="kd">::</span><span class="w"> </span><span class="n">imperial_units</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">imperial_units</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span><span class="w"></span>
-
-<span class="w">      </span><span class="c">!&gt; temperatures in degrees Fahrenheit, snowmelt in inches</span>
-
-<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">tmin</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">tmax</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">2.0_c_float</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">FREEZING_F</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-
-<span class="k">        </span><span class="n">potential_snowmelt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MELT_INDEX</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">tmax</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">FREEZING_F</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">DEGC_PER_DEGF</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">MM_PER_INCH</span><span class="w"></span>
-
-<span class="w">      </span><span class="k">else </span>
-
-<span class="k">        </span><span class="n">potential_snowmelt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0_c_float</span><span class="w"></span>
-
-<span class="w">      </span><span class="k">end if</span>
-
-<span class="k">    else</span><span class="w"></span>
-
-<span class="w">      </span><span class="c">!&gt; temperatures in degrees Celcius, snowmelt in mm</span>
-
-<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">tmin</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">tmax</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">2.0_c_float</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">FREEZING_C</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-
-<span class="k">        </span><span class="n">potential_snowmelt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MELT_INDEX</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">tmax</span><span class="w"> </span>
-
-<span class="w">      </span><span class="k">else </span>
-
-<span class="k">        </span><span class="n">potential_snowmelt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0_c_float</span><span class="w"></span>
-
-<span class="w">      </span><span class="k">end if</span>
-
-<span class="k">    endif  </span>
-
-<span class="k">  end subroutine </span><span class="n">snowmelt_original_calculate</span><span class="w"></span>
-</pre></div>
-
-    </section>
-    <br>
     
     </div>
   </div>
@@ -292,7 +242,7 @@
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-10-17T14:19:59.727997             </p>
+ on 2023-10-19T16:28:40.743458             </p>
           </div>
         </div>
         <br>

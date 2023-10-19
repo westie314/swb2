@@ -73,7 +73,7 @@
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip"
                  data-bs-placement="bottom" data-html="true"
-                 title=" 0.2% of total for procedures.">31 statements</a>
+                 title=" 0.4% of total for procedures.">32 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -86,7 +86,7 @@
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb justify-content-end mb-0">
                 <li class="breadcrumb-item"><a href='../sourcefile/swbstats2_support.f90.html'>swbstats2_support.F90</a></li>
-                <li class="breadcrumb-item"><a href='../module/swbstats2_support~2.html'>swbstats2_support</a></li>
+                <li class="breadcrumb-item"><a href='../module/swbstats2_support.html'>swbstats2_support</a></li>
             <li class="breadcrumb-item active" aria-current="page">open_output_netcdf_files</li>
           </ol>
         </nav>
@@ -125,12 +125,6 @@
   
   
   
-    <div class="card card-primary">
-      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
-      <div class="list-group">
-        <a class="list-group-item" href="../proc/open_output_netcdf_files.html#src">open_output_netcdf_files</a>
-      </div>
-    </div>
 
 
   </div>
@@ -144,7 +138,7 @@
 
 
     <h3>Type Bound</h3>
-    <p><a href='../type/swbstats_t~2.html'>SWBSTATS_T</a></p>
+    <p><a href='../type/swbstats_t.html'>SWBSTATS_T</a></p>
 
     <h3>Arguments</h3>
         <table class="table table-striped varlist">
@@ -160,7 +154,7 @@
         <tr>
             <td>
               <span class="anchor" id="variable-this~215"></span>
-              class(<a href='../type/swbstats_t~2.html'>SWBSTATS_T</a>),
+              class(<a href='../type/swbstats_t.html'>SWBSTATS_T</a>),
             </td>
 <td>intent(inout)</td>
               <td></td>            <td>
@@ -175,7 +169,7 @@
         <tr>
             <td>
               <span class="anchor" id="variable-output_files"></span>
-              type(<a href='../type/file_collection_t~2.html'>FILE_COLLECTION_T</a>),
+              type(<a href='../type/file_collection_t.html'>FILE_COLLECTION_T</a>),
             </td>
 <td>intent(inout)</td>
               <td></td>            <td>
@@ -202,73 +196,6 @@
 
 
     
-    <section>
-    <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre><span></span><span class="w">  </span><span class="k">subroutine </span><span class="n">open_output_netcdf_files</span><span class="p">(</span><span class="n">this</span><span class="p">,</span><span class="w">                                    </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                      </span><span class="n">OUTPUT_FILES</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">class</span><span class="w"> </span><span class="p">(</span><span class="n">SWBSTATS_T</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w">           </span><span class="kd">::</span><span class="w"> </span><span class="n">this</span><span class="w"></span>
-<span class="w">    </span><span class="k">type</span><span class="w"> </span><span class="p">(</span><span class="n">FILE_COLLECTION_T</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w">     </span><span class="kd">::</span><span class="w"> </span><span class="n">OUTPUT_FILES</span><span class="p">(:)</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! [ LOCALS ]</span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">                   </span><span class="kd">::</span><span class="w"> </span><span class="n">stat_indx</span><span class="w"></span>
-<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">                   </span><span class="kd">::</span><span class="w"> </span><span class="n">status</span><span class="w"></span>
-<span class="w">    </span><span class="k">type</span><span class="w"> </span><span class="p">(</span><span class="n">T_NETCDF4_FILE</span><span class="p">),</span><span class="w"> </span><span class="k">pointer</span><span class="w">    </span><span class="kd">::</span><span class="w"> </span><span class="n">ncfile_out</span><span class="w"></span>
-<span class="w">    </span><span class="kt">character</span><span class="w"> </span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="w"> </span><span class="k">allocatable</span><span class="w">    </span><span class="kd">::</span><span class="w"> </span><span class="n">units_string</span><span class="w"></span>
-<span class="w">    </span><span class="kt">character</span><span class="w"> </span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="w"> </span><span class="k">allocatable</span><span class="w">    </span><span class="kd">::</span><span class="w"> </span><span class="n">filename_prefix</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">allocated</span><span class="p">(</span><span class="w"> </span><span class="n">this</span><span class="p">%</span><span class="n">output_file_prefix</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">      </span><span class="n">filename_prefix</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">this</span><span class="p">%</span><span class="n">output_file_prefix</span><span class="w"></span>
-<span class="w">    </span><span class="k">else</span>
-<span class="k">      </span><span class="n">filename_prefix</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="k">endif</span>
-
-<span class="k">    do </span><span class="n">stat_indx</span><span class="o">=</span><span class="n">STATS_MEAN</span><span class="p">,</span><span class="w"> </span><span class="n">STATS_VARIANCE</span><span class="w"></span>
-
-<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="p">.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="n">OUTPUT_FILES</span><span class="p">(</span><span class="n">stat_indx</span><span class="p">)%</span><span class="n">output_active</span><span class="w"> </span><span class="p">)</span><span class="w">  </span><span class="k">cycle</span>
-
-<span class="k">      if</span><span class="w"> </span><span class="p">(</span><span class="n">OUTPUT_FILES</span><span class="p">(</span><span class="n">stat_indx</span><span class="p">)%</span><span class="n">write_netcdf</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-
-<span class="k">        if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">this</span><span class="p">%</span><span class="n">annualize_stats</span><span class="w"> </span><span class="p">.</span><span class="nb">and</span><span class="p">.</span><span class="w"> </span><span class="n">stat_indx</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">STATS_SUM</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">          </span><span class="n">units_string</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">trim</span><span class="p">(</span><span class="n">this</span><span class="p">%</span><span class="n">netcdf_variable_units_string</span><span class="p">)</span><span class="o">//</span><span class="s2">&quot;, per year&quot;</span><span class="w"></span>
-<span class="w">        </span><span class="n">elseif</span><span class="w"> </span><span class="p">(</span><span class="n">this</span><span class="p">%</span><span class="n">report_as_volume</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">          </span><span class="n">units_string</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;cubic meters&quot;</span><span class="w"></span>
-<span class="w">        </span><span class="n">elseif</span><span class="w"> </span><span class="p">(</span><span class="n">this</span><span class="p">%</span><span class="n">report_in_meters</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">          </span><span class="n">units_string</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;meters&quot;</span><span class="w"></span>
-<span class="w">        </span><span class="k">else</span>
-<span class="k">          </span><span class="n">units_string</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">trim</span><span class="p">(</span><span class="n">this</span><span class="p">%</span><span class="n">netcdf_variable_units_string</span><span class="p">)</span><span class="w"></span>
-<span class="w">        </span><span class="k">endif</span>
-
-<span class="k">        allocate</span><span class="p">(</span><span class="w"> </span><span class="n">OUTPUT_FILES</span><span class="p">(</span><span class="n">stat_indx</span><span class="p">)%</span><span class="n">nc_ptr</span><span class="p">,</span><span class="w"> </span><span class="nb">stat</span><span class="o">=</span><span class="n">status</span><span class="p">)</span><span class="w"></span>
-<span class="w">        </span><span class="k">call </span><span class="n">assert</span><span class="p">(</span><span class="w"> </span><span class="n">status</span><span class="o">==</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Problem allocating netcdf file data structure.&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">          </span><span class="err">__</span><span class="n">FILE__</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">LINE__</span><span class="p">)</span><span class="w"></span>
-<span class="w">        </span><span class="n">ncfile_out</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">OUTPUT_FILES</span><span class="p">(</span><span class="n">stat_indx</span><span class="p">)%</span><span class="n">nc_ptr</span><span class="w"></span>
-
-<span class="w">        </span><span class="k">call </span><span class="n">netcdf_open_and_prepare_as_output</span><span class="p">(</span><span class="w">                                     </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">              </span><span class="n">NCFILE</span><span class="o">=</span><span class="n">ncfile_out</span><span class="p">,</span><span class="w">                                                    </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">              </span><span class="n">sVariableName</span><span class="o">=</span><span class="nb">trim</span><span class="p">(</span><span class="n">this</span><span class="p">%</span><span class="n">netcdf_variable_name_string</span><span class="p">),</span><span class="w">                 </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">              </span><span class="n">sVariableUnits</span><span class="o">=</span><span class="n">units_string</span><span class="p">,</span><span class="w">                                          </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">              </span><span class="n">iNX</span><span class="o">=</span><span class="n">this</span><span class="p">%</span><span class="n">ncfile_in</span><span class="p">%</span><span class="n">iNX</span><span class="p">,</span><span class="w">                                               </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">              </span><span class="n">iNY</span><span class="o">=</span><span class="n">this</span><span class="p">%</span><span class="n">ncfile_in</span><span class="p">%</span><span class="n">iNY</span><span class="p">,</span><span class="w">                                               </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">              </span><span class="n">fX</span><span class="o">=</span><span class="n">this</span><span class="p">%</span><span class="n">ncfile_in</span><span class="p">%</span><span class="n">rX_Coords</span><span class="p">,</span><span class="w">                                          </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">              </span><span class="n">fY</span><span class="o">=</span><span class="n">this</span><span class="p">%</span><span class="n">ncfile_in</span><span class="p">%</span><span class="n">rY_Coords</span><span class="p">,</span><span class="w">                                          </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">              </span><span class="n">PROJ4_string</span><span class="o">=</span><span class="nb">trim</span><span class="p">(</span><span class="n">this</span><span class="p">%</span><span class="n">target_proj4_string</span><span class="p">),</span><span class="w">                          </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">              </span><span class="n">StartDate</span><span class="o">=</span><span class="n">SIM_DT</span><span class="p">%</span><span class="n">start</span><span class="p">,</span><span class="w">                                               </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">              </span><span class="n">EndDate</span><span class="o">=</span><span class="n">SIM_DT</span><span class="p">%</span><span class="k">end</span><span class="p">,</span><span class="w">                                                   </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">              </span><span class="n">executable_name</span><span class="o">=</span><span class="s2">&quot;SWBSTATS2&quot;</span><span class="p">,</span><span class="w">                                          </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">              </span><span class="n">filename_prefix</span><span class="o">=</span><span class="n">filename_prefix</span><span class="p">,</span><span class="w">                                      </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">              </span><span class="n">filename_modifier</span><span class="o">=</span><span class="n">this</span><span class="p">%</span><span class="n">filename_modifier_string</span><span class="w">                       </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                </span><span class="o">//</span><span class="s2">&quot;_&quot;</span><span class="o">//</span><span class="n">OUTPUT_FILES</span><span class="p">(</span><span class="n">stat_indx</span><span class="p">)%</span><span class="n">stats_description</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">      </span><span class="k">endif</span>
-
-<span class="k">    enddo</span>
-
-<span class="k">  end subroutine </span><span class="n">open_output_netcdf_files</span><span class="w"></span>
-</pre></div>
-
-    </section>
-    <br>
     
     </div>
   </div>
@@ -285,7 +212,7 @@
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-10-17T14:19:59.727997             </p>
+ on 2023-10-19T16:28:40.743458             </p>
           </div>
         </div>
         <br>

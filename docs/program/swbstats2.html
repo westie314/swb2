@@ -72,7 +72,7 @@
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip"
                  data-bs-placement="bottom" data-html="true"
-                 title="29.5% of total for programs.">290 statements</a>
+                 title="60.2% of total for programs.">309 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -125,8 +125,8 @@
             <a class="list-group-item" href="../program/swbstats2.html#variable-scompilationsystemstring~2">sCompilationSystemString</a>
             <a class="list-group-item" href="../program/swbstats2.html#variable-start_date_string">start_date_string</a>
             <a class="list-group-item" href="../program/swbstats2.html#variable-end_date_string">end_date_string</a>
-            <a class="list-group-item" href="../program/swbstats2.html#variable-icount~12">iCount</a>
-            <a class="list-group-item" href="../program/swbstats2.html#variable-iindex~6">iIndex</a>
+            <a class="list-group-item" href="../program/swbstats2.html#variable-icount~7">iCount</a>
+            <a class="list-group-item" href="../program/swbstats2.html#variable-iindex~4">iIndex</a>
             <a class="list-group-item" href="../program/swbstats2.html#variable-iindex_array">iIndex_array</a>
             <a class="list-group-item" href="../program/swbstats2.html#variable-ilen~2">iLen</a>
             <a class="list-group-item" href="../program/swbstats2.html#variable-start_date_dbl">start_date_dbl</a>
@@ -159,12 +159,6 @@
   
   
   
-    <div class="card card-primary">
-      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
-      <div class="list-group">
-        <a class="list-group-item" href="../program/swbstats2.html#src">swbstats2</a>
-      </div>
-    </div>
 
 
   </div>
@@ -179,17 +173,17 @@
             <li class="list-group-item">
               <ul class="list-inline">
                   <li class="list-inline-item"><a href='../module/fstring.html'>fstring</a></li>
-                  <li class="list-inline-item"><a href='../module/fstring_list.html'>fstring_list</a></li>
+                  <li class="list-inline-item"><a href='../module/constants_and_conversions.html'>constants_and_conversions</a></li>
                   <li class="list-inline-item"><a href='../module/exceptions.html'>exceptions</a></li>
-                  <li class="list-inline-item"><a href='../module/grid.html'>grid</a></li>
-                  <li class="list-inline-item"><a href='http://fortranwiki.org/fortran/show/iso_fortran_env'>iso_fortran_env</a></li>
-                  <li class="list-inline-item"><a href='../module/constants_and_conversions~2.html'>constants_and_conversions</a></li>
-                  <li class="list-inline-item"><a href='../module/simulation_datetime~2.html'>simulation_datetime</a></li>
-                  <li class="list-inline-item">version_control</li>
-                  <li class="list-inline-item"><a href='../module/netcdf4_support~2.html'>netcdf4_support</a></li>
-                  <li class="list-inline-item"><a href='http://fortranwiki.org/fortran/show/iso_c_binding'>iso_c_binding</a></li>
-                  <li class="list-inline-item"><a href='../module/swbstats2_support~2.html'>swbstats2_support</a></li>
+                  <li class="list-inline-item"><a href='../module/netcdf4_support.html'>netcdf4_support</a></li>
                   <li class="list-inline-item"><a href='../module/datetime.html'>datetime</a></li>
+                  <li class="list-inline-item"><a href='../module/simulation_datetime.html'>simulation_datetime</a></li>
+                  <li class="list-inline-item"><a href='../module/swbstats2_support.html'>swbstats2_support</a></li>
+                  <li class="list-inline-item"><a href='http://fortranwiki.org/fortran/show/iso_fortran_env'>iso_fortran_env</a></li>
+                  <li class="list-inline-item">version_control</li>
+                  <li class="list-inline-item"><a href='../module/fstring_list.html'>fstring_list</a></li>
+                  <li class="list-inline-item"><a href='../module/grid.html'>grid</a></li>
+                  <li class="list-inline-item"><a href='http://fortranwiki.org/fortran/show/iso_c_binding'>iso_c_binding</a></li>
               </ul>
             </li>
         </ul>
@@ -437,7 +431,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-icount~12"></span>
+              <span class="anchor" id="variable-icount~7"></span>
               integer(kind=c_int)
             </td>
             <td>
@@ -453,7 +447,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-iindex~6"></span>
+              <span class="anchor" id="variable-iindex~4"></span>
               integer(kind=c_int)
             </td>
             <td>
@@ -614,7 +608,7 @@
         <tr>
             <td>
               <span class="anchor" id="variable-swbstats"></span>
-              type(<a href='../type/swbstats_t~2.html'>SWBSTATS_T</a>)
+              type(<a href='../type/swbstats_t.html'>SWBSTATS_T</a>)
             </td>
             <td>
               
@@ -641,710 +635,6 @@
 
     
 
-    <section>
-    <h2 id="src">Source Code</h2>
-    <div class="highlight"><pre><span></span><span class="k">program </span><span class="n">swbstats2</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">use </span><span class="nb">iso_c_binding</span>
-<span class="nb">  </span><span class="k">use </span><span class="n">constants_and_conversions</span><span class="p">,</span><span class="w"> </span><span class="k">only</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">TRUE</span><span class="p">,</span><span class="w"> </span><span class="n">FALSE</span><span class="p">,</span><span class="w"> </span><span class="n">DATATYPE_INT</span><span class="p">,</span><span class="w">             </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                        </span><span class="n">DATATYPE_FLOAT</span><span class="p">,</span><span class="w"> </span><span class="n">BNDS</span><span class="p">,</span><span class="w"> </span><span class="n">asFloat</span><span class="p">,</span><span class="w">         </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                        </span><span class="n">OS_NATIVE_PATH_DELIMITER</span><span class="w"></span>
-<span class="w">  </span><span class="k">use </span><span class="n">exceptions</span><span class="p">,</span><span class="w"> </span><span class="k">only</span><span class="w">                </span><span class="p">:</span><span class="w"> </span><span class="n">assert</span><span class="p">,</span><span class="w"> </span><span class="n">die</span><span class="w"></span>
-<span class="w">  </span><span class="k">use </span><span class="n">datetime</span><span class="p">,</span><span class="w"> </span><span class="k">only</span><span class="w">                  </span><span class="p">:</span><span class="w"> </span><span class="n">DATETIME_T</span><span class="p">,</span><span class="w"> </span><span class="n">assignment</span><span class="p">(</span><span class="o">=</span><span class="p">),</span><span class="w"> </span><span class="n">operator</span><span class="p">(</span><span class="o">&gt;</span><span class="p">)</span><span class="w"></span>
-<span class="w">  </span><span class="k">use </span><span class="n">grid</span><span class="w"></span>
-<span class="w">  </span><span class="k">use </span><span class="n">netcdf4_support</span><span class="w"></span>
-<span class="w">  </span><span class="k">use </span><span class="n">simulation_datetime</span><span class="p">,</span><span class="w"> </span><span class="k">only</span><span class="w">       </span><span class="p">:</span><span class="w"> </span><span class="n">SIM_DT</span><span class="p">,</span><span class="w"> </span><span class="n">DATE_RANGE_T</span><span class="w"></span>
-<span class="w">  </span><span class="k">use </span><span class="n">fstring_list</span><span class="p">,</span><span class="w"> </span><span class="k">only</span><span class="w">              </span><span class="p">:</span><span class="w"> </span><span class="n">FSTRING_LIST_T</span><span class="p">,</span><span class="w">                         </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                        </span><span class="n">create_list</span><span class="w"></span>
-<span class="w">  </span><span class="k">use </span><span class="n">fstring</span><span class="w"></span>
-<span class="w">  </span><span class="k">use </span><span class="n">version_control</span><span class="p">,</span><span class="w"> </span><span class="k">only</span><span class="w">           </span><span class="p">:</span><span class="w"> </span><span class="n">SWB_VERSION</span><span class="p">,</span><span class="w"> </span><span class="n">GIT_COMMIT_HASH_STRING</span><span class="p">,</span><span class="w">   </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                        </span><span class="n">GIT_BRANCH_STRING</span><span class="p">,</span><span class="w"> </span><span class="n">COMPILE_DATE</span><span class="p">,</span><span class="w">       </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                        </span><span class="n">COMPILE_TIME</span><span class="p">,</span><span class="w"> </span><span class="n">SYSTEM_NAME</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">use </span><span class="n">iso_fortran_env</span><span class="p">,</span><span class="w"> </span><span class="k">only</span><span class="w">           </span><span class="p">:</span><span class="w"> </span><span class="n">OUTPUT_UNIT</span><span class="p">,</span><span class="w"> </span><span class="n">COMPILER_OPTIONS</span><span class="p">,</span><span class="w">         </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                        </span><span class="n">COMPILER_VERSION</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">use </span><span class="n">swbstats2_support</span><span class="w"></span>
-<span class="w">  </span><span class="k">implicit none</span>
-
-<span class="k">  </span><span class="kt">character</span><span class="w"> </span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">256</span><span class="p">)</span><span class="w">             </span><span class="kd">::</span><span class="w"> </span><span class="n">command_arg_str</span><span class="w"></span>
-<span class="w">  </span><span class="kt">character</span><span class="w"> </span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">256</span><span class="p">)</span><span class="w">             </span><span class="kd">::</span><span class="w"> </span><span class="n">temp_string</span><span class="p">,</span><span class="w"> </span><span class="n">sub_string</span><span class="w"></span>
-<span class="w">  </span><span class="kt">character</span><span class="w"> </span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">70</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">usage_string</span><span class="p">(:)</span><span class="w"></span>
-
-<span class="w">  </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">                </span><span class="kd">::</span><span class="w"> </span><span class="n">iNumArgs</span><span class="w"></span>
-<span class="w">  </span><span class="kt">character</span><span class="w"> </span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">1024</span><span class="p">)</span><span class="w">           </span><span class="kd">::</span><span class="w"> </span><span class="n">sCompilerFlags</span><span class="w"></span>
-<span class="w">  </span><span class="kt">character</span><span class="w"> </span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">256</span><span class="p">)</span><span class="w">            </span><span class="kd">::</span><span class="w"> </span><span class="n">sCompilerVersion</span><span class="w"></span>
-<span class="w">  </span><span class="kt">character</span><span class="w"> </span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">256</span><span class="p">)</span><span class="w">            </span><span class="kd">::</span><span class="w"> </span><span class="n">sVersionString</span><span class="w"></span>
-<span class="w">  </span><span class="kt">character</span><span class="w"> </span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">256</span><span class="p">)</span><span class="w">            </span><span class="kd">::</span><span class="w"> </span><span class="n">sGitHashString</span><span class="w"></span>
-<span class="w">  </span><span class="kt">character</span><span class="w"> </span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">256</span><span class="p">)</span><span class="w">            </span><span class="kd">::</span><span class="w"> </span><span class="n">sProgramName</span><span class="w"></span>
-<span class="w">  </span><span class="kt">character</span><span class="w"> </span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">256</span><span class="p">)</span><span class="w">            </span><span class="kd">::</span><span class="w"> </span><span class="n">sCompilationDateString</span><span class="w"></span>
-<span class="w">  </span><span class="kt">character</span><span class="w"> </span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">256</span><span class="p">)</span><span class="w">            </span><span class="kd">::</span><span class="w"> </span><span class="n">sCompilationSystemString</span><span class="w"></span>
-<span class="w">  </span><span class="kt">character</span><span class="w"> </span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">start_date_string</span><span class="w"></span>
-<span class="w">  </span><span class="kt">character</span><span class="w"> </span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">end_date_string</span><span class="w"></span>
-<span class="w">  </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">                </span><span class="kd">::</span><span class="w"> </span><span class="n">iCount</span><span class="w"></span>
-<span class="w">  </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">                </span><span class="kd">::</span><span class="w"> </span><span class="n">iIndex</span><span class="w"></span>
-<span class="w">  </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="w">   </span><span class="kd">::</span><span class="n">iIndex_array</span><span class="p">(:)</span><span class="w"></span>
-<span class="w">  </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">                </span><span class="kd">::</span><span class="w"> </span><span class="n">iLen</span><span class="w"></span>
-<span class="w">  </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_double</span><span class="p">)</span><span class="w">                </span><span class="kd">::</span><span class="w"> </span><span class="n">start_date_dbl</span><span class="w"></span>
-<span class="w">  </span><span class="kt">real</span><span class="w"> </span><span class="p">(</span><span class="kt">c_double</span><span class="p">)</span><span class="w">                </span><span class="kd">::</span><span class="w"> </span><span class="n">end_date_dbl</span><span class="w"></span>
-<span class="w">  </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">                </span><span class="kd">::</span><span class="w"> </span><span class="n">TIME_BNDS_VARID</span><span class="w"></span>
-<span class="w">  </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w">                </span><span class="kd">::</span><span class="w"> </span><span class="n">month_index</span><span class="w"></span>
-
-<span class="w">  </span><span class="kt">logical</span><span class="w"> </span><span class="p">(</span><span class="kt">c_bool</span><span class="p">)</span><span class="w">               </span><span class="kd">::</span><span class="w"> </span><span class="n">netcdf_active</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FALSE</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">type</span><span class="w"> </span><span class="p">(</span><span class="n">FSTRING_LIST_T</span><span class="p">)</span><span class="w">           </span><span class="kd">::</span><span class="w"> </span><span class="n">name_list</span><span class="w"></span>
-<span class="w">  </span><span class="k">type</span><span class="w"> </span><span class="p">(</span><span class="n">FSTRING_LIST_T</span><span class="p">)</span><span class="w">           </span><span class="kd">::</span><span class="w"> </span><span class="n">value_list</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">type</span><span class="w"> </span><span class="p">(</span><span class="n">SWBSTATS_T</span><span class="p">)</span><span class="w">             </span><span class="kd">::</span><span class="w"> </span><span class="n">swbstats</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">allocate</span><span class="p">(</span><span class="w"> </span><span class="n">swbstats</span><span class="p">%</span><span class="n">ncfile_in</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">  </span><span class="n">iNumArgs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">COMMAND_ARGUMENT_COUNT</span><span class="p">()</span><span class="w"></span>
-
-<span class="w">  </span><span class="n">sProgramName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;  SWB Statistics Calculator (SWBSTATS2), a companion to&quot;</span><span class="w"></span>
-<span class="w">  </span><span class="n">sVersionString</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;  Soil Water Balance Code version &quot;</span><span class="o">//</span><span class="nb">trim</span><span class="p">(</span><span class="w"> </span><span class="n">SWB_VERSION</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">  </span><span class="n">sCompilationDateString</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;     compilation date           : &quot;</span><span class="w">              </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                               </span><span class="o">//</span><span class="nb">trim</span><span class="p">(</span><span class="n">COMPILE_DATE</span><span class="p">)</span><span class="o">//</span><span class="s2">&quot; &quot;</span><span class="o">//</span><span class="nb">trim</span><span class="p">(</span><span class="n">COMPILE_TIME</span><span class="p">)</span><span class="w"></span>
-<span class="w">  </span><span class="n">sCompilationSystemString</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;     compiled on                : &quot;</span><span class="o">//</span><span class="nb">trim</span><span class="p">(</span><span class="n">SYSTEM_NAME</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w">     </span><span class="p">(</span><span class="n">SYSTEM_NAME</span><span class="w"> </span><span class="p">.</span><span class="n">containssimilar</span><span class="p">.</span><span class="w"> </span><span class="s2">&quot;Windows&quot;</span><span class="p">)</span><span class="w">                           </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">      </span><span class="p">.</span><span class="nb">or</span><span class="p">.</span><span class="w"> </span><span class="p">(</span><span class="n">SYSTEM_NAME</span><span class="w"> </span><span class="p">.</span><span class="n">containssimilar</span><span class="p">.</span><span class="w"> </span><span class="s2">&quot;Mingw&quot;</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">    </span><span class="n">OS_NATIVE_PATH_DELIMITER</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;\&quot;</span>
-<span class="s2">  else</span>
-<span class="s2">    OS_NATIVE_PATH_DELIMITER = &quot;</span><span class="o">/</span><span class="s2">&quot;</span>
-<span class="s2">  endif</span>
-
-<span class="s2">  sGitHashString = &quot;</span><span class="w">     </span><span class="n">Git</span><span class="w"> </span><span class="n">branch</span><span class="w"> </span><span class="nb">and </span><span class="n">commit</span><span class="w"> </span><span class="n">hash</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;                        &amp;</span>
-<span class="s2">                         //trim( adjustl(GIT_BRANCH_STRING ) )                 &amp;</span>
-<span class="s2">                         //&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;//trim( GIT_COMMIT_HASH_STRING )</span>
-
-<span class="s2">  iCount = max( len_trim( sVersionString ), len_trim( sGitHashString ) )</span>
-<span class="s2">  iCount = max( iCount, len_trim( sCompilationSystemString ) )</span>
-<span class="s2">  iCount = max( iCount, len_trim( sProgramName) )</span>
-
-<span class="s2">  write(unit=*, fmt=&quot;</span><span class="p">(</span><span class="o">/</span><span class="p">,</span><span class="n">a</span><span class="p">)</span><span class="s2">&quot;) repeat(&quot;</span><span class="o">-</span><span class="s2">&quot;,iCount + 4)</span>
-<span class="s2">  write(unit=*, fmt=&quot;</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="o">/</span><span class="p">)</span><span class="s2">&quot;) trim( sProgramName )</span>
-<span class="s2">  write(UNIT=*,FMT=&quot;</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="o">/</span><span class="p">)</span><span class="s2">&quot;) trim( sVersionString )</span>
-<span class="s2">  write(UNIT=*,FMT=&quot;</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="s2">&quot;) trim( sCompilationDateString )</span>
-<span class="s2">  write(UNIT=*,FMT=&quot;</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="s2">&quot;) trim( sCompilationSystemString )</span>
-<span class="s2">  write(UNIT=*,FMT=&quot;</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="s2">&quot;) trim( sGitHashString )</span>
-<span class="s2">  write(unit=*, fmt=&quot;</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="o">/</span><span class="p">)</span><span class="s2">&quot;) repeat(&quot;</span><span class="o">-</span><span class="s2">&quot;,iCount + 4)</span>
-
-<span class="s2">  if(iNumArgs == 0 ) then</span>
-
-<span class="s2">#ifdef __GFORTRAN__l</span>
-<span class="s2">    sCompilerFlags = COMPILER_OPTIONS()</span>
-<span class="s2">    sCompilerVersion = COMPILER_VERSION()</span>
-<span class="s2">    write(UNIT=*,FMT=&quot;</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="o">/</span><span class="p">)</span><span class="s2">&quot;) &quot;</span><span class="n">Compiled</span><span class="w"> </span><span class="n">with</span><span class="p">:</span><span class="w"> </span><span class="n">gfortran</span><span class="w"> </span><span class="p">(</span><span class="s2">&quot;//TRIM(sCompilerVersion)//&quot;</span><span class="p">)</span><span class="s2">&quot;</span>
-<span class="s2">    write(UNIT=*,FMT=&quot;</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="s2">&quot;) &quot;</span><span class="n">Compiler</span><span class="w"> </span><span class="n">flags</span><span class="p">:</span><span class="s2">&quot;</span>
-<span class="s2">    write(UNIT=*,FMT=&quot;</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="s2">&quot;) &quot;</span><span class="o">-------------------------------</span><span class="s2">&quot;</span>
-<span class="s2">    write(UNIT=*,FMT=&quot;</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="o">/</span><span class="p">)</span><span class="s2">&quot;) TRIM(sCompilerFlags)</span>
-<span class="s2">#endif</span>
-
-<span class="s2">#ifdef __INTEL_COMPILER</span>
-<span class="s2">    write(UNIT=*,FMT=&quot;</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="s2">&quot;) &quot;</span><span class="n">Compiled</span><span class="w"> </span><span class="n">with</span><span class="p">:</span><span class="w"> </span><span class="n">Intel</span><span class="w"> </span><span class="n">Fortran</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="s2">&quot; &amp;</span>
-<span class="s2">      //TRIM(asCharacter(__INTEL_COMPILER))</span>
-<span class="s2">      write(UNIT=*,FMT=&quot;</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="o">/</span><span class="p">)</span><span class="s2">&quot;) &quot;</span><span class="n">Compiler</span><span class="w"> </span><span class="n">build</span><span class="w"> </span><span class="n">date</span><span class="p">:</span><span class="s2">&quot;//TRIM(asCharacter(__INTEL_COMPILER_BUILD_DATE))</span>
-<span class="s2">#endif</span>
-
-<span class="s2">    allocate(usage_string(50))</span>
-
-<span class="s2">    usage_string = [                                                           &amp;</span>
-<span class="s2">     &quot;</span><span class="n">usage</span><span class="p">:</span><span class="w"> </span><span class="n">swbstats2</span><span class="w"> </span><span class="p">[</span><span class="k">options</span><span class="p">]</span><span class="w"> </span><span class="n">netcdf_file_name</span><span class="w">                           </span><span class="s2">&quot;, &amp;</span>
-<span class="s2">     &quot;</span><span class="w">                                                                      </span><span class="s2">&quot;, &amp;</span>
-<span class="s2">     &quot;</span><span class="w">  </span><span class="k">options</span><span class="p">:</span><span class="w">                                                            </span><span class="s2">&quot;, &amp;</span>
-<span class="s2">     &quot;</span><span class="w">                                                                      </span><span class="s2">&quot;, &amp;</span>
-<span class="s2">     &quot;</span><span class="w">  </span><span class="p">[</span><span class="w"> </span><span class="o">--</span><span class="n">output_prefix</span><span class="o">=</span><span class="w"> </span><span class="p">]</span><span class="w">                                                </span><span class="s2">&quot;, &amp;</span>
-<span class="s2">     &quot;</span><span class="w">    </span><span class="n">text</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">place</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">front</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">default</span><span class="w"> </span><span class="n">output</span><span class="w"> </span><span class="n">filename</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="w">          </span><span class="s2">&quot;, &amp;</span>
-<span class="s2">     &quot;</span><span class="w">  </span><span class="p">[</span><span class="w"> </span><span class="o">--</span><span class="n">annual_statistics</span><span class="w"> </span><span class="p">]</span><span class="w">                                             </span><span class="s2">&quot;, &amp;</span>
-<span class="s2">     &quot;</span><span class="w">    </span><span class="n">calculate</span><span class="w"> </span><span class="n">statistics</span><span class="w"> </span><span class="n">for</span><span class="w"> </span><span class="n">every</span><span class="w"> </span><span class="n">calendar</span><span class="w"> </span><span class="n">year</span><span class="w"> </span><span class="n">between</span><span class="w"> </span><span class="n">start</span><span class="w"> </span><span class="nb">and </span><span class="k">end</span><span class="s2">&quot;, &amp;</span>
-<span class="s2">     &quot;</span><span class="w">  </span><span class="p">[</span><span class="w"> </span><span class="o">--</span><span class="n">monthly_statistics</span><span class="w"> </span><span class="p">]</span><span class="w">                                            </span><span class="s2">&quot;, &amp;</span>
-<span class="s2">     &quot;</span><span class="w">    </span><span class="n">calculate</span><span class="w"> </span><span class="n">statistics</span><span class="w"> </span><span class="n">for</span><span class="w"> </span><span class="n">every</span><span class="w"> </span><span class="n">month</span><span class="w"> </span><span class="n">between</span><span class="w"> </span><span class="n">start</span><span class="w"> </span><span class="nb">and </span><span class="k">end</span><span class="w">        </span><span class="s2">&quot;, &amp;</span>
-<span class="s2">     &quot;</span><span class="w">  </span><span class="p">[</span><span class="w"> </span><span class="o">--</span><span class="n">daily_statistics</span><span class="w"> </span><span class="p">]</span><span class="w">                                              </span><span class="s2">&quot;, &amp;</span>
-<span class="s2">     &quot;</span><span class="w">    </span><span class="n">calculate</span><span class="w"> </span><span class="n">statistics</span><span class="w"> </span><span class="n">for</span><span class="w"> </span><span class="n">every</span><span class="w"> </span><span class="n">day</span><span class="w"> </span><span class="n">between</span><span class="w"> </span><span class="n">start</span><span class="w"> </span><span class="nb">and </span><span class="k">end</span><span class="w">          </span><span class="s2">&quot;, &amp;     </span>
-<span class="s2">     &quot;</span><span class="w">  </span><span class="p">[</span><span class="w"> </span><span class="o">--</span><span class="n">annualize_sums</span><span class="w"> </span><span class="p">]</span><span class="w">                                                </span><span class="s2">&quot;, &amp;</span>
-<span class="s2">     &quot;</span><span class="w">    </span><span class="n">express</span><span class="w"> </span><span class="n">sums</span><span class="w"> </span><span class="n">on</span><span class="w"> </span><span class="n">an</span><span class="w"> </span><span class="n">annual</span><span class="w"> </span><span class="n">basis</span><span class="w"> </span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">g</span><span class="p">.</span><span class="w"> </span><span class="n">inches</span><span class="w"> </span><span class="n">per</span><span class="w"> </span><span class="n">year</span><span class="p">)</span><span class="w">            </span><span class="s2">&quot;, &amp;</span>
-<span class="s2">     &quot;</span><span class="w">  </span><span class="p">[</span><span class="w"> </span><span class="o">--</span><span class="n">report_as_volume</span><span class="w"> </span><span class="p">]</span><span class="w">                                              </span><span class="s2">&quot;, &amp;</span>
-<span class="s2">     &quot;</span><span class="w">    </span><span class="n">express</span><span class="w"> </span><span class="n">statistics</span><span class="w"> </span><span class="n">as</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">volume</span><span class="w"> </span><span class="p">(</span><span class="n">cubic</span><span class="w"> </span><span class="n">meters</span><span class="p">)</span><span class="w">                     </span><span class="s2">&quot;, &amp;</span>
-<span class="s2">     &quot;</span><span class="w">  </span><span class="p">[</span><span class="w"> </span><span class="o">--</span><span class="n">report_in_meters</span><span class="w"> </span><span class="p">]</span><span class="w">                                              </span><span class="s2">&quot;, &amp;</span>
-<span class="s2">     &quot;</span><span class="w">    </span><span class="n">express</span><span class="w"> </span><span class="n">output</span><span class="w"> </span><span class="n">statistics</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="o">*</span><span class="n">meters</span><span class="o">*</span><span class="w">                             </span><span class="s2">&quot;, &amp;</span>
-<span class="s2">     &quot;</span><span class="w">  </span><span class="p">[</span><span class="w"> </span><span class="o">--</span><span class="n">slice</span><span class="o">=</span><span class="w"> </span><span class="p">]</span><span class="w">                                                        </span><span class="s2">&quot;, &amp;</span>
-<span class="s2">     &quot;</span><span class="w">    </span><span class="n">dates</span><span class="w"> </span><span class="n">over</span><span class="w"> </span><span class="n">which</span><span class="w"> </span><span class="n">statistics</span><span class="w"> </span><span class="n">should</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">calculated</span><span class="p">,</span><span class="w">                 </span><span class="s2">&quot;, &amp;</span>
-<span class="s2">     &quot;</span><span class="w">    </span><span class="n">with</span><span class="w"> </span><span class="n">start</span><span class="w"> </span><span class="n">date</span><span class="w"> </span><span class="nb">and </span><span class="k">end </span><span class="n">date</span><span class="w"> </span><span class="n">formatted</span><span class="w"> </span><span class="n">as</span><span class="w"> </span><span class="n">yyyy</span><span class="o">-</span><span class="n">mm</span><span class="o">-</span><span class="n">dd</span><span class="p">,</span><span class="n">yyyy</span><span class="o">-</span><span class="n">mm</span><span class="o">-</span><span class="n">dd</span><span class="w">   </span><span class="s2">&quot;, &amp;</span>
-<span class="s2">     &quot;</span><span class="w">  </span><span class="p">[</span><span class="w"> </span><span class="o">--</span><span class="n">stress_period_file</span><span class="o">=</span><span class="w"> </span><span class="p">]</span><span class="w">                                           </span><span class="s2">&quot;, &amp;</span>
-<span class="s2">     &quot;</span><span class="w">    </span><span class="n">comma</span><span class="o">-</span><span class="n">delimited</span><span class="w"> </span><span class="k">file </span><span class="n">containing</span><span class="w"> </span><span class="n">stress</span><span class="w"> </span><span class="n">period</span><span class="w"> </span><span class="n">start</span><span class="w"> </span><span class="nb">and</span><span class="w">           </span><span class="s2">&quot;, &amp;</span>
-<span class="s2">     &quot;</span><span class="w">    </span><span class="k">end </span><span class="n">date</span><span class="p">,</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">header</span><span class="w"> </span><span class="n">labels</span><span class="w"> </span><span class="nb">and </span><span class="n">comments</span><span class="w"> </span><span class="n">starting</span><span class="w"> </span><span class="n">with</span><span class="s1">&#39;#&#39;</span><span class="p">:</span><span class="w">       </span><span class="s2">&quot;, &amp;</span>
-<span class="s2">     &quot;</span><span class="w">      </span><span class="n">id</span><span class="p">,</span><span class="n">start_date</span><span class="p">,</span><span class="n">end_date</span><span class="w">                                          </span><span class="s2">&quot;, &amp;</span>
-<span class="s2">     &quot;</span><span class="w">      </span><span class="err">#</span><span class="mi">2</span><span class="p">,</span><span class="mi">1870</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">01</span><span class="p">,</span><span class="mi">1898</span><span class="o">-</span><span class="mi">12</span><span class="o">-</span><span class="mi">31</span><span class="w">                                        </span><span class="s2">&quot;, &amp;</span>
-<span class="s2">     &quot;</span><span class="w">      </span><span class="mi">5</span><span class="p">,</span><span class="mi">1920</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">01</span><span class="p">,</span><span class="mi">1925</span><span class="o">-</span><span class="mi">12</span><span class="o">-</span><span class="mi">31</span><span class="w">                                         </span><span class="s2">&quot;, &amp;</span>
-<span class="s2">     &quot;</span><span class="w">      </span><span class="mi">6</span><span class="p">,</span><span class="mi">1925</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">01</span><span class="p">,</span><span class="mi">1930</span><span class="o">-</span><span class="mi">12</span><span class="o">-</span><span class="mi">31</span><span class="w">                                         </span><span class="s2">&quot;, &amp;</span>
-<span class="s2">     &quot;</span><span class="w">  </span><span class="p">[</span><span class="w"> </span><span class="o">--</span><span class="n">comparison_scale_factor</span><span class="o">=</span><span class="w"> </span><span class="p">]</span><span class="w">                                      </span><span class="s2">&quot;, &amp;</span>
-<span class="s2">     &quot;</span><span class="w">    </span><span class="k">value </span><span class="n">to</span><span class="w"> </span><span class="n">multiply</span><span class="w"> </span><span class="n">comparison</span><span class="w"> </span><span class="n">grid</span><span class="w"> </span><span class="n">by</span><span class="w"> </span><span class="n">before</span><span class="w"> </span><span class="n">calculating</span><span class="w"> </span><span class="n">statistics</span><span class="s2">&quot;, &amp;</span>
-<span class="s2">     &quot;</span><span class="w">  </span><span class="p">[</span><span class="w"> </span><span class="o">--</span><span class="n">comparison_grid</span><span class="o">=</span><span class="w"> </span><span class="p">]</span><span class="w">                                              </span><span class="s2">&quot;, &amp;</span>
-<span class="s2">     &quot;</span><span class="w">    </span><span class="n">name</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="kt">real</span><span class="o">-</span><span class="n">valued</span><span class="w"> </span><span class="n">grid</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">compare</span><span class="w"> </span><span class="n">SWB</span><span class="w"> </span><span class="n">output</span><span class="w"> </span><span class="n">against</span><span class="w">            </span><span class="s2">&quot;, &amp;</span>
-<span class="s2">     &quot;</span><span class="w">  </span><span class="p">[</span><span class="w"> </span><span class="o">--</span><span class="n">comparison_period_file</span><span class="o">=</span><span class="w"> </span><span class="p">]</span><span class="w">                                       </span><span class="s2">&quot;, &amp;</span>
-<span class="s2">     &quot;</span><span class="w">    </span><span class="n">comma</span><span class="o">-</span><span class="n">delimited</span><span class="w"> </span><span class="k">file </span><span class="n">containing</span><span class="w"> </span><span class="n">comparison</span><span class="w"> </span><span class="n">period</span><span class="w"> </span><span class="n">start</span><span class="w"> </span><span class="nb">and</span><span class="w">       </span><span class="s2">&quot;, &amp;</span>
-<span class="s2">     &quot;</span><span class="w">    </span><span class="k">end </span><span class="n">date</span><span class="p">,</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">header</span><span class="w"> </span><span class="n">labels</span><span class="w"> </span><span class="nb">and </span><span class="n">comments</span><span class="w"> </span><span class="n">starting</span><span class="w"> </span><span class="n">with</span><span class="s1">&#39;#&#39;</span><span class="p">:</span><span class="w">       </span><span class="s2">&quot;, &amp;</span>
-<span class="s2">     &quot;</span><span class="w">      </span><span class="n">id</span><span class="p">,</span><span class="n">start_date</span><span class="p">,</span><span class="n">end_date</span><span class="p">,</span><span class="n">comparison_grid_filename</span><span class="w">                 </span><span class="s2">&quot;, &amp;</span>
-<span class="s2">     &quot;</span><span class="w">      </span><span class="err">#</span><span class="mi">2</span><span class="p">,</span><span class="mi">1870</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">01</span><span class="p">,</span><span class="mi">1898</span><span class="o">-</span><span class="mi">12</span><span class="o">-</span><span class="mi">31</span><span class="p">,</span><span class="n">comparison_file_period_2</span><span class="p">.</span><span class="n">asc</span><span class="w">           </span><span class="s2">&quot;, &amp;</span>
-<span class="s2">     &quot;</span><span class="w">      </span><span class="mi">5</span><span class="p">,</span><span class="mi">1920</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">01</span><span class="p">,</span><span class="mi">1925</span><span class="o">-</span><span class="mi">12</span><span class="o">-</span><span class="mi">31</span><span class="p">,</span><span class="n">comparison_file_period_5</span><span class="p">.</span><span class="n">asc</span><span class="w">            </span><span class="s2">&quot;, &amp;</span>
-<span class="s2">     &quot;</span><span class="w">      </span><span class="mi">6</span><span class="p">,</span><span class="mi">1925</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">01</span><span class="p">,</span><span class="mi">1930</span><span class="o">-</span><span class="mi">12</span><span class="o">-</span><span class="mi">31</span><span class="p">,</span><span class="n">comparison_file_period_6</span><span class="p">.</span><span class="n">asc</span><span class="w">            </span><span class="s2">&quot;, &amp;</span>
-<span class="s2">     &quot;</span><span class="w">  </span><span class="p">[</span><span class="w"> </span><span class="o">--</span><span class="n">zone_grid</span><span class="o">=</span><span class="w"> </span><span class="p">]</span><span class="w">                                                    </span><span class="s2">&quot;, &amp;</span>
-<span class="s2">     &quot;</span><span class="w">    </span><span class="n">name</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="kt">integer</span><span class="o">-</span><span class="n">valued</span><span class="w"> </span><span class="n">grid</span><span class="w"> </span><span class="n">for</span><span class="w"> </span><span class="n">which</span><span class="w"> </span><span class="n">zonal</span><span class="w"> </span><span class="n">statistics</span><span class="w"> </span><span class="n">are</span><span class="w"> </span><span class="n">desired</span><span class="s2">&quot;, &amp;</span>
-<span class="s2">     &quot;</span><span class="w">  </span><span class="p">[</span><span class="w"> </span><span class="o">--</span><span class="n">zone_period_file</span><span class="o">=</span><span class="w"> </span><span class="p">]</span><span class="w">                                             </span><span class="s2">&quot;, &amp;</span>
-<span class="s2">     &quot;</span><span class="w">    </span><span class="n">comma</span><span class="o">-</span><span class="n">delimited</span><span class="w"> </span><span class="k">file </span><span class="n">containing</span><span class="w"> </span><span class="n">calculation</span><span class="w"> </span><span class="n">period</span><span class="w"> </span><span class="n">start</span><span class="w"> </span><span class="nb">and</span><span class="w">      </span><span class="s2">&quot;, &amp;</span>
-<span class="s2">     &quot;</span><span class="w">    </span><span class="k">end </span><span class="n">date</span><span class="p">,</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">header</span><span class="w"> </span><span class="n">labels</span><span class="w"> </span><span class="nb">and </span><span class="n">comments</span><span class="w"> </span><span class="n">starting</span><span class="w"> </span><span class="n">with</span><span class="s1">&#39;#&#39;</span><span class="p">:</span><span class="w">       </span><span class="s2">&quot;, &amp;</span>
-<span class="s2">     &quot;</span><span class="w">      </span><span class="n">id</span><span class="p">,</span><span class="n">start_date</span><span class="p">,</span><span class="n">end_date</span><span class="p">,</span><span class="n">zone_grid_filename</span><span class="w">                       </span><span class="s2">&quot;, &amp;</span>
-<span class="s2">     &quot;</span><span class="w">      </span><span class="err">#</span><span class="mi">2</span><span class="p">,</span><span class="mi">1870</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">01</span><span class="p">,</span><span class="mi">1898</span><span class="o">-</span><span class="mi">12</span><span class="o">-</span><span class="mi">31</span><span class="p">,</span><span class="n">zone_grid_file_period_2</span><span class="p">.</span><span class="n">asc</span><span class="w">            </span><span class="s2">&quot;, &amp;</span>
-<span class="s2">     &quot;</span><span class="w">      </span><span class="mi">5</span><span class="p">,</span><span class="mi">1920</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">01</span><span class="p">,</span><span class="mi">1925</span><span class="o">-</span><span class="mi">12</span><span class="o">-</span><span class="mi">31</span><span class="p">,</span><span class="n">zone_grid_file_period_5</span><span class="p">.</span><span class="n">asc</span><span class="w">             </span><span class="s2">&quot;, &amp;</span>
-<span class="s2">     &quot;</span><span class="w">      </span><span class="mi">6</span><span class="p">,</span><span class="mi">1925</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">01</span><span class="p">,</span><span class="mi">1930</span><span class="o">-</span><span class="mi">12</span><span class="o">-</span><span class="mi">31</span><span class="p">,</span><span class="n">zone_grid_file_period_6</span><span class="p">.</span><span class="n">asc</span><span class="w">             </span><span class="s2">&quot;, &amp;</span>
-<span class="s2">     &quot;</span><span class="w">  </span><span class="p">[</span><span class="w"> </span><span class="o">--</span><span class="err">{</span><span class="n">no_</span><span class="err">}</span><span class="n">netcdf_output</span><span class="w"> </span><span class="p">]</span><span class="w">                                            </span><span class="s2">&quot;, &amp;</span>
-<span class="s2">     &quot;</span><span class="w">    </span><span class="n">toggle</span><span class="w"> </span><span class="n">whether</span><span class="w"> </span><span class="n">netCDF</span><span class="w"> </span><span class="k">file is target </span><span class="n">for</span><span class="w"> </span><span class="n">gridded</span><span class="w"> </span><span class="n">output</span><span class="w">           </span><span class="s2">&quot;, &amp;</span>
-<span class="s2">     &quot;</span><span class="w">  </span><span class="p">[</span><span class="w"> </span><span class="o">--</span><span class="err">{</span><span class="n">no_</span><span class="err">}</span><span class="n">arcgrid_output</span><span class="w"> </span><span class="p">]</span><span class="w">                                           </span><span class="s2">&quot;, &amp;</span>
-<span class="s2">     &quot;</span><span class="w">    </span><span class="n">toggle</span><span class="w"> </span><span class="n">whether</span><span class="w"> </span><span class="n">an</span><span class="w"> </span><span class="n">ASCII</span><span class="w"> </span><span class="n">Arc</span><span class="w"> </span><span class="n">Grid</span><span class="w"> </span><span class="k">is target </span><span class="n">for</span><span class="w"> </span><span class="n">gridded</span><span class="w"> </span><span class="n">output</span><span class="w">     </span><span class="s2">&quot;  &amp;</span>
-<span class="s2">     ]</span>
-
-<span class="s2">     do iIndex=1,ubound(usage_string,1)</span>
-<span class="s2">       write(unit=*, fmt=&quot;</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="s2">&quot;) trim(usage_string(iIndex))</span>
-<span class="s2">     enddo</span>
-
-<span class="s2">    stop</span>
-
-<span class="s2">  end if</span>
-
-<span class="s2">  output_files(STATS_SUM)%output_active = TRUE</span>
-<span class="s2">  output_files(STATS_MEAN)%output_active = TRUE</span>
-
-<span class="s2">  call swbstats%slice_start_date%setDateFormat(&quot;</span><span class="n">YYYY</span><span class="o">-</span><span class="n">MM</span><span class="o">-</span><span class="n">DD</span><span class="s2">&quot;)</span>
-<span class="s2">  call swbstats%slice_end_date%setDateFormat(&quot;</span><span class="n">YYYY</span><span class="o">-</span><span class="n">MM</span><span class="o">-</span><span class="n">DD</span><span class="s2">&quot;)</span>
-<span class="s2">  swbstats%filename_modifier_string = &quot;&quot;</span>
-
-<span class="s2">  do iIndex=1, iNumArgs</span>
-
-<span class="s2">    call GET_COMMAND_ARGUMENT( iIndex, command_arg_str )</span>
-
-<span class="s2">    if ( command_arg_str .containssimilar. &quot;</span><span class="n">comparison_scale_factor</span><span class="s2">&quot; ) then</span>
-
-<span class="s2">      sub_string = right(command_arg_str, substring=&quot;</span><span class="o">=</span><span class="s2">&quot;)</span>
-
-<span class="s2">      swbstats%comparison_grid_conversion_factor = asFloat(sub_string)</span>
-
-<span class="s2">    elseif ( command_arg_str .containssimilar. &quot;</span><span class="n">output_prefix</span><span class="s2">&quot; ) then</span>
-
-<span class="s2">        sub_string = right(command_arg_str, substring=&quot;</span><span class="o">=</span><span class="s2">&quot;)</span>
-<span class="s2">  </span>
-<span class="s2">        swbstats%output_file_prefix = trim(sub_string)</span>
-<span class="s2">  </span>
-<span class="s2">    elseif ( command_arg_str .containssimilar. &quot;</span><span class="n">annual_statistics</span><span class="s2">&quot; ) then</span>
-
-<span class="s2">      swbstats%calculation_time_period = CALC_PERIOD_ANNUAL</span>
-<span class="s2">      swbstats%filename_modifier_string = &quot;</span><span class="n">YEARLY</span><span class="s2">&quot;</span>
-
-<span class="s2">    elseif ( command_arg_str .containssimilar. &quot;</span><span class="n">daily_statistics</span><span class="s2">&quot; ) then</span>
-
-<span class="s2">      swbstats%calculation_time_period = CALC_PERIOD_DAILY</span>
-<span class="s2">      swbstats%filename_modifier_string = &quot;</span><span class="n">DAILY</span><span class="s2">&quot;</span>
-
-<span class="s2">    elseif ( command_arg_str .containssimilar. &quot;</span><span class="n">monthly_statistics</span><span class="s2">&quot; ) then</span>
-
-<span class="s2">      swbstats%calculation_time_period = CALC_PERIOD_MONTHLY</span>
-<span class="s2">      swbstats%filename_modifier_string = &quot;</span><span class="n">MONTHLY</span><span class="s2">&quot;</span>
-
-<span class="s2">    elseif ( command_arg_str .containssimilar. &quot;</span><span class="n">dump_options</span><span class="s2">&quot; ) then</span>
-
-<span class="s2">      swbstats%dump_options_to_screen = TRUE</span>
-
-<span class="s2">    elseif ( command_arg_str .containssimilar. &quot;</span><span class="n">report_as_volume</span><span class="s2">&quot; ) then</span>
-
-<span class="s2">      swbstats%report_as_volume = TRUE</span>
-
-<span class="s2">    elseif ( command_arg_str .containssimilar. &quot;</span><span class="n">report_in_meters</span><span class="s2">&quot; ) then</span>
-
-<span class="s2">      swbstats%report_in_meters = TRUE</span>
-
-<span class="s2">    elseif ( command_arg_str .containssimilar. &quot;</span><span class="n">annualize_sums</span><span class="s2">&quot; ) then</span>
-
-<span class="s2">      swbstats%annualize_stats = TRUE</span>
-
-<span class="s2">    elseif ( command_arg_str .containssimilar. &quot;</span><span class="n">stress_period_file</span><span class="s2">&quot; ) then</span>
-
-<span class="s2">      swbstats%calculation_time_period = CALC_PERIOD_SLICE_MULTIPLE</span>
-<span class="s2">      swbstats%stress_period_filename = right(command_arg_str, substring=&quot;</span><span class="o">=</span><span class="s2">&quot;)</span>
-<span class="s2">      call swbstats%read_date_range_file(                                            &amp;</span>
-<span class="s2">                                    csv_filename=swbstats%stress_period_filename,    &amp;</span>
-<span class="s2">                                    date_range_id_list=swbstats%date_range_id_list,  &amp;</span>
-<span class="s2">                                    start_date_list=swbstats%start_date_list,        &amp;</span>
-<span class="s2">                                    end_date_list=swbstats%end_date_list )</span>
-<span class="s2">      swbstats%filename_modifier_string = &quot;</span><span class="n">STRESS_PERIOD_STATS</span><span class="s2">&quot;</span>
-
-<span class="s2">    elseif ( command_arg_str .containssimilar. &quot;</span><span class="n">zone_period_file</span><span class="s2">&quot; ) then</span>
-
-<span class="s2">      swbstats%calculation_time_period = CALC_PERIOD_SLICE_MULTIPLE</span>
-<span class="s2">      swbstats%multiple_zone_grids = TRUE</span>
-<span class="s2">      swbstats%calc_zonal_stats    = TRUE</span>
-<span class="s2">      swbstats%write_csv           = TRUE</span>
-
-<span class="s2">      swbstats%zone_period_filename = right(command_arg_str, substring=&quot;</span><span class="o">=</span><span class="s2">&quot;)</span>
-<span class="s2">      call swbstats%read_zone_period_file(                                                   &amp;</span>
-<span class="s2">                                  csv_filename=swbstats%zone_period_filename ,               &amp;</span>
-<span class="s2">                                  date_range_id_list=swbstats%date_range_id_list,            &amp;</span>
-<span class="s2">                                  start_date_list=swbstats%start_date_list,                  &amp;</span>
-<span class="s2">                                  end_date_list=swbstats%end_date_list,                      &amp;</span>
-<span class="s2">                                  zonal_stats_grid_file_list=swbstats%zone_grid_file_list )</span>
-
-<span class="s2">    elseif ( command_arg_str .containssimilar. &quot;</span><span class="n">comparison_period_file</span><span class="s2">&quot; ) then</span>
-
-<span class="s2">      swbstats%calculation_time_period = CALC_PERIOD_SLICE_MULTIPLE</span>
-<span class="s2">      swbstats%multiple_comparison_grids = TRUE</span>
-<span class="s2">      swbstats%compare_to_obs_values     = TRUE</span>
-<span class="s2">      swbstats%write_csv                 = TRUE</span>
-<span class="s2">      swbstats%filename_modifier_string = &quot;</span><span class="n">COMPARISON_PERIOD_STATS</span><span class="s2">&quot;</span>
-
-<span class="s2">      swbstats%comparison_period_filename = right(command_arg_str, substring=&quot;</span><span class="o">=</span><span class="s2">&quot;)</span>
-<span class="s2">      call swbstats%read_comparison_period_file(                                                  &amp;</span>
-<span class="s2">                                    csv_filename=swbstats%comparison_period_filename,             &amp;</span>
-<span class="s2">                                    date_range_id_list=swbstats%date_range_id_list,               &amp;</span>
-<span class="s2">                                    start_date_list=swbstats%start_date_list,                     &amp;</span>
-<span class="s2">                                    end_date_list=swbstats%end_date_list,                         &amp;</span>
-<span class="s2">                                    comparison_grid_file_list=swbstats%comparison_grid_file_list )</span>
-
-<span class="s2">    elseif ( command_arg_str .containssimilar. &quot;</span><span class="n">slice</span><span class="s2">&quot; ) then</span>
-
-<span class="s2">      sub_string          = right(command_arg_str, substring=&quot;</span><span class="o">=</span><span class="s2">&quot;)</span>
-<span class="s2">      start_date_string   = left(sub_string, substring=&quot;</span><span class="p">,</span><span class="s2">&quot;)</span>
-<span class="s2">      end_date_string     = right(sub_string, substring=&quot;</span><span class="p">,</span><span class="s2">&quot;)</span>
-
-<span class="s2">      swbstats%calculation_time_period = CALC_PERIOD_SLICE_SINGLE</span>
-
-<span class="s2">      call swbstats%slice_start_date%parseDate(start_date_string)</span>
-<span class="s2">      call swbstats%slice_start_date%calcGregorianDate()</span>
-
-<span class="s2">      call swbstats%slice_end_date%parseDate(end_date_string)</span>
-<span class="s2">      call swbstats%slice_end_date%calcGregorianDate()</span>
-<span class="s2">      swbstats%filename_modifier_string = &quot;</span><span class="n">SLICE_STATS</span><span class="o">--</span><span class="s2">&quot;                      &amp;</span>
-<span class="s2">        //swbstats%slice_start_date%prettydate()//&quot;</span><span class="err">_</span><span class="n">to_</span><span class="s2">&quot;                       &amp;</span>
-<span class="s2">        //swbstats%slice_end_date%prettydate()</span>
-
-<span class="s2">    elseif ( command_arg_str .containssimilar. &quot;</span><span class="n">zone_grid</span><span class="o">=</span><span class="s2">&quot; ) then</span>
-
-<span class="s2">      swbstats%zone_grid_filename = right(command_arg_str, substring=&quot;</span><span class="o">=</span><span class="s2">&quot;)</span>
-<span class="s2">      swbstats%calc_zonal_stats   = TRUE</span>
-<span class="s2">      swbstats%write_csv          = TRUE</span>
-
-<span class="s2">    elseif ( command_arg_str .containssimilar. &quot;</span><span class="n">zone_grid2</span><span class="o">=</span><span class="s2">&quot; ) then</span>
-
-<span class="s2">      swbstats%zone_grid2_filename = right(command_arg_str, substring=&quot;</span><span class="o">=</span><span class="s2">&quot;)</span>
-<span class="s2">      swbstats%calc_zonal_stats   = TRUE</span>
-<span class="s2">      swbstats%write_csv          = TRUE</span>
-
-<span class="s2">    elseif ( command_arg_str .containssimilar. &quot;</span><span class="n">comparison_grid</span><span class="s2">&quot; ) then</span>
-
-<span class="s2">      swbstats%comparison_grid_filename = right(command_arg_str, substring=&quot;</span><span class="o">=</span><span class="s2">&quot;)</span>
-<span class="s2">      swbstats%compare_to_obs_values    = TRUE</span>
-<span class="s2">      swbstats%write_csv                = TRUE</span>
-
-<span class="s2">    elseif ( command_arg_str .strapprox. &quot;</span><span class="o">--</span><span class="n">netcdf_output</span><span class="s2">&quot;) then</span>
-
-<span class="s2">      output_files%write_netcdf             = TRUE</span>
-
-<span class="s2">    elseif ( command_arg_str .strapprox. &quot;</span><span class="o">--</span><span class="n">no_netcdf_output</span><span class="s2">&quot; ) then</span>
-
-<span class="s2">      output_files%write_netcdf             = FALSE</span>
-
-<span class="s2">    elseif ( command_arg_str .strapprox. &quot;</span><span class="o">--</span><span class="n">arcgrid_output</span><span class="s2">&quot; ) then</span>
-
-<span class="s2">      output_files%write_arcgrid            = TRUE</span>
-
-<span class="s2">    elseif ( command_arg_str .strapprox. &quot;</span><span class="o">--</span><span class="n">no_arcgrid_output</span><span class="s2">&quot; ) then</span>
-
-<span class="s2">      output_files%write_arcgrid            = FALSE</span>
-
-<span class="s2">    elseif ( command_arg_str .contains. &quot;</span><span class="o">--</span><span class="s2">&quot; ) then</span>
-
-<span class="s2">       ! ifort barfs if &#39;sQuote&#39; embedded in stop statement. revert to print *</span>
-<span class="s2">       print *, &quot;</span><span class="n">Unknown</span><span class="w"> </span><span class="n">swbstats2</span><span class="w"> </span><span class="n">option</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;//sQuote(command_arg_str)//&quot;</span><span class="p">.</span><span class="s2">&quot;</span>
-<span class="s2">       stop    </span>
-<span class="s2">    </span>
-<span class="s2">    else</span>
-
-<span class="s2">      ! no match on the command-line argument flags; must be the netCDF file</span>
-<span class="s2">      swbstats%netcdf_input_filename = trim(command_arg_str)</span>
-
-<span class="s2">      call netcdf_open_and_prepare_for_merging( swbstats%ncfile_in,             &amp;</span>
-<span class="s2">                                                swbstats%netcdf_input_filename, &amp;</span>
-<span class="s2">                                                guess_z_var_name=TRUE )</span>
-
-<span class="s2">      ! extract integer start and end Julian dates from netCDF file</span>
-<span class="s2">      start_date_dbl = real( swbstats%ncfile_in%iFirstDayJD, c_double )</span>
-<span class="s2">      end_date_dbl = real( swbstats%ncfile_in%iLastDayJD, c_double )</span>
-
-<span class="s2">      ! populate datetime data structure</span>
-<span class="s2">      call swbstats%data_start_date%setJulianDate(start_date_dbl)</span>
-<span class="s2">      call swbstats%data_start_date%calcGregorianDate()</span>
-<span class="s2">      call swbstats%data_end_date%setJulianDate(end_date_dbl)</span>
-<span class="s2">      call swbstats%data_end_date%calcGregorianDate()</span>
-
-<span class="s2">      swbstats%netcdf_input_file_is_open = TRUE</span>
-
-<span class="s2">    endif</span>
-
-<span class="s2">  enddo</span>
-
-<span class="s2">  if (.not. swbstats%netcdf_input_file_is_open)                                   &amp;</span>
-<span class="s2">    stop (&quot;</span><span class="n">No</span><span class="w"> </span><span class="n">netCDF</span><span class="w"> </span><span class="k">file </span><span class="n">was</span><span class="w"> </span><span class="n">specified</span><span class="w"> </span><span class="nb">or </span><span class="n">there</span><span class="w"> </span><span class="n">was</span><span class="w"> </span><span class="n">an</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="n">opening</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="k">file</span><span class="p">.</span><span class="s2">&quot;)</span>
-
-<span class="s2">!----------------------------------------------------------------------------</span>
-<span class="s2">! end of argument processing; now take action based on the options selected</span>
-<span class="s2">!----------------------------------------------------------------------------</span>
-
-<span class="s2">  ! get the attributes associated with the coordinate reference system (CRS) variable  </span>
-<span class="s2">  call netcdf_get_attribute_list_for_variable( NCFILE=swbstats%ncfile_in,              &amp;</span>
-<span class="s2">                                               variable_name=&quot;</span><span class="n">crs</span><span class="s2">&quot;,  &amp;</span>
-<span class="s2">                                               attribute_name_list=name_list, &amp;</span>
-<span class="s2">                                               attribute_value_list=value_list )</span>
-
-<span class="s2">  ! extract PROJ4 string from netCDF file</span>
-<span class="s2">  iIndex_array = name_list%which(&quot;</span><span class="n">proj4_string</span><span class="s2">&quot;)</span>
-<span class="s2">  temp_string = value_list%get( iIndex_array(1) )</span>
-<span class="s2">  swbstats%target_proj4_string = trim(temp_string)</span>
-
-<span class="s2">  swbstats%netcdf_variable_name_string = trim(swbstats%ncfile_in%pNC_VAR(NC_Z)%sVariableName)</span>
-
-<span class="s2">  ! get the attributes associated with the SWB2 output variable</span>
-<span class="s2">  call netcdf_get_attribute_list_for_variable(                                 &amp;</span>
-<span class="s2">                   NCFILE=swbstats%ncfile_in,                                  &amp;</span>
-<span class="s2">                   variable_name=swbstats%netcdf_variable_name_string,         &amp;</span>
-<span class="s2">                   attribute_name_list=name_list,                              &amp;</span>
-<span class="s2">                   attribute_value_list=value_list )</span>
-
-<span class="s2">  ! extract units description string from netCDF file</span>
-<span class="s2">  iIndex_array = name_list%which(&quot;</span><span class="n">units</span><span class="s2">&quot;)</span>
-<span class="s2">  swbstats%netcdf_variable_units_string = value_list%get( iIndex_array(1) )</span>
-
-<span class="s2">  ! create working grids with dimensions extracted from netCDF file being munged</span>
-<span class="s2">  call swbstats%create_working_grids()</span>
-
-<span class="s2">  call RSTAT%initialize(NX=swbstats%ncfile_in%iNX,           &amp;</span>
-<span class="s2">                        NY=swbstats%ncfile_in%iNY,           &amp;</span>
-<span class="s2">                        X0=swbstats%ncfile_in%rX(0),         &amp;</span>
-<span class="s2">                        Y0=swbstats%ncfile_in%rY(0),         &amp;</span>
-<span class="s2">                        X1=swbstats%ncfile_in%rX(1),         &amp;</span>
-<span class="s2">                        Y1=swbstats%ncfile_in%rY(1),         &amp;</span>
-<span class="s2">                        nodata_value=-9999._c_double)</span>
-
-<span class="s2">  ! if user wants annual or monthly statistics, calculate a list of annual or</span>
-<span class="s2">  ! monthly starting and ending dates for each time slice</span>
-<span class="s2">  if (swbstats%calculation_time_period == CALC_PERIOD_ANNUAL) then</span>
-
-<span class="s2">    call swbstats%create_date_list_for_annual_statistics()</span>
-
-<span class="s2">  elseif (swbstats%calculation_time_period == CALC_PERIOD_MONTHLY) then</span>
-
-<span class="s2">    call swbstats%create_date_list_for_monthly_statistics()</span>
-<span class="s2">    call swbstats%create_monthly_working_grids()</span>
-
-<span class="s2">    do month_index=1,12</span>
-
-<span class="s2">      call MON_STAT(month_index)%initialize(NX=swbstats%ncfile_in%iNX,           &amp;</span>
-<span class="s2">                                            NY=swbstats%ncfile_in%iNY,           &amp;</span>
-<span class="s2">                                            X0=swbstats%ncfile_in%rX(0),         &amp;</span>
-<span class="s2">                                            Y0=swbstats%ncfile_in%rY(0),         &amp;</span>
-<span class="s2">                                            X1=swbstats%ncfile_in%rX(1),         &amp;</span>
-<span class="s2">                                            Y1=swbstats%ncfile_in%rY(1),         &amp;</span>
-<span class="s2">                                            nodata_value=-9999._c_double)</span>
-
-<span class="s2">    enddo  </span>
-
-<span class="s2">  elseif (swbstats%calculation_time_period == CALC_PERIOD_DAILY) then</span>
-
-<span class="s2">    call swbstats%create_date_list_for_daily_statistics()</span>
-
-<span class="s2">  endif</span>
-
-<span class="s2">  if (swbstats%report_in_meters) then</span>
-
-<span class="s2">    ! set unit conversions needed to obtain output units of &quot;</span><span class="n">meters</span><span class="s2">&quot;</span>
-<span class="s2">    if (swbstats%netcdf_variable_units_string .containssimilar. &quot;</span><span class="n">inch</span><span class="s2">&quot;) then</span>
-<span class="s2">      swbstats%unit_conversion_factor = 0.0254_c_double</span>
-<span class="s2">    elseif (swbstats%netcdf_variable_units_string .containssimilar. &quot;</span><span class="n">cm</span><span class="s2">&quot;) then</span>
-<span class="s2">      swbstats%unit_conversion_factor = 0.01_c_double</span>
-<span class="s2">    elseif (swbstats%netcdf_variable_units_string .containssimilar. &quot;</span><span class="n">mm</span><span class="s2">&quot;) then</span>
-<span class="s2">      swbstats%unit_conversion_factor = 0.001_c_double</span>
-<span class="s2">    else</span>
-<span class="s2">      call die(&quot;</span><span class="n">Was</span><span class="w"> </span><span class="n">attempting</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">determine</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">output</span><span class="w"> </span><span class="n">unit</span><span class="w"> </span><span class="n">conversion</span><span class="w"> </span><span class="n">factor</span><span class="p">,</span><span class="s2">&quot; &amp;</span>
-<span class="s2">      //&quot;</span><span class="w"> </span><span class="n">but</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">netCDF</span><span class="w"> </span><span class="n">variable</span><span class="w"> </span><span class="n">has</span><span class="w"> </span><span class="n">units</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="s2">&quot;                                &amp;</span>
-<span class="s2">      //sQuote(swbstats%netcdf_variable_units_string)//&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">which</span><span class="w"> </span><span class="n">cannot</span><span class="s2">&quot;         &amp;</span>
-<span class="s2">      //&quot;</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">converted</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">units</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="s1">&#39;meters&#39;</span><span class="p">.</span><span class="s2">&quot;)</span>
-<span class="s2">    endif</span>
-
-<span class="s2">    swbstats%filename_modifier_string = trim(swbstats%filename_modifier_string) &amp;</span>
-<span class="s2">                                       //&quot;</span><span class="err">__</span><span class="n">meters</span><span class="s2">&quot;</span>
-<span class="s2">  endif</span>
-
-<span class="s2">  ! for use with MODFLOW, the output needs to be expressed as a volume; set the</span>
-<span class="s2">  ! conversion factors based on the information contained in the netCDF proj4 string</span>
-<span class="s2">  if (swbstats%report_as_volume) then</span>
-
-<span class="s2">    if (swbstats%report_as_volume) then</span>
-<span class="s2">      if (swbstats%target_proj4_string .containssimilar. &quot;</span><span class="n">units</span><span class="o">=</span><span class="n">m</span><span class="s2">&quot;) then</span>
-<span class="s2">        swbstats%length_conversion_factor = 1.0_c_double</span>
-<span class="s2">      elseif (swbstats%target_proj4_string .containssimilar. &quot;</span><span class="n">units</span><span class="o">=</span><span class="n">us</span><span class="o">-</span><span class="n">ft</span><span class="s2">&quot;) then</span>
-<span class="s2">        swbstats%length_conversion_factor = 0.3048006096012192_c_double</span>
-<span class="s2">      elseif (swbstats%target_proj4_string .containssimilar. &quot;</span><span class="n">units</span><span class="o">=</span><span class="n">ft</span><span class="s2">&quot;) then</span>
-<span class="s2">        swbstats%length_conversion_factor = 0.3048_c_double</span>
-<span class="s2">      else</span>
-<span class="s2">        call die(&quot;</span><span class="n">Was</span><span class="w"> </span><span class="n">attempting</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">define</span><span class="w"> </span><span class="n">length</span><span class="w"> </span><span class="n">conversion</span><span class="w"> </span><span class="n">factor</span><span class="p">,</span><span class="w"> </span><span class="n">but</span><span class="w"> </span><span class="n">no</span><span class="w"> </span><span class="n">units</span><span class="w"> </span><span class="s2">&quot; &amp;</span>
-<span class="s2">          //&quot;</span><span class="n">information</span><span class="w"> </span><span class="n">found</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">input</span><span class="w"> </span><span class="n">PROJ4</span><span class="w"> </span><span class="n">string</span><span class="p">.</span><span class="s2">&quot;)</span>
-<span class="s2">      endif</span>
-<span class="s2">      swbstats%grid_cell_area_sq_meters = (swbstats%grd_native%rGridCellSize                  &amp;</span>
-<span class="s2">                                           * swbstats%length_conversion_factor)**2</span>
-<span class="s2">      swbstats%output_conversion_factor = swbstats%grid_cell_area_sq_meters          &amp;</span>
-<span class="s2">                                           * swbstats%unit_conversion_factor</span>
-<span class="s2">    else</span>
-<span class="s2">      swbstats%output_conversion_factor = swbstats%unit_conversion_factor</span>
-<span class="s2">    endif</span>
-
-<span class="s2">    swbstats%filename_modifier_string = trim(swbstats%filename_modifier_string)   &amp;</span>
-<span class="s2">                                       //&quot;</span><span class="err">__</span><span class="n">cubic_meters</span><span class="s2">&quot;</span>
-
-<span class="s2">  endif</span>
-
-<span class="s2">  call assert(.not. (swbstats%report_as_volume .and. swbstats%report_in_meters),  &amp;</span>
-<span class="s2">       &quot;</span><span class="n">Cannot</span><span class="w"> </span><span class="k">use</span><span class="w"> </span><span class="s1">&#39;--report_as_volume&#39;</span><span class="w"> </span><span class="nb">and</span><span class="w"> </span><span class="s1">&#39;--report_in_meters&#39;</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">same</span><span class="s2">&quot;   &amp;</span>
-<span class="s2">       //&quot;</span><span class="w"> </span><span class="n">swbstats</span><span class="w"> </span><span class="n">run</span><span class="s2">&quot;)</span>
-
-<span class="s2">  if (swbstats%compare_to_obs_values) then</span>
-<span class="s2">    call swbstats%initialize_comparison_grid(grid_filename=swbstats%comparison_grid_filename)</span>
-<span class="s2">  endif</span>
-
-<span class="s2">  if ( swbstats%calculation_time_period == CALC_PERIOD_SLICE_SINGLE) then</span>
-
-<span class="s2">    ! force slice dates to honor bounds of data dates</span>
-<span class="s2">    if ( swbstats%slice_start_date &lt; swbstats%data_start_date )                  &amp;</span>
-<span class="s2">      swbstats%slice_start_date = swbstats%data_start_date</span>
-<span class="s2">    if ( swbstats%slice_end_date &gt; swbstats%data_end_date )                      &amp;</span>
-<span class="s2">      swbstats%slice_end_date = swbstats%data_end_date</span>
-
-<span class="s2">    call SIM_DT%initialize( swbstats%slice_start_date, swbstats%slice_end_date )</span>
-<span class="s2">    call swbstats%create_date_list_for_period_statistics( swbstats%slice_start_date, swbstats%slice_end_date )</span>
-
-<span class="s2">  elseif (swbstats%calculation_time_period == CALC_PERIOD_ALL) then</span>
-<span class="s2">    ! no slice dates were provided; default to a single slice with start/end date</span>
-<span class="s2">    ! corresponding to the start/end date of the data bounds</span>
-<span class="s2">    swbstats%calculation_time_period = CALC_PERIOD_SLICE_SINGLE</span>
-<span class="s2">    call SIM_DT%initialize( swbstats%data_start_date, swbstats%data_end_date )</span>
-<span class="s2">    call swbstats%create_date_list_for_period_statistics( swbstats%data_start_date, swbstats%data_end_date )</span>
-<span class="s2">  else</span>
-<span class="s2">    ! default time slice = all data in netcdf file</span>
-<span class="s2">    call SIM_DT%initialize( swbstats%data_start_date, swbstats%data_end_date )</span>
-<span class="s2">  endif</span>
-
-<span class="s2">  ! initialize data needed to calculate zonal statistics for a *SINGLE* zone grid</span>
-<span class="s2">  if (swbstats%calc_zonal_stats) then</span>
-<span class="s2">    if (.not. swbstats%multiple_zone_grids) then</span>
-<span class="s2">      call swbstats%initialize_zone_grid(grid_filename=swbstats%zone_grid_filename)</span>
-<span class="s2">      call swbstats%get_unique_int(swbstats%grd_zone%pGrdBase%iData, swbstats%unique_zone_list)</span>
-
-<span class="s2">      if (len_trim(swbstats%zone_grid2_filename) &gt; 0) then</span>
-<span class="s2">        call swbstats%initialize_secondary_zone_grid(grid_filename=swbstats%zone_grid2_filename)</span>
-<span class="s2">        call swbstats%get_unique_int(swbstats%grd_zone2%pGrdBase%iData, swbstats%unique_zone2_list)</span>
-<span class="s2">      endif</span>
-
-<span class="s2">    endif</span>
-
-<span class="s2">    if ( allocated( swbstats%output_file_prefix) ) then</span>
-<span class="s2">      temp_string = trim(swbstats%output_file_prefix)//&quot;</span><span class="err">__</span><span class="n">zonal_stats__</span><span class="s2">&quot;//trim(swbstats%netcdf_variable_name_string)//&quot;</span><span class="p">.</span><span class="n">csv</span><span class="s2">&quot;</span>
-<span class="s2">    else</span>
-<span class="s2">      temp_string = &quot;</span><span class="n">zonal_stats__</span><span class="s2">&quot;//trim(swbstats%netcdf_variable_name_string)//&quot;</span><span class="p">.</span><span class="n">csv</span><span class="s2">&quot;</span>
-<span class="s2">    endif</span>
-
-<span class="s2">    call swbstats%open_zonal_stats_output_file(trim(temp_string))</span>
-
-<span class="s2">  endif  ! initialize data structures needed to calculate zonal statistics for a *SINGLE* zone grid </span>
-
-
-<span class="s2">  ! establish data range string for use in output file naming</span>
-<span class="s2">  swbstats%date_range_string = swbstats%data_start_date%prettydate()                 &amp;</span>
-<span class="s2">                                   //&quot;</span><span class="err">_</span><span class="n">to_</span><span class="s2">&quot;//swbstats%data_end_date%prettydate()</span>
-
-<span class="s2">  call swbstats%open_output_netcdf_files(output_files)</span>
-
-<span class="s2">  ! Done with preliminaries (opening files, setting options, etc.); begin calcs</span>
-
-<span class="s2">  if (swbstats%dump_options_to_screen)  call swbstats%print_all_options()</span>
-
-<span class="s2">  ! depending on options selected, we will have a list of:</span>
-<span class="s2">  !  a) arbitrary time periods based on user-supplied date ranges;</span>
-<span class="s2">  !  b) time periods bracketing the start and end of all months within the</span>
-<span class="s2">  !     netCDF start and end period; or</span>
-<span class="s2">  !  c) time periods bracketing complete calendar years within the start and</span>
-<span class="s2">  !     end dates contained within the netCDF file to be munged.</span>
-
-
-<span class="s2">! .o8                             o8o                                                o8o                   oooo                                 </span>
-<span class="s2">!&quot;</span><span class="mi">888</span><span class="w">                             </span><span class="err">`</span><span class="s2">&quot;&#39;                                                `&quot;</span><span class="s1">&#39;                   `888                                 </span>
-<span class="s1">! 888oooo.   .ooooo.   .oooooooo oooo  ooo. .oo.        ooo. .oo.  .oo.    .oooo.   oooo  ooo. .oo.         888   .ooooo.   .ooooo.  oo.ooooo.  </span>
-<span class="s1">! d88&#39;</span><span class="w"> </span><span class="err">`</span><span class="mi">88</span><span class="n">b</span><span class="w"> </span><span class="n">d88</span><span class="s1">&#39; `88b 888&#39;</span><span class="w"> </span><span class="err">`</span><span class="mi">88</span><span class="n">b</span><span class="w">  </span><span class="err">`</span><span class="mi">888</span><span class="w">  </span><span class="err">`</span><span class="mi">888</span><span class="n">P</span><span class="s2">&quot;Y88b       `888P&quot;</span><span class="n">Y88bP</span><span class="s2">&quot;Y88b  `P  )88b  `888  `888P&quot;</span><span class="n">Y88b</span><span class="w">        </span><span class="mi">888</span><span class="w">  </span><span class="n">d88</span><span class="s1">&#39; `88b d88&#39;</span><span class="w"> </span><span class="err">`</span><span class="mi">88</span><span class="n">b</span><span class="w">  </span><span class="mi">888</span><span class="s1">&#39; `88b </span>
-<span class="s1">! 888   888 888ooo888 888   888   888   888   888        888   888   888   .oP&quot;888   888   888   888        888  888   888 888   888  888   888 </span>
-<span class="s1">! 888   888 888    .o `88bod8P&#39;</span><span class="w">   </span><span class="mi">888</span><span class="w">   </span><span class="mi">888</span><span class="w">   </span><span class="mi">888</span><span class="w">        </span><span class="mi">888</span><span class="w">   </span><span class="mi">888</span><span class="w">   </span><span class="mi">888</span><span class="w">  </span><span class="n">d8</span><span class="p">(</span><span class="w">  </span><span class="mi">888</span><span class="w">   </span><span class="mi">888</span><span class="w">   </span><span class="mi">888</span><span class="w">   </span><span class="mi">888</span><span class="w">        </span><span class="mi">888</span><span class="w">  </span><span class="mi">888</span><span class="w">   </span><span class="mi">888</span><span class="w"> </span><span class="mi">888</span><span class="w">   </span><span class="mi">888</span><span class="w">  </span><span class="mi">888</span><span class="w">   </span><span class="mi">888</span><span class="w"> </span>
-<span class="c">! `Y8bod8P&#39; `Y8bod8P&#39; `8oooooo.  o888o o888o o888o      o888o o888o o888o `Y888&quot;&quot;8o o888o o888o o888o      o888o `Y8bod8P&#39; `Y8bod8P&#39;  888bod8P&#39; </span>
-<span class="c">!                     d&quot;     YD                                                                                                       888       </span>
-<span class="c">!                     &quot;Y88888P&#39;                                                                                                      o888o      </span>
-
-
-<span class="c">! One potential use case: several hundred lines that look like the entry below.</span>
-<span class="c">! Need to ensure that all resources are deallocated promptly to avoid memory leak</span>
-
-<span class="c">!  *** snippet of a &#39;zone_period_file&#39; ***</span>
-<span class="c">!-------------------------------------------------</span>
-<span class="c">!  id,start_date,end_date,zone_grid_filename</span>
-<span class="c">!  1,2013-05-01,2013-05-31,corn2013_zone_1000m.asc</span>
-<span class="c">!  2,2013-06-01,2013-06-30,corn2013_zone_1000m.asc</span>
-<span class="c">!  3,2013-07-01,2013-07-31,corn2013_zone_1000m.asc</span>
-<span class="c">!  4,2013-08-01,2013-08-31,corn2013_zone_1000m.asc</span>
-<span class="c">!  5,2013-09-01,2013-09-30,corn2013_zone_1000m.asc</span>
-
-<span class="c">! for the use case given above, date_range_id_list%count should equal the number of rows in the zone period file</span>
-
-<span class="w">  </span><span class="k">do </span><span class="n">iIndex</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">swbstats</span><span class="p">%</span><span class="n">date_range_id_list</span><span class="p">%</span><span class="nb">count</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! set the date format that is expected in subsequent calls to parseDate</span>
-<span class="w">    </span><span class="k">call </span><span class="n">swbstats</span><span class="p">%</span><span class="n">slice_start_date</span><span class="p">%</span><span class="n">setDateFormat</span><span class="p">(</span><span class="s2">&quot;YYYY-MM-DD&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">call </span><span class="n">swbstats</span><span class="p">%</span><span class="n">slice_end_date</span><span class="p">%</span><span class="n">setDateFormat</span><span class="p">(</span><span class="s2">&quot;YYYY-MM-DD&quot;</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! set start and end date for slice calculation to the value corresponding to its position</span>
-<span class="w">    </span><span class="c">! in the input zone or observation file list.</span>
-<span class="w">    </span><span class="n">start_date_string</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">swbstats</span><span class="p">%</span><span class="n">start_date_list</span><span class="p">%</span><span class="n">get</span><span class="p">(</span><span class="w"> </span><span class="n">iIndex</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="n">end_date_string</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">swbstats</span><span class="p">%</span><span class="n">end_date_list</span><span class="p">%</span><span class="n">get</span><span class="p">(</span><span class="w"> </span><span class="n">iIndex</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! parse start and end dates for slice into date objects</span>
-<span class="w">    </span><span class="k">call </span><span class="n">swbstats</span><span class="p">%</span><span class="n">slice_start_date</span><span class="p">%</span><span class="n">parseDate</span><span class="p">(</span><span class="w"> </span><span class="n">start_date_string</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">call </span><span class="n">swbstats</span><span class="p">%</span><span class="n">slice_end_date</span><span class="p">%</span><span class="n">parseDate</span><span class="p">(</span><span class="w"> </span><span class="n">end_date_string</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! create date range string for use in output filenames</span>
-<span class="w">    </span><span class="n">swbstats</span><span class="p">%</span><span class="n">slice_range_string</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">swbstats</span><span class="p">%</span><span class="n">slice_start_date</span><span class="p">%</span><span class="n">prettydate</span><span class="p">()</span><span class="w">    </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">       </span><span class="o">//</span><span class="s2">&quot;_to_&quot;</span><span class="o">//</span><span class="n">swbstats</span><span class="p">%</span><span class="n">slice_end_date</span><span class="p">%</span><span class="n">prettydate</span><span class="p">()</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;(a)&quot;</span><span class="p">)</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;(a)&quot;</span><span class="p">)</span><span class="w"> </span><span class="s2">&quot;Processing slice: &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">swbstats</span><span class="p">%</span><span class="n">slice_start_date</span><span class="p">%</span><span class="n">prettydate</span><span class="p">()</span><span class="w">    </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">       </span><span class="o">//</span><span class="s2">&quot; to &quot;</span><span class="o">//</span><span class="n">swbstats</span><span class="p">%</span><span class="n">slice_end_date</span><span class="p">%</span><span class="n">prettydate</span><span class="p">()</span><span class="w"></span>
-<span class="w">    </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;(a)&quot;</span><span class="p">)</span><span class="w"> </span><span class="nb">repeat</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">70</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! grid_sum = simple addition over stack of grids;</span>
-<span class="w">    </span><span class="c">! grid_mean is the grid_sum divided by number of days = daily mean</span>
-<span class="w">    </span><span class="c">!</span>
-<span class="w">    </span><span class="c">! first step is to calculate the statistics over the entire grid</span>
-<span class="w">    </span><span class="k">call </span><span class="n">swbstats</span><span class="p">%</span><span class="n">calculate_slice_statistics</span><span class="p">(</span><span class="w"> </span><span class="n">start_date</span><span class="o">=</span><span class="n">swbstats</span><span class="p">%</span><span class="n">slice_start_date</span><span class="p">,</span><span class="w">                     </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                              </span><span class="n">end_date</span><span class="o">=</span><span class="n">swbstats</span><span class="p">%</span><span class="n">slice_end_date</span><span class="p">,</span><span class="w">                         </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                              </span><span class="n">grd_sum</span><span class="o">=</span><span class="n">output_files</span><span class="p">(</span><span class="n">STATS_SUM</span><span class="p">)%</span><span class="n">grid_ptr</span><span class="p">%</span><span class="n">dpData</span><span class="p">,</span><span class="w">          </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                              </span><span class="n">grd_mean</span><span class="o">=</span><span class="n">output_files</span><span class="p">(</span><span class="n">STATS_MEAN</span><span class="p">)%</span><span class="n">grid_ptr</span><span class="p">%</span><span class="n">dpData</span><span class="p">,</span><span class="w">        </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                              </span><span class="n">grd_var</span><span class="o">=</span><span class="n">output_files</span><span class="p">(</span><span class="n">STATS_VARIANCE</span><span class="p">)%</span><span class="n">grid_ptr</span><span class="p">%</span><span class="n">dpData</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! idea here is to tack on a set of accumulator grids that can be used to sum up </span>
-<span class="w">    </span><span class="c">! results from all grid vals for every January within the simulation timeframe, </span>
-<span class="w">    </span><span class="c">! all grid vals for every February within simulation timeframe, etc.</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">swbstats</span><span class="p">%</span><span class="n">calculation_time_period</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">CALC_PERIOD_MONTHLY</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">      call </span><span class="n">swbstats</span><span class="p">%</span><span class="n">calculate_monthly_statistics</span><span class="p">(</span><span class="n">month_num</span><span class="o">=</span><span class="n">swbstats</span><span class="p">%</span><span class="n">slice_start_date</span><span class="p">%</span><span class="n">iMonth</span><span class="p">,</span><span class="w"> </span><span class="n">finalize</span><span class="o">=</span><span class="n">FALSE</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">endif  </span>
-
-<span class="k">    if</span><span class="w"> </span><span class="p">(</span><span class="n">swbstats</span><span class="p">%</span><span class="n">multiple_comparison_grids</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">      </span><span class="n">swbstats</span><span class="p">%</span><span class="n">comparison_grid_filename</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">swbstats</span><span class="p">%</span><span class="n">comparison_grid_file_list</span><span class="p">%</span><span class="n">get</span><span class="p">(</span><span class="w"> </span><span class="n">iIndex</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">      </span><span class="k">call </span><span class="n">swbstats</span><span class="p">%</span><span class="n">initialize_comparison_grid</span><span class="p">(</span><span class="n">grid_filename</span><span class="o">=</span><span class="n">swbstats</span><span class="p">%</span><span class="n">comparison_grid_filename</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">endif</span>
-
-<span class="k">    if</span><span class="w"> </span><span class="p">(</span><span class="n">swbstats</span><span class="p">%</span><span class="n">multiple_zone_grids</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">      </span><span class="n">swbstats</span><span class="p">%</span><span class="n">zone_grid_filename</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">swbstats</span><span class="p">%</span><span class="n">zone_grid_file_list</span><span class="p">%</span><span class="n">get</span><span class="p">(</span><span class="w"> </span><span class="n">iIndex</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">      </span><span class="k">call </span><span class="n">swbstats</span><span class="p">%</span><span class="n">initialize_zone_grid</span><span class="p">(</span><span class="n">grid_filename</span><span class="o">=</span><span class="n">swbstats</span><span class="p">%</span><span class="n">zone_grid_filename</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">endif</span>
-
-<span class="k">    call </span><span class="n">swbstats</span><span class="p">%</span><span class="n">write_stats_to_netcdf</span><span class="p">(</span><span class="n">output_files</span><span class="o">=</span><span class="n">output_files</span><span class="p">,</span><span class="w">           </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                              </span><span class="n">start_date</span><span class="o">=</span><span class="n">swbstats</span><span class="p">%</span><span class="n">slice_start_date</span><span class="p">,</span><span class="w">          </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                              </span><span class="n">end_date</span><span class="o">=</span><span class="n">swbstats</span><span class="p">%</span><span class="n">slice_end_date</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">call </span><span class="n">swbstats</span><span class="p">%</span><span class="n">write_stats_to_arcgrid</span><span class="p">(</span><span class="n">output_files</span><span class="o">=</span><span class="n">output_files</span><span class="p">,</span><span class="w">            </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                </span><span class="n">start_date</span><span class="o">=</span><span class="n">swbstats</span><span class="p">%</span><span class="n">slice_start_date</span><span class="p">,</span><span class="w">          </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                </span><span class="n">end_date</span><span class="o">=</span><span class="n">swbstats</span><span class="p">%</span><span class="n">slice_end_date</span><span class="p">,</span><span class="w">              </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                </span><span class="n">date_range_string</span><span class="o">=</span><span class="n">swbstats</span><span class="p">%</span><span class="n">slice_range_string</span><span class="p">,</span><span class="w">  </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                </span><span class="n">output_file_prefix</span><span class="o">=</span><span class="n">swbstats</span><span class="p">%</span><span class="n">output_file_prefix</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">swbstats</span><span class="p">%</span><span class="n">calc_zonal_stats</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">      if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="nb">len_trim</span><span class="p">(</span><span class="n">swbstats</span><span class="p">%</span><span class="n">zone_grid2_filename</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-
-<span class="k">        if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="nb">associated</span><span class="p">(</span><span class="n">swbstats</span><span class="p">%</span><span class="n">grd_comparison</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-
-<span class="k">          call </span><span class="n">swbstats</span><span class="p">%</span><span class="n">output_zonal_stats</span><span class="p">(</span><span class="w">                                      </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">               </span><span class="n">start_date</span><span class="o">=</span><span class="n">swbstats</span><span class="p">%</span><span class="n">slice_start_date</span><span class="p">,</span><span class="w">                             </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">               </span><span class="n">end_date</span><span class="o">=</span><span class="n">swbstats</span><span class="p">%</span><span class="n">slice_end_date</span><span class="p">,</span><span class="w">                                 </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">               </span><span class="n">values</span><span class="o">=</span><span class="n">output_files</span><span class="p">(</span><span class="n">STATS_SUM</span><span class="p">)%</span><span class="n">grid_ptr</span><span class="p">%</span><span class="n">dpData</span><span class="p">,</span><span class="w">                   </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">               </span><span class="n">zone_ids</span><span class="o">=</span><span class="n">swbstats</span><span class="p">%</span><span class="n">grd_zone</span><span class="p">%</span><span class="n">pGrdBase</span><span class="p">%</span><span class="n">iData</span><span class="p">,</span><span class="w">                        </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">               </span><span class="n">unique_zone_list</span><span class="o">=</span><span class="n">swbstats</span><span class="p">%</span><span class="n">unique_zone_list</span><span class="p">,</span><span class="w">                       </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">               </span><span class="n">zone2_ids</span><span class="o">=</span><span class="n">swbstats</span><span class="p">%</span><span class="n">grd_zone2</span><span class="p">%</span><span class="n">pGrdBase</span><span class="p">%</span><span class="n">iData</span><span class="p">,</span><span class="w">                      </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">               </span><span class="n">unique_zone2_list</span><span class="o">=</span><span class="n">swbstats</span><span class="p">%</span><span class="n">unique_zone2_list</span><span class="p">,</span><span class="w">                     </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">               </span><span class="n">comparison_values</span><span class="o">=</span><span class="n">swbstats</span><span class="p">%</span><span class="n">grd_comparison</span><span class="p">%</span><span class="n">pGrdBase</span><span class="p">%</span><span class="n">dpData</span><span class="p">,</span><span class="w">        </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">               </span><span class="n">funit</span><span class="o">=</span><span class="n">swbstats</span><span class="p">%</span><span class="n">zonal_stats_output_file</span><span class="p">%</span><span class="n">unit</span><span class="p">()</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">        </span><span class="k">else</span>
-<span class="k">          call </span><span class="n">swbstats</span><span class="p">%</span><span class="n">output_zonal_stats</span><span class="p">(</span><span class="w">                                      </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">               </span><span class="n">start_date</span><span class="o">=</span><span class="n">swbstats</span><span class="p">%</span><span class="n">slice_start_date</span><span class="p">,</span><span class="w">                             </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">               </span><span class="n">end_date</span><span class="o">=</span><span class="n">swbstats</span><span class="p">%</span><span class="n">slice_end_date</span><span class="p">,</span><span class="w">                                 </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">               </span><span class="n">values</span><span class="o">=</span><span class="n">output_files</span><span class="p">(</span><span class="n">STATS_SUM</span><span class="p">)%</span><span class="n">grid_ptr</span><span class="p">%</span><span class="n">dpData</span><span class="p">,</span><span class="w">                   </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">               </span><span class="n">zone_ids</span><span class="o">=</span><span class="n">swbstats</span><span class="p">%</span><span class="n">grd_zone</span><span class="p">%</span><span class="n">pGrdBase</span><span class="p">%</span><span class="n">iData</span><span class="p">,</span><span class="w">                        </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">               </span><span class="n">unique_zone_list</span><span class="o">=</span><span class="n">swbstats</span><span class="p">%</span><span class="n">unique_zone_list</span><span class="p">,</span><span class="w">                       </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">               </span><span class="n">zone2_ids</span><span class="o">=</span><span class="n">swbstats</span><span class="p">%</span><span class="n">grd_zone2</span><span class="p">%</span><span class="n">pGrdBase</span><span class="p">%</span><span class="n">iData</span><span class="p">,</span><span class="w">                      </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">               </span><span class="n">unique_zone2_list</span><span class="o">=</span><span class="n">swbstats</span><span class="p">%</span><span class="n">unique_zone2_list</span><span class="p">,</span><span class="w">                     </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">               </span><span class="n">funit</span><span class="o">=</span><span class="n">swbstats</span><span class="p">%</span><span class="n">zonal_stats_output_file</span><span class="p">%</span><span class="n">unit</span><span class="p">()</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">        </span><span class="k">endif</span>
-
-<span class="k">      else</span><span class="w">  </span><span class="c">! perform calculation for a single zone grid</span>
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="nb">associated</span><span class="p">(</span><span class="n">swbstats</span><span class="p">%</span><span class="n">grd_comparison</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">          call </span><span class="n">swbstats</span><span class="p">%</span><span class="n">output_zonal_stats</span><span class="p">(</span><span class="w">                                      </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">               </span><span class="n">start_date</span><span class="o">=</span><span class="n">swbstats</span><span class="p">%</span><span class="n">slice_start_date</span><span class="p">,</span><span class="w">                             </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">               </span><span class="n">end_date</span><span class="o">=</span><span class="n">swbstats</span><span class="p">%</span><span class="n">slice_end_date</span><span class="p">,</span><span class="w">                                 </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">               </span><span class="n">values</span><span class="o">=</span><span class="n">output_files</span><span class="p">(</span><span class="n">STATS_SUM</span><span class="p">)%</span><span class="n">grid_ptr</span><span class="p">%</span><span class="n">dpData</span><span class="p">,</span><span class="w">                   </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">               </span><span class="n">zone_ids</span><span class="o">=</span><span class="n">swbstats</span><span class="p">%</span><span class="n">grd_zone</span><span class="p">%</span><span class="n">pGrdBase</span><span class="p">%</span><span class="n">iData</span><span class="p">,</span><span class="w">                        </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">               </span><span class="n">unique_zone_list</span><span class="o">=</span><span class="n">swbstats</span><span class="p">%</span><span class="n">unique_zone_list</span><span class="p">,</span><span class="w">                       </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">               </span><span class="n">comparison_values</span><span class="o">=</span><span class="n">swbstats</span><span class="p">%</span><span class="n">grd_comparison</span><span class="p">%</span><span class="n">pGrdBase</span><span class="p">%</span><span class="n">dpData</span><span class="p">,</span><span class="w">        </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">               </span><span class="n">funit</span><span class="o">=</span><span class="n">swbstats</span><span class="p">%</span><span class="n">zonal_stats_output_file</span><span class="p">%</span><span class="n">unit</span><span class="p">()</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">        </span><span class="k">else</span>
-<span class="k">          call </span><span class="n">swbstats</span><span class="p">%</span><span class="n">output_zonal_stats</span><span class="p">(</span><span class="w">                                      </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">               </span><span class="n">start_date</span><span class="o">=</span><span class="n">swbstats</span><span class="p">%</span><span class="n">slice_start_date</span><span class="p">,</span><span class="w">                             </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">               </span><span class="n">end_date</span><span class="o">=</span><span class="n">swbstats</span><span class="p">%</span><span class="n">slice_end_date</span><span class="p">,</span><span class="w">                                 </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">               </span><span class="n">values</span><span class="o">=</span><span class="n">output_files</span><span class="p">(</span><span class="n">STATS_SUM</span><span class="p">)%</span><span class="n">grid_ptr</span><span class="p">%</span><span class="n">dpData</span><span class="p">,</span><span class="w">                   </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">               </span><span class="n">zone_ids</span><span class="o">=</span><span class="n">swbstats</span><span class="p">%</span><span class="n">grd_zone</span><span class="p">%</span><span class="n">pGrdBase</span><span class="p">%</span><span class="n">iData</span><span class="p">,</span><span class="w">                        </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">               </span><span class="n">unique_zone_list</span><span class="o">=</span><span class="n">swbstats</span><span class="p">%</span><span class="n">unique_zone_list</span><span class="p">,</span><span class="w">                       </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">               </span><span class="n">funit</span><span class="o">=</span><span class="n">swbstats</span><span class="p">%</span><span class="n">zonal_stats_output_file</span><span class="p">%</span><span class="n">unit</span><span class="p">()</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="w">        </span><span class="k">endif</span>
-<span class="k">      endif</span>
-<span class="k">    endif</span><span class="w"></span>
-
-<span class="w">    </span><span class="c">! icky hack; need to advance the record number for the multiple slice calc</span>
-<span class="w">    </span><span class="n">RECNUM</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RECNUM</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">enddo</span><span class="w"></span>
-
-<span class="w">  </span><span class="c">!call netcdf_close_file(NCFILE=ncfile_out)</span>
-<span class="w">  </span><span class="k">call </span><span class="n">swbstats</span><span class="p">%</span><span class="n">close_output_netcdf_files</span><span class="p">(</span><span class="n">output_files</span><span class="o">=</span><span class="n">output_files</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">swbstats</span><span class="p">%</span><span class="n">calculation_time_period</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">CALC_PERIOD_MONTHLY</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">    call </span><span class="n">swbstats</span><span class="p">%</span><span class="n">calculate_monthly_statistics</span><span class="p">(</span><span class="n">month_num</span><span class="o">=</span><span class="n">swbstats</span><span class="p">%</span><span class="n">slice_start_date</span><span class="p">%</span><span class="n">iMonth</span><span class="p">,</span><span class="w"> </span><span class="n">finalize</span><span class="o">=</span><span class="n">TRUE</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">call </span><span class="n">swbstats</span><span class="p">%</span><span class="n">write_monthly_stats_to_arcgrid</span><span class="p">(</span><span class="n">output_files</span><span class="o">=</span><span class="n">output_files</span><span class="p">,</span><span class="w">            </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                </span><span class="n">date_range_string</span><span class="o">=</span><span class="n">swbstats</span><span class="p">%</span><span class="n">date_range_string</span><span class="p">,</span><span class="w">          </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">                                </span><span class="n">output_file_prefix</span><span class="o">=</span><span class="n">swbstats</span><span class="p">%</span><span class="n">output_file_prefix</span><span class="p">)</span><span class="w"></span>
-<span class="w">  </span><span class="k">endif  </span>
-
-<span class="k">  if</span><span class="w"> </span><span class="p">(</span><span class="n">swbstats</span><span class="p">%</span><span class="n">write_csv</span><span class="p">)</span><span class="w">  </span><span class="k">call </span><span class="n">swbstats</span><span class="p">%</span><span class="n">zonal_stats_output_file</span><span class="p">%</span><span class="k">close</span><span class="p">()</span><span class="w"></span>
-
-<span class="c">! endif</span>
-
-<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">swbstats</span><span class="p">%</span><span class="n">dump_options_to_screen</span><span class="p">)</span><span class="w">  </span><span class="k">call </span><span class="n">swbstats</span><span class="p">%</span><span class="n">print_all_options</span><span class="p">()</span><span class="w"></span>
-
-<span class="k">end program </span><span class="n">swbstats2</span><span class="w"></span>
-</pre></div>
-
-    </section>
     
     </div>
   </div>
@@ -1361,7 +651,7 @@
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-10-17T14:19:59.727997             </p>
+ on 2023-10-19T16:28:40.743458             </p>
           </div>
         </div>
         <br>

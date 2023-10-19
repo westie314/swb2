@@ -73,7 +73,7 @@
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip"
                  data-bs-placement="bottom" data-html="true"
-                 title=" 0.2% of total for procedures.">27 statements</a>
+                 title=" 0.3% of total for procedures.">27 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -125,12 +125,6 @@
   
   
   
-    <div class="card card-primary">
-      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
-      <div class="list-group">
-        <a class="list-group-item" href="../proc/grid_destroy.html#src">grid_Destroy</a>
-      </div>
-    </div>
 
 
   </div>
@@ -186,63 +180,6 @@
 
 
     
-    <section>
-    <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre><span></span><span class="k">subroutine </span><span class="n">grid_Destroy</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">pGrd</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">  </span><span class="c">!! Destroys the data in the GENERAL_GRID_T pGrd</span>
-<span class="w">  </span><span class="c">! ARGUMENTS</span>
-<span class="w">  </span><span class="k">type</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">GENERAL_GRID_T</span><span class="w"> </span><span class="p">),</span><span class="w"> </span><span class="k">pointer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">pGrd</span><span class="w"></span>
-<span class="w">  </span><span class="c">! LOCALS</span>
-<span class="w">  </span><span class="kt">integer</span><span class="w"> </span><span class="p">(</span><span class="kt">c_int</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">iStat</span><span class="w"></span>
-
-<span class="w">  </span><span class="k">if</span><span class="p">(</span><span class="nb">associated</span><span class="p">(</span><span class="n">pGrd</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="k">then</span>
-
-<span class="k">    if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">pGrd</span><span class="p">%</span><span class="n">iDataType</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">GRID_DATATYPE_INT</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">      deallocate</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">pGrd</span><span class="p">%</span><span class="n">iData</span><span class="p">,</span><span class="w"> </span><span class="nb">stat</span><span class="o">=</span><span class="n">iStat</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">      </span><span class="k">call </span><span class="n">assert</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">iStat</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Failed to deallocate integer grid&quot;</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">else if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">pGrd</span><span class="p">%</span><span class="n">iDataType</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">GRID_DATATYPE_REAL</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">      deallocate</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">pGrd</span><span class="p">%</span><span class="n">rData</span><span class="p">,</span><span class="w"> </span><span class="nb">stat</span><span class="o">=</span><span class="n">iStat</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">      </span><span class="k">call </span><span class="n">assert</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">iStat</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Failed to deallocate real grid&quot;</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">else if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">pGrd</span><span class="p">%</span><span class="n">iDataType</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">GRID_DATATYPE_DOUBLE</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">      deallocate</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">pGrd</span><span class="p">%</span><span class="n">dpData</span><span class="p">,</span><span class="w"> </span><span class="nb">stat</span><span class="o">=</span><span class="n">iStat</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">      </span><span class="k">call </span><span class="n">assert</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">iStat</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Failed to deallocate double-precision grid&quot;</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-
-<span class="c">!     else if ( pGrd%iDataType == GRID_DATATYPE_CELL_GRID ) then</span>
-<span class="c">!       deallocate ( pGrd%Cells, stat=iStat )</span>
-<span class="c">!       call assert ( iStat == 0, &quot;Failed to deallocate cell grid&quot; )</span>
-<span class="c">!       else if ( pGrd%iDataType == GRID_DATATYPE_ALL ) then</span>
-<span class="c">!       deallocate ( pGrd%iData, stat=iStat )</span>
-<span class="c">!       call assert ( iStat == 0, &quot;Failed to deallocate integer grid&quot; )</span>
-<span class="c">!       deallocate ( pGrd%rData, stat=iStat )</span>
-<span class="c">!       call assert ( iStat == 0, &quot;Failed to deallocate real grid&quot; )</span>
-<span class="c">!       deallocate ( pGrd%Cells, stat=iStat )</span>
-<span class="c">!       call assert ( iStat == 0, &quot;Failed to deallocate cell grid&quot; )</span>
-<span class="w">    </span><span class="k">else</span>
-<span class="k">      call </span><span class="n">assert</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">FALSE</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Internal error -- unknown grid type&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="err">__</span><span class="n">FILE__</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">LINE__</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">end if</span>
-
-<span class="k">    if</span><span class="p">(</span><span class="w"> </span><span class="nb">allocated</span><span class="p">(</span><span class="n">pGrd</span><span class="p">%</span><span class="n">rX</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">      deallocate</span><span class="p">(</span><span class="w"> </span><span class="n">pGrd</span><span class="p">%</span><span class="n">rX</span><span class="p">,</span><span class="w"> </span><span class="nb">stat</span><span class="o">=</span><span class="n">iStat</span><span class="p">)</span><span class="w"></span>
-<span class="w">      </span><span class="k">call </span><span class="n">assert</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">iStat</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Failed to deallocate X-coordinate data structure associated with grid&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="err">__</span><span class="n">FILE__</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">LINE__</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">endif</span>
-
-<span class="k">    if</span><span class="p">(</span><span class="w"> </span><span class="nb">allocated</span><span class="p">(</span><span class="n">pGrd</span><span class="p">%</span><span class="n">rY</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">      deallocate</span><span class="p">(</span><span class="w"> </span><span class="n">pGrd</span><span class="p">%</span><span class="n">rY</span><span class="p">,</span><span class="w"> </span><span class="nb">stat</span><span class="o">=</span><span class="n">iStat</span><span class="p">)</span><span class="w"></span>
-<span class="w">      </span><span class="k">call </span><span class="n">assert</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">iStat</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Failed to deallocate Y-coordinate data structure associated with grid&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">        </span><span class="err">__</span><span class="n">FILE__</span><span class="p">,</span><span class="w"> </span><span class="err">__</span><span class="n">LINE__</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">endif</span>
-
-<span class="k">  endif</span>
-
-<span class="k">  </span><span class="n">pGrd</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="nb">null</span><span class="p">()</span><span class="w"></span>
-
-<span class="k">end subroutine </span><span class="n">grid_Destroy</span><span class="w"></span>
-</pre></div>
-
-    </section>
-    <br>
     
     </div>
   </div>
@@ -259,7 +196,7 @@
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-10-17T14:19:59.727997             </p>
+ on 2023-10-19T16:28:40.743458             </p>
           </div>
         </div>
         <br>
