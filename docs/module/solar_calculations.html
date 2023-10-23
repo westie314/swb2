@@ -170,16 +170,16 @@
     </div>
 
     <div class="col-md-9" id='text'>
-      
+      <p>Functions for solar radiation analysis, especially earth-sun trigonometry. </p>
 <br>          <div class="card mb-4">
       <h3 class="card-header card-title bg-light">Uses</h3>
       <div class="card-body">
         <ul class="list-group list-group-flush">
             <li class="list-group-item">
               <ul class="list-inline">
-                  <li class="list-inline-item"><a href='../module/exceptions.html'>exceptions</a></li>
-                  <li class="list-inline-item"><a href='../module/constants_and_conversions.html'>constants_and_conversions</a></li>
                   <li class="list-inline-item"><a href='../module/meteorological_calculations.html'>meteorological_calculations</a></li>
+                  <li class="list-inline-item"><a href='../module/constants_and_conversions.html'>constants_and_conversions</a></li>
+                  <li class="list-inline-item"><a href='../module/exceptions.html'>exceptions</a></li>
                   <li class="list-inline-item"><a href='http://fortranwiki.org/fortran/show/iso_c_binding'>iso_c_binding</a></li>
               </ul>
             </li>
@@ -279,7 +279,7 @@
             <td>::</td>
             <td><strong>dOmega_s</strong></td>
             <td>
-
+<p>Sunset hour angle, in RADIANS</p>
             </td>
         </tr>
     </tbody>
@@ -289,7 +289,7 @@
     Return Value
     <small>real(kind=c_double)</small>
     </h4>
-    
+    <p>Number of daylight hours</p>
 
     </div>
   </div>
@@ -324,7 +324,7 @@
             <td>::</td>
             <td><strong>dLatitude</strong></td>
             <td>
-
+<p>Latitude of grid cell, in RADIANS</p>
             </td>
         </tr>
         <tr>
@@ -339,7 +339,7 @@
             <td>::</td>
             <td><strong>dDelta</strong></td>
             <td>
-
+<p>Solar declination, in RADIANS</p>
             </td>
         </tr>
         <tr>
@@ -354,7 +354,7 @@
             <td>::</td>
             <td><strong>dOmega_s</strong></td>
             <td>
-
+<p>Sunset hour angle, in RADIANS</p>
             </td>
         </tr>
         <tr>
@@ -369,7 +369,7 @@
             <td>::</td>
             <td><strong>dDsubR</strong></td>
             <td>
-
+<p>Inverse relative distance between earth and sun</p>
             </td>
         </tr>
     </tbody>
@@ -379,7 +379,7 @@
     Return Value
     <small>real(kind=c_double)</small>
     </h4>
-    
+    <p>Extraterrestrial radiation in MJ / m**2 / day.</p>
 
     </div>
   </div>
@@ -414,7 +414,7 @@
             <td>::</td>
             <td><strong>dRs</strong></td>
             <td>
-
+<p>Incoming shortwave solar radiation, in MJ / m**2 / day</p>
             </td>
         </tr>
         <tr>
@@ -429,7 +429,7 @@
             <td>::</td>
             <td><strong>dAlbedo</strong></td>
             <td>
-
+<p>Albedo or canopy reflection coefficient; 0.23 for grass reference crop</p>
             </td>
         </tr>
     </tbody>
@@ -439,7 +439,7 @@
     Return Value
     <small>real(kind=c_double)</small>
     </h4>
-    
+    <p>Net shortwave radiation, in MJ / m**2 / day</p>
 
     </div>
   </div>
@@ -464,7 +464,7 @@
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-idayofyear~3"></span>
+              <span class="anchor" id="variable-idayofyear"></span>
               integer(kind=c_int),
             </td>
 <td>intent(in)</td>
@@ -474,12 +474,12 @@
             <td>::</td>
             <td><strong>iDayOfYear</strong></td>
             <td>
-
+<p>Integer day of the year (January 1=1)</p>
             </td>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-inumdaysinyear~3"></span>
+              <span class="anchor" id="variable-inumdaysinyear"></span>
               integer(kind=c_int),
             </td>
 <td>intent(in)</td>
@@ -489,7 +489,7 @@
             <td>::</td>
             <td><strong>iNumDaysInYear</strong></td>
             <td>
-
+<p>Number of days in the current year</p>
             </td>
         </tr>
     </tbody>
@@ -499,7 +499,7 @@
     Return Value
     <small>real(kind=c_double)</small>
     </h4>
-    
+    <p>Solar declination, in RADIANS</p>
 
     </div>
   </div>
@@ -524,7 +524,7 @@
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-idayofyear~4"></span>
+              <span class="anchor" id="variable-idayofyear~2"></span>
               integer(kind=c_int),
             </td>
 <td>intent(in)</td>
@@ -534,12 +534,12 @@
             <td>::</td>
             <td><strong>iDayOfYear</strong></td>
             <td>
-
+<p>Integer day of the year (January 1 = 1)</p>
             </td>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-inumdaysinyear~4"></span>
+              <span class="anchor" id="variable-inumdaysinyear~2"></span>
               integer(kind=c_int),
             </td>
 <td>intent(in)</td>
@@ -549,7 +549,7 @@
             <td>::</td>
             <td><strong>iNumDaysInYear</strong></td>
             <td>
-
+<p>Number of days in the current year</p>
             </td>
         </tr>
     </tbody>
@@ -559,7 +559,7 @@
     Return Value
     <small>real(kind=c_double)</small>
     </h4>
-    
+    <p>Solar declination, in RADIANS</p>
 
     </div>
   </div>
@@ -584,7 +584,7 @@
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-idayofyear~5"></span>
+              <span class="anchor" id="variable-idayofyear~3"></span>
               integer(kind=c_int),
             </td>
 <td>intent(in)</td>
@@ -594,12 +594,12 @@
             <td>::</td>
             <td><strong>iDayOfYear</strong></td>
             <td>
-
+<p>Integer day of the year (January 1 = 1)</p>
             </td>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-inumdaysinyear~5"></span>
+              <span class="anchor" id="variable-inumdaysinyear~3"></span>
               integer(kind=c_int),
             </td>
 <td>intent(in)</td>
@@ -609,7 +609,7 @@
             <td>::</td>
             <td><strong>iNumDaysInYear</strong></td>
             <td>
-
+<p>Number of days in the current year</p>
             </td>
         </tr>
     </tbody>
@@ -619,7 +619,7 @@
     Return Value
     <small>real(kind=c_double)</small>
     </h4>
-    
+    <p>Relative earth-sun distance</p>
 
     </div>
   </div>
@@ -654,7 +654,7 @@
             <td>::</td>
             <td><strong>dLatitude</strong></td>
             <td>
-
+<p>Latitude, in RADIANS</p>
             </td>
         </tr>
         <tr>
@@ -669,7 +669,7 @@
             <td>::</td>
             <td><strong>dDelta</strong></td>
             <td>
-
+<p>Solar declination, in RADIANS</p>
             </td>
         </tr>
     </tbody>
@@ -679,7 +679,7 @@
     Return Value
     <small>real(kind=c_double)</small>
     </h4>
-    
+    <p>Sunset angle, in RADIANS</p>
 
     </div>
   </div>
@@ -689,7 +689,8 @@
 </h3></div>
     <div class="card-body">
           
-  <p>Calculate shortwave solar radiation.</p><a href="../proc/solar_radiation_hargreaves__rs.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+  <p>Calculate shortwave solar radiation using Hargreave's radiation formula.
+For use when percent possible daily sunshine value is not available.</p><a href="../proc/solar_radiation_hargreaves__rs.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -714,12 +715,12 @@
             <td>::</td>
             <td><strong>dRa</strong></td>
             <td>
-
+<p>Extraterrestrial radiation, in MJ / m**2 / day</p>
             </td>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-ftmin~4"></span>
+              <span class="anchor" id="variable-ftmin~2"></span>
               real(kind=c_float),
             </td>
 <td>intent(in)</td>
@@ -729,12 +730,12 @@
             <td>::</td>
             <td><strong>fTMin</strong></td>
             <td>
-
+<p>Minimum daily air temperature, in <script type="math/tex">&deg</script>C</p>
             </td>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-ftmax~3"></span>
+              <span class="anchor" id="variable-ftmax"></span>
               real(kind=c_float),
             </td>
 <td>intent(in)</td>
@@ -744,7 +745,7 @@
             <td>::</td>
             <td><strong>fTMax</strong></td>
             <td>
-
+<p>Maximum daily air temperature, in <script type="math/tex">&deg</script>C</p>
             </td>
         </tr>
     </tbody>
@@ -754,7 +755,7 @@
     Return Value
     <small>real(kind=c_double)</small>
     </h4>
-    
+    <p>Solar radiation, in MJ / m**2 / day</p>
 
     </div>
   </div>
@@ -764,7 +765,10 @@
 </h3></div>
     <div class="card-body">
           
-  <p>Estimate percent of possible sunshine.</p><a href="../proc/estimate_percent_of_possible_sunshine__psun.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+  <p>Estimate percent of possible sunshine.
+This function follows from equation 5 in "The Rational Use of the FAO Blaney-Criddle
+substituting the rearranged Hargreaves solar radiation formula into
+equation 5 results in the formulation as implemented.</p>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -779,7 +783,7 @@
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-ftmax~4"></span>
+              <span class="anchor" id="variable-ftmax~2"></span>
               real(kind=c_float),
             </td>
 <td>intent(in)</td>
@@ -789,12 +793,12 @@
             <td>::</td>
             <td><strong>fTMax</strong></td>
             <td>
-
+<p>Maximum daily air temperature, in Kelvin</p>
             </td>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-ftmin~5"></span>
+              <span class="anchor" id="variable-ftmin~3"></span>
               real(kind=c_float),
             </td>
 <td>intent(in)</td>
@@ -804,7 +808,7 @@
             <td>::</td>
             <td><strong>fTMin</strong></td>
             <td>
-
+<p>Minimum daily air temperature, in Kelvin</p>
             </td>
         </tr>
     </tbody>
@@ -814,7 +818,7 @@
     Return Value
     <small>real(kind=c_float)</small>
     </h4>
-    
+    <p>Percentage of possible sunshine, dimensionless percentage</p>
 
     </div>
   </div>
@@ -1049,7 +1053,7 @@
 </h3></div>
     <div class="card-body">
           
-  <p>Calculate net longwave radiation flux.</p><a href="../proc/net_longwave_radiation__rnl.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+  <p>Calculate net longwave radiation flux</p><a href="../proc/net_longwave_radiation__rnl.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -1064,7 +1068,7 @@
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-ftmin~6"></span>
+              <span class="anchor" id="variable-ftmin~4"></span>
               real(kind=c_float),
             </td>
 <td>intent(in)</td>
@@ -1074,12 +1078,12 @@
             <td>::</td>
             <td><strong>fTMin</strong></td>
             <td>
-
+<p>Minimum daily air temperature, in <script type="math/tex">deg</script>C</p>
             </td>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-ftmax~5"></span>
+              <span class="anchor" id="variable-ftmax~3"></span>
               real(kind=c_float),
             </td>
 <td>intent(in)</td>
@@ -1089,12 +1093,12 @@
             <td>::</td>
             <td><strong>fTMax</strong></td>
             <td>
-
+<p>Maximum daily air temperature, in <script type="math/tex">deg</script>C</p>
             </td>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-drs~4"></span>
+              <span class="anchor" id="variable-drs~3"></span>
               real(kind=c_double),
             </td>
 <td>intent(in)</td>
@@ -1104,12 +1108,12 @@
             <td>::</td>
             <td><strong>dRs</strong></td>
             <td>
-
+<p>Measured or calculated shortwave solar radiation, in MJ / m**2 / day</p>
             </td>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-drso~3"></span>
+              <span class="anchor" id="variable-drso"></span>
               real(kind=c_double),
             </td>
 <td>intent(in)</td>
@@ -1119,7 +1123,7 @@
             <td>::</td>
             <td><strong>dRso</strong></td>
             <td>
-
+<p>Calculated clear-sky radiation, in MJ / m**2 / day</p>
             </td>
         </tr>
     </tbody>
@@ -1129,7 +1133,7 @@
     Return Value
     <small>real(kind=c_double)</small>
     </h4>
-    
+    <p>Net longwave solar radiation flux (incoming minus outgoing), in MJ / m**2 / day</p>
 
     </div>
   </div>
@@ -1139,7 +1143,10 @@
 </h3></div>
     <div class="card-body">
           
-  <p>Calculate the day angle in RADIANS.</p><a href="../proc/day_angle__gamma.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+  <p>Calculate the day angle, in RADIANS
+This function expresses the integer day number as an angle (in
+radians). Output values range from 0 (on January 1st) to
+just less than <script type="math/tex">2\pi</script> on December 31st.</p><a href="../proc/day_angle__gamma.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -1154,7 +1161,7 @@
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-idayofyear~6"></span>
+              <span class="anchor" id="variable-idayofyear~4"></span>
               integer(kind=c_int),
             </td>
 <td>intent(in)</td>
@@ -1164,12 +1171,12 @@
             <td>::</td>
             <td><strong>iDayOfYear</strong></td>
             <td>
-
+<p>Current day of the year (January 1 = 1)</p>
             </td>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-inumdaysinyear~6"></span>
+              <span class="anchor" id="variable-inumdaysinyear~4"></span>
               integer(kind=c_int),
             </td>
 <td>intent(in)</td>
@@ -1179,7 +1186,7 @@
             <td>::</td>
             <td><strong>iNumDaysInYear</strong></td>
             <td>
-
+<p>Number of days in the current year</p>
             </td>
         </tr>
     </tbody>
@@ -1189,7 +1196,7 @@
     Return Value
     <small>real(kind=c_double)</small>
     </h4>
-    
+    <p>Day angle, in RADIANS</p>
 
     </div>
   </div>
@@ -1199,7 +1206,7 @@
 </h3></div>
     <div class="card-body">
           
-  <p>Calculate the solar altitude given the zenith angle.</p><a href="../proc/solar_altitude__alpha.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+  <p>Calculate the solar altitude given the zenith angle.</p>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -1224,7 +1231,7 @@
             <td>::</td>
             <td><strong>dTheta_z</strong></td>
             <td>
-
+<p>Solar zenith angle for given location and time, in RADIANS</p>
             </td>
         </tr>
     </tbody>
@@ -1234,7 +1241,7 @@
     Return Value
     <small>real(kind=c_double)</small>
     </h4>
-    
+    <p>Solar altitude angle for given location, in RADIANS</p>
 
     </div>
   </div>
@@ -1244,7 +1251,9 @@
 </h3></div>
     <div class="card-body">
           
-  <p>Calculate solar zenith angle given latitude, declination, and (optionally) hour angle.</p><a href="../proc/zenith_angle__theta_z.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+  <p>Calculate solar zenith angle given latitude, declination, and (optionally) hour angle.
+Solar zenith angle is the angle between a point directly overhead and
+the center of the sun's disk.</p><a href="../proc/zenith_angle__theta_z.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -1269,7 +1278,7 @@
             <td>::</td>
             <td><strong>dLatitude</strong></td>
             <td>
-
+<p>Latitude of location for which estimate is being made, in RADIANS</p>
             </td>
         </tr>
         <tr>
@@ -1284,7 +1293,7 @@
             <td>::</td>
             <td><strong>dDelta</strong></td>
             <td>
-
+<p>Solar declination angle, in RADIANS</p>
             </td>
         </tr>
         <tr>
@@ -1299,7 +1308,8 @@
             <td>::</td>
             <td><strong>dOmega</strong></td>
             <td>
-
+<p>[OPTIONAL] Hour angle, measured at the celestial pole between the observer's meridian and
+           the solar meridian, in RADIANS</p>
             </td>
         </tr>
     </tbody>
@@ -1309,7 +1319,7 @@
     Return Value
     <small>real(kind=c_double)</small>
     </h4>
-    
+    <p>Solar zenith angle for the given location and time, in RADIANS</p>
 
     </div>
   </div>
@@ -1319,7 +1329,7 @@
 </h3></div>
     <div class="card-body">
           
-  <p>Calculate solar azimuth angle.</p><a href="../proc/azimuth_angle__psi.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+  <p>Calculate solar azimuth angle</p><a href="../proc/azimuth_angle__psi.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -1344,7 +1354,7 @@
             <td>::</td>
             <td><strong>rAlpha</strong></td>
             <td>
-
+<p>Solar altitude angle, in RADIANS</p>
             </td>
         </tr>
         <tr>
@@ -1359,7 +1369,7 @@
             <td>::</td>
             <td><strong>rLatitude</strong></td>
             <td>
-
+<p>Latitude of location for which estimate is being made, in RADIANS</p>
             </td>
         </tr>
         <tr>
@@ -1374,7 +1384,7 @@
             <td>::</td>
             <td><strong>rDelta</strong></td>
             <td>
-
+<p>Solar declination angle, in RADIANS</p>
             </td>
         </tr>
     </tbody>
@@ -1384,7 +1394,7 @@
     Return Value
     <small>real(kind=c_double)</small>
     </h4>
-    
+    <p>Solar azimuth angle, in RADIANS</p>
 
     </div>
   </div>
@@ -1410,7 +1420,7 @@
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-10-23T15:50:27.332322             </p>
+ on 2023-10-23T18:25:06.961436             </p>
           </div>
         </div>
         <br>

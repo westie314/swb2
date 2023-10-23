@@ -96,7 +96,7 @@
 where only some data fields are found, or are only partially populated.</p><a href="../proc/awc_depth_integrated_read.html" class="pull-right"><emph>Read more&hellip;</emph></a></td></tr>
 			   <tr><td><a href='../proc/awc_gridded_values_initialize.html'>awc_gridded_values_initialize</a></td><td><a href='../module/awc__gridded_values.html'>awc__gridded_values</a></td><td>Subroutine</td><td></td></tr>
 			   <tr><td><a href='../proc/awc_gridded_values_read.html'>awc_gridded_values_read</a></td><td><a href='../module/awc__gridded_values.html'>awc__gridded_values</a></td><td>Subroutine</td><td></td></tr>
-			   <tr><td><a href='../proc/azimuth_angle__psi.html'>azimuth_angle__psi</a></td><td><a href='../module/solar_calculations.html'>solar_calculations</a></td><td>Function</td><td><p>Calculate solar azimuth angle.</p><a href="../proc/azimuth_angle__psi.html" class="pull-right"><emph>Read more&hellip;</emph></a></td></tr>
+			   <tr><td><a href='../proc/azimuth_angle__psi.html'>azimuth_angle__psi</a></td><td><a href='../module/solar_calculations.html'>solar_calculations</a></td><td>Function</td><td><p>Calculate solar azimuth angle</p><a href="../proc/azimuth_angle__psi.html" class="pull-right"><emph>Read more&hellip;</emph></a></td></tr>
 			   <tr><td><a href='../proc/bitwise_exclusive_or_operation.html'>bitwise_exclusive_or_operation</a></td><td><a href='../module/kiss_random_number_generator.html'>kiss_random_number_generator</a></td><td>Function</td><td></td></tr>
 			   <tr><td><a href='../proc/bool2dbl.html'>bool2dbl</a></td><td><a href='../module/constants_and_conversions.html'>constants_and_conversions</a></td><td>Function</td><td><p>Convert a boolean value into a double</p></td></tr>
 			   <tr><td><a href='../proc/bool2real.html'>bool2real</a></td><td><a href='../module/constants_and_conversions.html'>constants_and_conversions</a></td><td>Function</td><td><p>Convert a boolean value into a real</p></td></tr>
@@ -164,7 +164,10 @@ vegetation during the growing season</p><a href="../proc/calculate_fraction_expo
 			   <tr><td><a href='../proc/ctok_sgl_fn.html'>CtoK_sgl_fn</a></td><td><a href='../module/constants_and_conversions.html'>constants_and_conversions</a></td><td>Function</td><td><p>Convert degrees Celsius to Kelvins.
 @param[in] degrees_C Temperature in degrees Celcius.
 @retval degrees_K Temperature in Kelvins.</p></td></tr>
-			   <tr><td><a href='../proc/day_angle__gamma.html'>day_angle__gamma</a></td><td><a href='../module/solar_calculations.html'>solar_calculations</a></td><td>Function</td><td><p>Calculate the day angle in RADIANS.</p><a href="../proc/day_angle__gamma.html" class="pull-right"><emph>Read more&hellip;</emph></a></td></tr>
+			   <tr><td><a href='../proc/day_angle__gamma.html'>day_angle__gamma</a></td><td><a href='../module/solar_calculations.html'>solar_calculations</a></td><td>Function</td><td><p>Calculate the day angle, in RADIANS
+This function expresses the integer day number as an angle (in
+radians). Output values range from 0 (on January 1st) to
+just less than <script type="math/tex">2\pi</script> on December 31st.</p><a href="../proc/day_angle__gamma.html" class="pull-right"><emph>Read more&hellip;</emph></a></td></tr>
 			   <tr><td><a href='../proc/day_of_year.html'>day_of_year</a></td><td><a href='../module/datetime.html'>datetime</a></td><td>Function</td><td></td></tr>
 			   <tr><td><a href='../proc/daylight_hours.html'>daylight_hours</a></td><td><a href='../module/solar_calculations.html'>solar_calculations</a></td><td>Function</td><td><p>Calculate the number of daylight hours at a location.</p><a href="../proc/daylight_hours.html" class="pull-right"><emph>Read more&hellip;</emph></a></td></tr>
 			   <tr><td><a href='../proc/dbl2int.html'>dbl2int</a></td><td><a href='../module/constants_and_conversions.html'>constants_and_conversions</a></td><td>Function</td><td><p>Convert a double-precision value to an integer</p></td></tr>
@@ -190,7 +193,10 @@ to be added directly to SOIL MOISTURE.</p><a href="../proc/direct_soil_moisture_
 			   <tr><td><a href='../proc/enforce_bounds_sgl_fn.html'>enforce_bounds_sgl_fn</a></td><td><a href='../module/constants_and_conversions.html'>constants_and_conversions</a></td><td>Function</td><td></td></tr>
 			   <tr><td><a href='../proc/equivalent_evaporation.html'>equivalent_evaporation</a></td><td><a href='../module/meteorological_calculations.html'>meteorological_calculations</a></td><td>Function</td><td><p>Calculate a radiation value in terms of equivalent evaporation (depth of water
 that would be evaporated for a given radiation value)</p></td></tr>
-			   <tr><td><a href='../proc/estimate_percent_of_possible_sunshine__psun.html'>estimate_percent_of_possible_sunshine__psun</a></td><td><a href='../module/solar_calculations.html'>solar_calculations</a></td><td>Function</td><td><p>Estimate percent of possible sunshine.</p><a href="../proc/estimate_percent_of_possible_sunshine__psun.html" class="pull-right"><emph>Read more&hellip;</emph></a></td></tr>
+			   <tr><td><a href='../proc/estimate_percent_of_possible_sunshine__psun.html'>estimate_percent_of_possible_sunshine__psun</a></td><td><a href='../module/solar_calculations.html'>solar_calculations</a></td><td>Function</td><td><p>Estimate percent of possible sunshine.
+This function follows from equation 5 in "The Rational Use of the FAO Blaney-Criddle
+substituting the rearranged Hargreaves solar radiation formula into
+equation 5 results in the formulation as implemented.</p></td></tr>
 			   <tr><td><a href='../proc/et0_hargreaves.html'>ET0_hargreaves</a></td><td><a href='../module/et__hargreaves_samani.html'>et__hargreaves_samani</a></td><td>Function</td><td></td></tr>
 			   <tr><td><a href='../proc/et_gridded_values_calculate.html'>et_gridded_values_calculate</a></td><td><a href='../module/et__gridded_values.html'>et__gridded_values</a></td><td>Subroutine</td><td></td></tr>
 			   <tr><td><a href='../proc/et_gridded_values_initialize.html'>et_gridded_values_initialize</a></td><td><a href='../module/et__gridded_values.html'>et__gridded_values</a></td><td>Subroutine</td><td></td></tr>
@@ -507,7 +513,7 @@ retrieve nongrowing season interception amount: 'n' term</p></td></tr>
 			   <tr><td><a href='../interface/nc_put_vars_short.html'>nc_put_vars_short</a></td><td><a href='../module/netcdf_c_api_interfaces.html'>netcdf_c_api_interfaces</a></td><td>Interface</td><td></td></tr>
 			   <tr><td><a href='../interface/nc_redef.html'>nc_redef</a></td><td><a href='../module/netcdf_c_api_interfaces.html'>netcdf_c_api_interfaces</a></td><td>Interface</td><td></td></tr>
 			   <tr><td><a href='../interface/nc_strerror.html'>nc_strerror</a></td><td><a href='../module/netcdf_c_api_interfaces.html'>netcdf_c_api_interfaces</a></td><td>Interface</td><td></td></tr>
-			   <tr><td><a href='../proc/net_longwave_radiation__rnl.html'>net_longwave_radiation__Rnl</a></td><td><a href='../module/solar_calculations.html'>solar_calculations</a></td><td>Function</td><td><p>Calculate net longwave radiation flux.</p><a href="../proc/net_longwave_radiation__rnl.html" class="pull-right"><emph>Read more&hellip;</emph></a></td></tr>
+			   <tr><td><a href='../proc/net_longwave_radiation__rnl.html'>net_longwave_radiation__Rnl</a></td><td><a href='../module/solar_calculations.html'>solar_calculations</a></td><td>Function</td><td><p>Calculate net longwave radiation flux</p><a href="../proc/net_longwave_radiation__rnl.html" class="pull-right"><emph>Read more&hellip;</emph></a></td></tr>
 			   <tr><td><a href='../proc/net_shortwave_radiation__rns.html'>net_shortwave_radiation__Rns</a></td><td><a href='../module/solar_calculations.html'>solar_calculations</a></td><td>Function</td><td><p>Calculate net shortwave radiation</p><a href="../proc/net_shortwave_radiation__rns.html" class="pull-right"><emph>Read more&hellip;</emph></a></td></tr>
 			   <tr><td><a href='../proc/netcdf_close_file.html'>netcdf_close_file</a></td><td><a href='../module/netcdf4_support.html'>netcdf4_support</a></td><td>Subroutine</td><td></td></tr>
 			   <tr><td><a href='../proc/netcdf_coord_to_col_row.html'>netcdf_coord_to_col_row</a></td><td><a href='../module/netcdf4_support.html'>netcdf4_support</a></td><td>Function</td><td></td></tr>
@@ -598,11 +604,12 @@ of defined type procedure pointers within the defined type definition</p></td></
 			   <tr><td><a href='../proc/short2real.html'>short2real</a></td><td><a href='../module/constants_and_conversions.html'>constants_and_conversions</a></td><td>Function</td><td><p>Convert a short int value into a real</p></td></tr>
 			   <tr><td><a href='../proc/snowfall_original_calculate.html'>snowfall_original_calculate</a></td><td><a href='../module/snowfall__original.html'>snowfall__original</a></td><td>Subroutine</td><td></td></tr>
 			   <tr><td><a href='../proc/snowmelt_original_calculate.html'>snowmelt_original_calculate</a></td><td><a href='../module/snowmelt__original.html'>snowmelt__original</a></td><td>Subroutine</td><td><p>temperatures in degrees Fahrenheit, snowmelt in inches</p><a href="../proc/snowmelt_original_calculate.html" class="pull-right"><emph>Read more&hellip;</emph></a></td></tr>
-			   <tr><td><a href='../proc/solar_altitude__alpha.html'>solar_altitude__alpha</a></td><td><a href='../module/solar_calculations.html'>solar_calculations</a></td><td>Function</td><td><p>Calculate the solar altitude given the zenith angle.</p><a href="../proc/solar_altitude__alpha.html" class="pull-right"><emph>Read more&hellip;</emph></a></td></tr>
+			   <tr><td><a href='../proc/solar_altitude__alpha.html'>solar_altitude__alpha</a></td><td><a href='../module/solar_calculations.html'>solar_calculations</a></td><td>Function</td><td><p>Calculate the solar altitude given the zenith angle.</p></td></tr>
 			   <tr><td><a href='../proc/solar_declination__delta.html'>solar_declination__delta</a></td><td><a href='../module/solar_calculations.html'>solar_calculations</a></td><td>Function</td><td><p>Calculate the solar declination for a given day of the year.</p><a href="../proc/solar_declination__delta.html" class="pull-right"><emph>Read more&hellip;</emph></a></td></tr>
 			   <tr><td><a href='../proc/solar_declination_simple__delta.html'>solar_declination_simple__delta</a></td><td><a href='../module/solar_calculations.html'>solar_calculations</a></td><td>Function</td><td><p>Calculate the solar declination for a given day of the year.</p><a href="../proc/solar_declination_simple__delta.html" class="pull-right"><emph>Read more&hellip;</emph></a></td></tr>
 			   <tr><td><a href='../proc/solar_radiation__rs.html'>solar_radiation__Rs</a></td><td><a href='../module/solar_calculations.html'>solar_calculations</a></td><td>Function</td><td><p>Calculate solar radiation by means of the Angstrom formula.</p><a href="../proc/solar_radiation__rs.html" class="pull-right"><emph>Read more&hellip;</emph></a></td></tr>
-			   <tr><td><a href='../proc/solar_radiation_hargreaves__rs.html'>solar_radiation_Hargreaves__Rs</a></td><td><a href='../module/solar_calculations.html'>solar_calculations</a></td><td>Function</td><td><p>Calculate shortwave solar radiation.</p><a href="../proc/solar_radiation_hargreaves__rs.html" class="pull-right"><emph>Read more&hellip;</emph></a></td></tr>
+			   <tr><td><a href='../proc/solar_radiation_hargreaves__rs.html'>solar_radiation_Hargreaves__Rs</a></td><td><a href='../module/solar_calculations.html'>solar_calculations</a></td><td>Function</td><td><p>Calculate shortwave solar radiation using Hargreave's radiation formula.
+For use when percent possible daily sunshine value is not available.</p><a href="../proc/solar_radiation_hargreaves__rs.html" class="pull-right"><emph>Read more&hellip;</emph></a></td></tr>
 			   <tr><td><a href='../interface/split.html'>split</a></td><td><a href='../module/fstring_list.html'>fstring_list</a></td><td>Interface</td><td></td></tr>
 			   <tr><td><a href='../interface/squote.html'>squote</a></td><td><a href='../module/fstring.html'>fstring</a></td><td>Interface</td><td></td></tr>
 			   <tr><td><a href='../proc/start_timer_sub.html'>start_timer_sub</a></td><td><a href='../module/timer.html'>timer</a></td><td>Subroutine</td><td></td></tr>
@@ -646,7 +653,9 @@ position of the current Kcb value on the Kcb curve</p></td></tr>
 			   <tr><td><a href='../proc/write_provisional_disclaimer.html'>write_provisional_disclaimer</a></td><td><a href='../module/disclaimers.html'>disclaimers</a></td><td>Subroutine</td><td></td></tr>
 			   <tr><td><a href='../proc/write_stats_to_arcgrid.html'>write_stats_to_arcgrid</a></td><td><a href='../module/swbstats2_support.html'>swbstats2_support</a></td><td>Subroutine</td><td></td></tr>
 			   <tr><td><a href='../proc/write_stats_to_netcdf.html'>write_stats_to_netcdf</a></td><td><a href='../module/swbstats2_support.html'>swbstats2_support</a></td><td>Subroutine</td><td></td></tr>
-			   <tr><td><a href='../proc/zenith_angle__theta_z.html'>zenith_angle__theta_z</a></td><td><a href='../module/solar_calculations.html'>solar_calculations</a></td><td>Function</td><td><p>Calculate solar zenith angle given latitude, declination, and (optionally) hour angle.</p><a href="../proc/zenith_angle__theta_z.html" class="pull-right"><emph>Read more&hellip;</emph></a></td></tr>
+			   <tr><td><a href='../proc/zenith_angle__theta_z.html'>zenith_angle__theta_z</a></td><td><a href='../module/solar_calculations.html'>solar_calculations</a></td><td>Function</td><td><p>Calculate solar zenith angle given latitude, declination, and (optionally) hour angle.
+Solar zenith angle is the angle between a point directly overhead and
+the center of the sun's disk.</p><a href="../proc/zenith_angle__theta_z.html" class="pull-right"><emph>Read more&hellip;</emph></a></td></tr>
 			 </tbody></table>
              
         </div>
@@ -663,7 +672,7 @@ position of the current Kcb value on the Kcb curve</p></td></tr>
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-10-23T15:50:27.332322             </p>
+ on 2023-10-23T18:25:06.961436             </p>
           </div>
         </div>
         <br>
