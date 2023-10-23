@@ -5,7 +5,6 @@ ordered_subpage: daily_weather_data.md
 ordered_subpage: projection_and_resampling.md
 ordered_subpage: output_files.md
 ordered_subpage: references.md
-copy_subdir: images
 ---
 
 @note
@@ -16,7 +15,7 @@ The official documentation for this code is contained in [USGS Techniques and Me
 
 SWB is compiled Fortran 2008 code; no installation is needed other than copying the executable program to the desired location on the system hard drive. When the name of the executable is typed at a terminal command prompt, SWB will start up, list the compilation date, list the Git commit hash and branch, and finally, list any options that may be invoked (fig 1). Git is a software tool designed to keep track of changes made to a source code such as SWB (Torvalds and Hamano, 2010). A Git commit hash is a symbol that uniquely identifies the state of the code modules used to compile the version of SWB the user is running. If a SWB run has issues, the Git commit hash is crucial for recreating the code as it existed during compilation. 
 
-![SWB startup message](images/swb_startup_message.png)
+![SWB startup message](|media|/swb_startup_message.png)
 
 **Figure 1.**  Command-line response when Soil-Water-Balance (SWB) version 2.0 is
     executed with no other arguments.

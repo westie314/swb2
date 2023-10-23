@@ -49,6 +49,7 @@ The hydrologic soil group grid is an integer-valued grid that contains the soil 
 | C                     | 0.05-0.15 inch per hour        | 3                  |
 | D                     | Less than 0.05 inch per hour   | 4                  |
 
+
 #### Available Water Capacity
 
 SWB needs one or more datasets for use in assigning the size of the soil-storage reservoirs. The user can specify gridded datasets of either (1) maximum soil-water capacity in inches, or (2) available-water-capacity in inches per foot, along with tabular values of the rooting depth in feet. Traditionally SWB uses the gridded available water capacity and tabular rooting depth to calculate a maximum soil water-holding capacity for each grid cell. The maximum soil-water capacity is calculated as in equation 1.
@@ -74,6 +75,7 @@ If the maximum soil-water capacity is not specified directly, each grid cell wit
 | Sandy clay           | 3.20                                                    |
 | Silty clay           | 3.40                                                    |
 | Clay                 | 3.60                                                    |
+
 
 The available water capacity of a soil is typically given as inches of
 water-holding capacity per foot of soil thickness. For example, if a
@@ -118,7 +120,7 @@ corresponding cell figure 1*B*, located to the southwest of the
 central cell, contains the number 8. By convention, therefore, the D8
 flow direction for the cell shown in figure 1*A* is 8.
 
-<img src=images/Combined_elevation_and_D8_flow_direction_plot_fig_5__cropped.png width=100%>
+<img src=|media|/Combined_elevation_and_D8_flow_direction_plot_fig_5__cropped.png width=100%>
 
 Figure 1.  Example (a) elevation grid values, in meters, and (b) resulting D8
     flow-direction encoding.
