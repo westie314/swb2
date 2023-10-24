@@ -23,7 +23,7 @@ of the underlying netCDF library, writing out netCDF files with SWB is
 still several times faster than writing to the custom binary files of
 SWB version 1.0.
 
-**Table 4.** List of variables written to separate netCDF
+**Table 1.** List of variables written to separate netCDF
 files.
 
 | Variable name                | Units                  |                                                                                                                                                                                                                                                                           |
@@ -108,16 +108,16 @@ variables:
 }
 ```
 
-**Figure 7.**  Example header data from a Soil-Water-Balance (SWB) version 2.0
+**Figure 1.**  Example header data from a Soil-Water-Balance (SWB) version 2.0
     output netCDF file.
 
 ### Log Files
 
-In addition to the gridded netCDF output files, SWB writes ASCII log files each time the code is run. If the user experiences an issue while running the code, the first response should be to examine the end of the log file. Often an important error or warning message will be printed to the log file just before the SWB run fails. A small subset of a SWB run log is shown in figure 8.
+In addition to the gridded netCDF output files, SWB writes ASCII log files each time the code is run. If the user experiences an issue while running the code, the first response should be to examine the end of the log file. Often an important error or warning message will be printed to the log file just before the SWB run fails. A small subset of a SWB run log is shown in figure 2.
 
-![SWB logfile snippet](images/swb_logfile_snippet2.png)
+![SWB logfile snippet](|media|/swb_logfile_snippet2.png)
 
-**Figure 8.**  Subset of a Soil-Water-Balance (SWB) log file as displayed in a
+**Figure 2.**  Subset of a Soil-Water-Balance (SWB) log file as displayed in a
     Markdown editor.
 
 The log files are formatted as Markdown text files; Markdown is a set of text file conventions that can be used to produce HyperText Markup Language (HTML), Portable Document Format (PDF), or other formatted output (Gruber, 2012). The log files are not required to be viewed in a Markdown editor; the files are accessible as plain text and may be viewed in any standard text editor. However, Markdown tags have been selected so that error messages are more easily recognized within the voluminous text of the logfile output.

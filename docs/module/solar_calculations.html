@@ -73,7 +73,7 @@
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip"
                  data-bs-placement="bottom" data-html="true"
-                 title=" 0.9% of total for modules and submodules.">167 statements</a>
+                 title=" 0.9% of total for modules and submodules.">165 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
@@ -105,19 +105,7 @@
         <div id="sidebar">
       <h3>Contents</h3>
   
-      <div class="card mb-4">
-      <a data-bs-toggle="collapse" href="#vars-0"
-         aria-expanded="false" aria-controls="vars-0">
-         <h4 class="card-header bg-primary text-white">Variables</h4>
-      </a>
-      <div id="vars-0" class="collapse">
-        <div class="list-group list-group-flush">
-            <a class="list-group-item" href="../module/solar_calculations.html#variable-earth_sun_dist_dr">EARTH_SUN_DIST_Dr</a>
-            <a class="list-group-item" href="../module/solar_calculations.html#variable-solar_declination_delta">SOLAR_DECLINATION_Delta</a>
-        </div>
-      </div>
-    </div>
-
+  
   
   
   
@@ -177,9 +165,9 @@
         <ul class="list-group list-group-flush">
             <li class="list-group-item">
               <ul class="list-inline">
+                  <li class="list-inline-item"><a href='../module/exceptions.html'>exceptions</a></li>
                   <li class="list-inline-item"><a href='../module/meteorological_calculations.html'>meteorological_calculations</a></li>
                   <li class="list-inline-item"><a href='../module/constants_and_conversions.html'>constants_and_conversions</a></li>
-                  <li class="list-inline-item"><a href='../module/exceptions.html'>exceptions</a></li>
                   <li class="list-inline-item"><a href='http://fortranwiki.org/fortran/show/iso_c_binding'>iso_c_binding</a></li>
               </ul>
             </li>
@@ -191,57 +179,6 @@
       <br>
 
 
-        <section>
-          <h2>Variables</h2>
-            <table class="table table-striped varlist">
-    <thead>
-      <tr>
-        <th scope="col">Type</th>
-<th scope="col">Visibility</th>        <th scope="col">Attributes</th>
-        <th scope="col"></th>
-        <th scope="col">Name</th>
-<th></th><th scope="col">Initial</th>        <th scope="col"></th>
-    </thead>
-    <tbody>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-earth_sun_dist_dr"></span>
-              real(kind=c_float),
-            </td>
-              <td>public</td>
-            <td>
-              
-            </td>
-            <td>::</td>
-            <td><strong>EARTH_SUN_DIST_Dr</strong></td>
-                <td></td>
-                <td></td>
-            <td>
-                
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-solar_declination_delta"></span>
-              real(kind=c_float),
-            </td>
-              <td>public</td>
-            <td>
-              
-            </td>
-            <td>::</td>
-            <td><strong>SOLAR_DECLINATION_Delta</strong></td>
-                <td></td>
-                <td></td>
-            <td>
-                
-            </td>
-        </tr>
-    </tbody>
-  </table>
-
-        </section>
-        <br>
 
 
 
@@ -828,7 +765,8 @@ equation 5 results in the formulation as implemented.</p>
 </h3></div>
     <div class="card-body">
           
-  <p>Calculate clear sky solar radiation.</p><a href="../proc/clear_sky_solar_radiation__rso.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+  <p>Calculate the clear sky solar radiation (i.e. when rPctSun = 100,
+  n/N=1.  Required for computing net longwave radiation.</p><a href="../proc/clear_sky_solar_radiation__rso.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -853,7 +791,7 @@ equation 5 results in the formulation as implemented.</p>
             <td>::</td>
             <td><strong>dRa</strong></td>
             <td>
-
+<p>Extraterrestrial radiation, in MJ / m**2 / day</p>
             </td>
         </tr>
         <tr>
@@ -868,7 +806,8 @@ equation 5 results in the formulation as implemented.</p>
             <td>::</td>
             <td><strong>dAs</strong></td>
             <td>
-
+<p>Solar radiation regression constant, expressing the fraction
+of extraterrestrial radiation that reaches earth on OVERCAST days.</p>
             </td>
         </tr>
         <tr>
@@ -883,7 +822,8 @@ equation 5 results in the formulation as implemented.</p>
             <td>::</td>
             <td><strong>dBs</strong></td>
             <td>
-
+<p>Solar radiation regression constant. As + Bs express the fraction
+of extraterrestrial radiation that reaches earth on CLEAR days.</p>
             </td>
         </tr>
     </tbody>
@@ -893,7 +833,7 @@ equation 5 results in the formulation as implemented.</p>
     Return Value
     <small>real(kind=c_double)</small>
     </h4>
-    
+    <p>Clear sky solar radiation, in MJ / m**2 / day</p>
 
     </div>
   </div>
@@ -918,7 +858,7 @@ equation 5 results in the formulation as implemented.</p>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-dra~4"></span>
+              <span class="anchor" id="variable-dra~5"></span>
               real(kind=c_double),
             </td>
 <td>intent(in)</td>
@@ -978,7 +918,7 @@ equation 5 results in the formulation as implemented.</p>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-dra~5"></span>
+              <span class="anchor" id="variable-dra~4"></span>
               real(kind=c_double),
             </td>
 <td>intent(in)</td>
@@ -988,7 +928,7 @@ equation 5 results in the formulation as implemented.</p>
             <td>::</td>
             <td><strong>dRa</strong></td>
             <td>
-
+<p>Extraterrestrial radiation in MJ / m**2 / day</p>
             </td>
         </tr>
         <tr>
@@ -1003,7 +943,8 @@ equation 5 results in the formulation as implemented.</p>
             <td>::</td>
             <td><strong>dAs</strong></td>
             <td>
-
+<p>Solar radiation regression constant, expressing the fraction
+of extraterrestrial radiation that reaches earth on OVERCAST days.</p>
             </td>
         </tr>
         <tr>
@@ -1018,7 +959,8 @@ equation 5 results in the formulation as implemented.</p>
             <td>::</td>
             <td><strong>dBs</strong></td>
             <td>
-
+<p>Solar radiation regression constant. As + Bs express the fraction
+of extraterrestrial radiation that reaches earth on CLEAR days.</p>
             </td>
         </tr>
         <tr>
@@ -1033,7 +975,7 @@ equation 5 results in the formulation as implemented.</p>
             <td>::</td>
             <td><strong>fPctSun</strong></td>
             <td>
-
+<p>Percent of TOTAL number of sunshine hours during which the sun was actually shining.</p>
             </td>
         </tr>
     </tbody>
@@ -1043,7 +985,7 @@ equation 5 results in the formulation as implemented.</p>
     Return Value
     <small>real(kind=c_double)</small>
     </h4>
-    
+    <p>Solar radiation in MJ / m**2 / day</p>
 
     </div>
   </div>
@@ -1098,7 +1040,7 @@ equation 5 results in the formulation as implemented.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-drs~3"></span>
+              <span class="anchor" id="variable-drs~4"></span>
               real(kind=c_double),
             </td>
 <td>intent(in)</td>
@@ -1113,7 +1055,7 @@ equation 5 results in the formulation as implemented.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-drso"></span>
+              <span class="anchor" id="variable-drso~2"></span>
               real(kind=c_double),
             </td>
 <td>intent(in)</td>
@@ -1420,7 +1362,7 @@ the center of the sun's disk.</p><a href="../proc/zenith_angle__theta_z.html" cl
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-10-23T18:25:06.961436             </p>
+ on 2023-10-24T10:28:22.778011             </p>
           </div>
         </div>
         <br>

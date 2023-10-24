@@ -7,9 +7,6 @@ module solar_calculations
   use exceptions
   implicit none
 
-  real (c_float) :: EARTH_SUN_DIST_Dr
-  real (c_float) :: SOLAR_DECLINATION_Delta
-
 contains
 
   function daylight_hours( dOmega_s )    result(dN)   bind(c)
@@ -290,31 +287,20 @@ contains
 
   !------------------------------------------------------------------------------------------------
 
-  !> Calculate clear sky solar radiation.
-  !!
-  !! Calculate the clear sky solar radiation (i.e. when rPctSun = 100,
-  !!   n/N=1.  Required for computing net longwave radiation.
-  !!
-  !! @param[in]  dRa   Extraterrestrial radiation, in MJ / m**2 / day
-  !! @param[in]  dAs   Solar radiation regression constant, expressing the fraction
-  !!                     of extraterrestrial radiation that reaches earth on OVERCAST days.
-  !! @param[in]  sBs   Solar radiation regression constant. As + Bs express the fraction
-  !!                     of extraterrestrial radiation that reaches earth on CLEAR days.
-  !! @retval    dRso   Clear sky solar radiation, in MJ / m**2 / day
-  !!
-  !!  Implementation follows equation 36, Allen and others (1998).
-  !!
-  !!  Reference:
-  !!   Allen, R.G., and others, 1998, FAO Irrigation and Drainage Paper No. 56,
-  !!    "Crop Evapotranspiration (Guidelines for computing crop water
-  !!    requirements)", Food and Agriculture Organization, Rome, Italy.
-
   function clear_sky_solar_radiation__Rso( dRa, dAs, dBs )   result( dRso )   bind(c)
+    !! Calculate the clear sky solar radiation (i.e. when rPctSun = 100,
+    !!   n/N=1.  Required for computing net longwave radiation.
 
     real (c_double), intent(in)           :: dRa
+      !! Extraterrestrial radiation, in MJ / m**2 / day
     real (c_double), intent(in), optional :: dAs
+      !! Solar radiation regression constant, expressing the fraction
+      !! of extraterrestrial radiation that reaches earth on OVERCAST days.
     real (c_double), intent(in),optional  :: dBs
+      !! Solar radiation regression constant. As + Bs express the fraction
+      !! of extraterrestrial radiation that reaches earth on CLEAR days.
     real (c_double)                       :: dRso
+      !! Clear sky solar radiation, in MJ / m**2 / day
 
     ! [ LOCALS ]
     real (c_double) :: dAs_l
@@ -335,6 +321,15 @@ contains
     end if
 
     dRso = (dAs_l + dBs_l * dRa)
+
+    !! @note
+    !!   Implementation follows equation 36, Allen and others (1998).
+    !!
+    !!   Reference:
+    !!     Allen, R.G., and others, 1998, FAO Irrigation and Drainage Paper No. 56,
+    !!     "Crop Evapotranspiration (Guidelines for computing crop water
+    !!     requirements)", Food and Agriculture Organization, Rome, Italy.
+    !! @endnote
 
   end function clear_sky_solar_radiation__Rso
 
@@ -369,33 +364,32 @@ contains
 
   !------------------------------------------------------------------------------------------------
 
-  !> Calculate solar radiation by means of the Angstrom formula.
-  !!
-  !! @param[in]      dRa   Extraterrestrial radiation in MJ / m**2 / day
-  !! @param[in]      dAs   Solar radiation regression constant, expressing the fraction
-  !!                         of extraterrestrial radiation that reaches earth on OVERCAST days.
-  !! @param[in]      dBs   Solar radiation regression constant. As + Bs express the fraction
-  !!                         of extraterrestrial radiation that reaches earth on CLEAR days.
-  !! @param[in]  fPctSun   Percent of TOTAL number of sunshine hours during which the
-  !!                         sun actually shown.
-  !! @retval         fRs   Solar radiation in MJ / m**2 / day
-  !!
-  !!  Implementation follows equation 35, Allen and others (1998).
-  !!
-  !!   Reference:
-  !!   Allen, R.G., and others, 1998, FAO Irrigation and Drainage Paper No. 56,
-  !!    "Crop Evapotranspiration (Guidelines for computing crop water
-  !!    requirements)", Food and Agriculture Organization, Rome, Italy.
-
   elemental function solar_radiation__Rs(dRa, dAs, dBs, fPctSun) result(dRs)
-
+    !! Calculate solar radiation by means of the Angstrom formula.
+    
     real (c_double), intent(in) :: dRa
+      !! Extraterrestrial radiation in MJ / m**2 / day
     real (c_double), intent(in) :: dAs
+      !! Solar radiation regression constant, expressing the fraction
+      !! of extraterrestrial radiation that reaches earth on OVERCAST days.
     real (c_double), intent(in) :: dBs
+      !! Solar radiation regression constant. As + Bs express the fraction
+      !! of extraterrestrial radiation that reaches earth on CLEAR days.
     real (c_double), intent(in) :: fPctSun
+      !! Percent of TOTAL number of sunshine hours during which the sun was actually shining.
     real (c_double)             :: dRs
+      !! Solar radiation in MJ / m**2 / day
 
     dRs = ( dAs + (dBs * fPctSun / 100_c_float ) ) * dRa
+
+    !! @note
+    !!   Implementation follows equation 35, Allen and others (1998).
+    !!
+    !!   Reference:
+    !!     Allen, R.G., and others, 1998, FAO Irrigation and Drainage Paper No. 56,
+    !!     "Crop Evapotranspiration (Guidelines for computing crop water
+    !!     requirements)", Food and Agriculture Organization, Rome, Italy.
+    !! @endnote
 
   end function solar_radiation__Rs
 
