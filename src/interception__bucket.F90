@@ -20,14 +20,14 @@ module interception__bucket
 !  logical (c_bool) :: GROWING_SEASON = .true._c_bool
 
   integer (c_int), allocatable :: iLanduseCodes(:)
-  real (c_double), allocatable  :: INTERCEPTION_A_VALUE_GROWING_SEASON(:)
-  real (c_double), allocatable  :: INTERCEPTION_B_VALUE_GROWING_SEASON(:)
-  real (c_double), allocatable  :: INTERCEPTION_N_VALUE_GROWING_SEASON(:)
-  real (c_double), allocatable  :: INTERCEPTION_A_VALUE_NONGROWING_SEASON(:)
-  real (c_double), allocatable  :: INTERCEPTION_B_VALUE_NONGROWING_SEASON(:)
-  real (c_double), allocatable  :: INTERCEPTION_N_VALUE_NONGROWING_SEASON(:)
-  real (c_double), allocatable  :: BUCKET_INTERCEPTION_STORAGE_MAX_GROWING_SEASON(:)
-  real (c_double), allocatable  :: BUCKET_INTERCEPTION_STORAGE_MAX_NONGROWING_SEASON(:)
+  real (c_float), allocatable  :: INTERCEPTION_A_VALUE_GROWING_SEASON(:)
+  real (c_float), allocatable  :: INTERCEPTION_B_VALUE_GROWING_SEASON(:)
+  real (c_float), allocatable  :: INTERCEPTION_N_VALUE_GROWING_SEASON(:)
+  real (c_float), allocatable  :: INTERCEPTION_A_VALUE_NONGROWING_SEASON(:)
+  real (c_float), allocatable  :: INTERCEPTION_B_VALUE_NONGROWING_SEASON(:)
+  real (c_float), allocatable  :: INTERCEPTION_N_VALUE_NONGROWING_SEASON(:)
+  real (c_float), allocatable  :: BUCKET_INTERCEPTION_STORAGE_MAX_GROWING_SEASON(:)
+  real (c_float), allocatable  :: BUCKET_INTERCEPTION_STORAGE_MAX_NONGROWING_SEASON(:)
 
   !> Form of the bucket interception: I = A + P*B^n
 
@@ -50,7 +50,7 @@ contains
     type (FSTRING_LIST_T)              :: sl_growing_season_begin
     type (FSTRING_LIST_T)              :: sl_growing_season_end
     character (len=32)                :: str_buffer
-    real (c_double), allocatable  :: temp_values(:)
+    real (c_float),  allocatable  :: temp_values(:)
     integer (c_int)              :: indx
     integer (c_int)              :: status
 
@@ -228,7 +228,7 @@ contains
     call sl_temp_list%append("Interception_Storage_Maximum_nongrowing")
 
     call PARAMS%get_parameters( slKeys=sl_temp_list,                                           &
-                                fValues=BUCKET_INTERCEPTION_STORAGE_MAX_NONGROWING_SEASON,     &
+                                fValues= BUCKET_INTERCEPTION_STORAGE_MAX_NONGROWING_SEASON,     &
                                 lFatal=FALSE )
 
     lAreLengthsEqual = ( ubound(BUCKET_INTERCEPTION_STORAGE_MAX_NONGROWING_SEASON,1) == ubound(iLanduseCodes,1) )
