@@ -30,11 +30,11 @@ module direct_soil_moisture__gridded_data
   type (DATA_CATALOG_ENTRY_T), pointer :: pSEPTIC_DISCHARGE
   type (DATA_CATALOG_ENTRY_T), pointer :: pANNUAL_SEPTIC_DISCHARGE
 
-  real (c_double), allocatable     :: fSEPTIC_DISCHARGE(:)
-  real (c_double), allocatable     :: fANNUAL_SEPTIC_DISCHARGE(:)
+  real (c_float), allocatable     :: fSEPTIC_DISCHARGE(:)
+  real (c_float), allocatable     :: fANNUAL_SEPTIC_DISCHARGE(:)
 
-  real (c_double), allocatable     :: fSEPTIC_DISCHARGE_TABLE(:)
-  real (c_double), allocatable     :: fANNUAL_SEPTIC_DISCHARGE_TABLE(:)
+  real (c_float), allocatable     :: fSEPTIC_DISCHARGE_TABLE(:)
+  real (c_float), allocatable     :: fANNUAL_SEPTIC_DISCHARGE_TABLE(:)
 
   type (T_NETCDF4_FILE), pointer       :: pNCFILE
 

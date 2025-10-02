@@ -35,8 +35,8 @@ contains
     type (FSTRING_LIST_T)              :: parameter_list
     type (FSTRING_LIST_T)              :: gdd_reset_val_list
     character (len=32)                :: sBuf
-    real (c_double), allocatable  :: gdd_base_l(:)
-    real (c_double), allocatable  :: gdd_max_l(:)
+    real (c_float), allocatable  :: gdd_base_l(:)
+    real (c_float), allocatable  :: gdd_max_l(:)
     integer (c_int)              :: number_of_landuse_codes
     integer (c_int), allocatable :: landuse_code(:)
 

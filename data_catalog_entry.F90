@@ -85,12 +85,12 @@ module data_catalog_entry
     real (c_double)      :: dUserScaleFactor = 1_c_double
     real (c_double)      :: dUserAddOffset = 0_c_double
     real (c_double)      :: dUserSubOffset = 0_c_double
-    real (c_float)       :: rX_Coord_AddOffset = 0.0_c_float
-    real (c_float)       :: rY_Coord_AddOffset = 0.0_c_float
-    real (c_float)       :: rCoordinateTolerance = 0.0_c_float
+    real (c_double)      :: rX_Coord_AddOffset = 0.0_c_double
+    real (c_double)      :: rY_Coord_AddOffset = 0.0_c_double
+    real (c_double)      :: rCoordinateTolerance = 0.0_c_double
     
-    real (c_float), allocatable :: rX_coordinate_subset(:)
-    real (c_float), allocatable :: rY_coordinate_subset(:)
+    real (c_double), allocatable :: rX_coordinate_subset(:)
+    real (c_double), allocatable :: rY_coordinate_subset(:)
 
     logical (c_bool)     :: lAllowMissingFiles = FALSE
     logical (c_bool)     :: lAllowAutomaticDataFlipping = TRUE
@@ -922,8 +922,8 @@ subroutine getvalues_constant_sub( this  )
 subroutine transform_grid_to_grid_sub(this, rX, rY)
 
   class (DATA_CATALOG_ENTRY_T) :: this
-  real (c_float), optional    :: rX(:)
-  real (c_float), optional    :: rY(:)
+  real (c_double), optional    :: rX(:)
+  real (c_double), optional    :: rY(:)
 
   if (.not. associated(this%pGrdNative) )  &
     call die("INTERNAL PROGRAMMING ERROR--Null pointer detected.", __FILE__, __LINE__)
@@ -1997,7 +1997,7 @@ end subroutine set_archive_local_sub
 subroutine set_X_coord_offset_sub(this, rXOffset)
 
    class (DATA_CATALOG_ENTRY_T) :: this
-   real (c_float)         :: rXOffset
+   real (c_double)         :: rXOffset
 
    this%rX_Coord_AddOffset = rXOffset
 
@@ -2008,7 +2008,7 @@ end subroutine set_X_coord_offset_sub
 subroutine set_Y_coord_offset_sub(this, rYOffset)
 
    class (DATA_CATALOG_ENTRY_T) :: this
-   real (c_float)              :: rYOffset
+   real (c_double)              :: rYOffset
 
    this%rY_Coord_AddOffset = rYOffset
 
@@ -2019,7 +2019,7 @@ end subroutine set_Y_coord_offset_sub
 subroutine set_coordinate_tolerance_sub(this, rCoordinateTolerance)
 
   class (DATA_CATALOG_ENTRY_T) :: this
-  real (c_float)              :: rCoordinateTolerance
+  real (c_double)              :: rCoordinateTolerance
 
   this%rCoordinateTolerance = rCoordinateTolerance
 
@@ -2145,9 +2145,7 @@ end subroutine set_maximum_allowable_value_real_sub
     ! [ LOCALS ]
     integer (c_int) :: iRetVal
     real (c_float) :: rMultiplier = 0.
-    real (c_float), dimension(4) :: rX, rY
-!JJH
-    real (c_double), dimension(4) :: dX, dY
+    real (c_double), dimension(4) :: rX, rY
 
     ! ensure that there is sufficient coverage on all sides of grid
     rX(1) = pGrdBase%rX0 ! - pGrdBase%rGridCellSize * rMultiplier ! Xll
@@ -2165,18 +2163,13 @@ end subroutine set_maximum_allowable_value_real_sub
       ! now transform the project coordinates to native coordinates so we can
       ! use the native coordinate boundaries to "cookie-cut" only the data
       ! pertinent to our project area.
-!JJH
-       dX = rX
-       dY = rY
-       
       iRetVal = pj_init_and_transform(trim(pGrdBase%sPROJ4_string)//C_NULL_CHAR, &
                   trim(this%sSourcePROJ4_string)//C_NULL_CHAR,                   &
                   __FILE__//C_NULL_CHAR,                                   &
                   __LINE__,                                                      &
                   4_c_long,                                                      &
-                  dX, dY )
-!                  rX, rY )
-!
+                  rX, rY )
+
       call grid_CheckForPROJ4Error(iRetVal=iRetVal, &
         sFromPROJ4=trim(pGrdBase%sPROJ4_string), &
         sToPROJ4=trim(this%sSourcePROJ4_string))
